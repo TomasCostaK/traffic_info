@@ -39,6 +39,7 @@ B -- Has --> D
      - Prime key: id+bool+beginning
  - Acidente is basically a logger entity:
      - Date of accident
+     - Coordinates for the accident (know the exact place)
  - Congestao is another logger:
      - Date of congestion
 Messaging queue may be done with RabbitMQ since we already have some knowledge using it from previous classes.
