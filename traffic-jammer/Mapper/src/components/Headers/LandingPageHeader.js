@@ -44,7 +44,7 @@ function LandingPageHeader() {
     <>
       <div
         style={{
-          backgroundImage: "url(" + require("assets/img/daniel-olahh.jpg") + ")"
+          backgroundImage: "url(" + require("assets/img/grid_neon2.png") + ")"
         }}
         className="page-header"
         data-parallax={true}
@@ -53,21 +53,20 @@ function LandingPageHeader() {
         <div className="filter" />
         <Container>
           <div className="motto text-center">
-            <h1>Example page</h1>
-            <h3>Start designing your landing page here.</h3>
+            <h1 style={{color:"white", fontSize:60, fontWeight:"bold"}}>Traffic Jammer</h1>
+            <h3 style={{color:'white', fontWeight:"bolder"}} >Closely follow traffic in your favourite city.</h3>
             <br />
             <Button
               href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
               className="btn-round mr-1"
               color="neutral"
               target="_blank"
-              outline
             >
               <i className="fa fa-play" />
-              Watch video
+              Watch Tutorial
             </Button>
-            <Button className="btn-round" color="neutral" type="button" outline>
-              Download
+            <Button className="btn-round" color="neutral" type="button">
+              Use Traffic Jammer
             </Button>
           </div>
         </Container>

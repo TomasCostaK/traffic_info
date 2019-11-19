@@ -29,6 +29,7 @@ import {
   NavItem,
   NavLink,
   Nav,
+  Button,
   Container
 } from "reactstrap";
 
@@ -74,10 +75,10 @@ function ExamplesNavbar() {
             data-placement="bottom"
             to="/index"
             target="_blank"
-            title="Coded by Creative Tim"
+            title="Traffic Jammer"
             tag={Link}
           >
-            Paper Kit 2
+            Traffic Jammer
           </NavbarBrand>
           <button
             aria-expanded={navbarCollapse}
@@ -98,62 +99,41 @@ function ExamplesNavbar() {
         >
           <Nav navbar>
             <NavItem>
-              <NavLink to="/index" tag={Link}>
-                <i className="nc-icon nc-layout-11" /> Components
+              <NavLink
+                data-placement="bottom"
+                href="https://gitlab.com/myiesgroup/iesproject_trafficjammer"
+                target="_blank"
+                title="Follow on Gitlab"
+              >
+                <i className="fa fa-gitlab" />
+                <p className="d-lg-none">Gitlab</p>
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink to="/dashboard" tag={Link}>
+                <i className="nc-icon nc-chart-bar-32" /> Dashboard
               </NavLink>
             </NavItem>
             <NavItem>
               <NavLink
-                href="https://demos.creative-tim.com/paper-kit-react/#/documentation?ref=pkr-examples-navbar"
+                href="https://gitlab.com/myiesgroup/iesproject_trafficjammer/blob/master/README.md"
                 target="_blank"
               >
                 <i className="nc-icon nc-book-bookmark" /> Documentation
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink
-                data-placement="bottom"
-                href="https://twitter.com/CreativeTim?ref=creativetim"
+              <Button
+                className="btn-round"
+                size = "md"
+                color="primary"
+                href="/profile"
                 target="_blank"
-                title="Follow us on Twitter"
               >
-                <i className="fa fa-twitter" />
-                <p className="d-lg-none">Twitter</p>
-              </NavLink>
+                Traffic WEB
+              </Button>
             </NavItem>
-            <NavItem>
-              <NavLink
-                data-placement="bottom"
-                href="https://www.facebook.com/CreativeTim?ref=creativetim"
-                target="_blank"
-                title="Like us on Facebook"
-              >
-                <i className="fa fa-facebook-square" />
-                <p className="d-lg-none">Facebook</p>
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink
-                data-placement="bottom"
-                href="https://www.instagram.com/CreativeTimOfficial?ref=creativetim"
-                target="_blank"
-                title="Follow us on Instagram"
-              >
-                <i className="fa fa-instagram" />
-                <p className="d-lg-none">Instagram</p>
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink
-                data-placement="bottom"
-                href="https://www.github.com/CreativeTimOfficial?ref=creativetim"
-                target="_blank"
-                title="Star on GitHub"
-              >
-                <i className="fa fa-github" />
-                <p className="d-lg-none">GitHub</p>
-              </NavLink>
-            </NavItem>
+
           </Nav>
         </Collapse>
       </Container>

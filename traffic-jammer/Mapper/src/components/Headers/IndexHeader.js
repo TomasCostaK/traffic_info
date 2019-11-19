@@ -31,15 +31,20 @@ function IndexHeader() {
         className="page-header section-dark"
         style={{
           backgroundImage:
-            "url(" + require("assets/img/grid_dark.jpg") + ")"
+            "url(" + require("assets/img/grid_neon.jpg") + ")"
         }}
       >
         <div className="filter" />
         <div className="content-center" >
           <Container>
             <div className="title-brand">
+              <h1 style={{fontSize: 125,
+                fontWeight: 700,
+                margin: 0,
+                color: "#FFFFFF"}} >Traffic Jammer</h1>
             </div>
-            <h2 className="presentation-subtitle text-center">
+            <h2 className="presentation-subtitle text-center"
+              style={{fontSize:40}}>
               Closely follow traffic for your favourite city!
             </h2>
           </Container>

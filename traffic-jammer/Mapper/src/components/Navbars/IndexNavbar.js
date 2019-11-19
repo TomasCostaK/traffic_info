@@ -105,12 +105,32 @@ function IndexNavbar() {
             </NavItem>
             <NavItem>
               <Button
-                className="btn-round"
-                color="primary"
+                className=""
+                color=""
+                href="/documentation"
+                target="_blank"
+              >
+                Documentation
+              </Button>
+            </NavItem>
+            <NavItem>
+              <Button
+                className=""
+                color=""
                 href="/admin"
                 target="_blank"
               >
                 Admin Dashboard
+              </Button>
+            </NavItem>
+            <NavItem>
+              <Button
+                className="btn"
+                color="primary"
+                href="/profile"
+                target="_blank"
+              >
+                Traffic WEB
               </Button>
             </NavItem>
           </Nav>
