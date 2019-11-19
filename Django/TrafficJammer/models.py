@@ -1,4 +1,6 @@
 from django.db import models
+from rest_framework import serializers
+
 
 class Street(models.Model):
     name=models.CharField(max_length=80)
@@ -31,4 +33,21 @@ class Acidente(models.Model):
 
 class Transit(models.Model):
     date=models.DateField()
-    section=models.ForeignKey(Section)
+    section=models.ForeignKey(Section,on_delete=models.CASCADE)
+
+class StreetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Street
+        fields = ('name','id',)
+
+class SectionSerializer(serializers.ModelSerializer):
+    street=StreetSerializer()
+    class Meta:
+        model = Section
+        fields=('id',
+                'number_cars',
+                'actual_direction',
+                'accident',
+                'beggining_coords_x',
+                'beggining_coords_y',
+                'street')
