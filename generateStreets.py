@@ -1,4 +1,5 @@
 from random import randint
+import json
 
 class Street():
     def __init__(self, name, beginning, ending, length):
@@ -9,10 +10,10 @@ class Street():
     
     def getDict(self):
         return {
-                    'name': self.name,
-                    'beginning': self.beginning,
-                    'ending': self.ending,
-                    'length': self.length
+                    "name": self.name,
+                    "beginning": self.beginning,
+                    "ending": self.ending,
+                    "length": self.length
                 }
 
 class Trecho():
@@ -25,17 +26,17 @@ class Trecho():
 
     def getDict(self):
         return {
-                    'street': self.street,
-                    'beginning': self.beginning,
-                    'num_cars': self.num_cars,
-                    'num_acc': self.num_acc,
-                    'direction': self.direction
+                    "street": self.street,
+                    "beginning": self.beginning,
+                    "num_cars": self.num_cars,
+                    "num_acc": self.num_acc,
+                    "direction": self.direction
                 }
 
 squareX = 5
 squareY = 5
 
-stNames = open("streetName.csv", 'r')
+stNames = open("streetName.csv", "r")
 streets = []
 
 for i in range(squareX+1):
@@ -48,17 +49,17 @@ for i in range(squareX+1):
     streets.append(Street(vertical_stName, vertical_street_beginning, vertical_street_ending, 5).getDict())
     streets.append(Street(horizontal_stName, horizontal_street_beginning, horizontal_street_ending, 5).getDict())
 
-print("Streets") 
-print(streets)
+data = {"Streets" : streets}
+# print(streets)
 
 trechos = []
 
 for street in streets:
-    street_name = street['name']
-    beg_street = street['beginning']
-    end_street = street['ending']
+    street_name = street["name"]
+    beg_street = street["beginning"]
+    end_street = street["ending"]
     for i in range(5):
-        ## Check if it's vertical or horizontal
+        ## Check if it"s vertical or horizontal
         if beg_street[0]==end_street[0]:
             beg_trecho_lr = (beg_street[0], i)
             beg_trecho_rl = (beg_street[0], 5-i)
@@ -70,11 +71,16 @@ for street in streets:
             trechos.append(Trecho(street_name, beg_trecho_ud, True).getDict())
             trechos.append(Trecho(street_name, beg_trecho_du, False).getDict())
 
-print("Trechos")
-print(trechos)
-'''
+data['Trechos'] = trechos
+
+print(json.dumps(data, indent=4))
+f = open("very_primordial_data.txt", "w")
+f.write(json.dumps(data, indent=4))
+f.close()
+
+"""
 for i in range(1):
-    stName = stNames.readline().split(',')[0]
+    stName = stNames.readline().split(",")[0]
     ## Random for vertical vs horizontal streets
     is_horizontal = randint(0,1) == 1
     common_var = 0
@@ -92,5 +98,5 @@ for i in range(1):
         y2 = randint(0, squareX)
         begin, end = sorted([y1, y2])
         print(f"Street {stName}, starts at {(begin, y1)} ends at {(end, y2)}")
-    #st = Street(stName, (0,1), squareX, 20)'''
+    #st = Street(stName, (0,1), squareX, 20)"""
 
