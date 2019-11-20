@@ -1,9 +1,10 @@
 from random import randint
 import json
+import unicodedata
 
 class Street():
     def __init__(self, name, beginning, ending, length):
-        self.name = name
+        self.name = unicodedata.normalize('NFD',name).encode('ascii','ignore').decode('utf-8')  #remove accents
         self.beginning = beginning
         self.ending = ending
         self.length = length
@@ -18,7 +19,7 @@ class Street():
 
 class Trecho():
     def __init__(self, street, beginning, direction):
-        self.street = street
+        self.street = unicodedata.normalize('NFD',street).encode('ascii','ignore').decode('utf-8')  #remove accents
         self.beginning = beginning
         self.num_cars = 0
         self.num_acc = 0
