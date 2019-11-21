@@ -19,10 +19,17 @@
 import React from "react";
 
 // reactstrap components
-import { Button, Card, Form, Input, Container, Row, Col } from "reactstrap";
+import { Button, Form, Input, Container, Row, Col } from "reactstrap";
 
 // core components
 import ExamplesNavbar from "components/Navbars/ExamplesNavbar.js";
+
+function submitForm(formValue) {
+  alert("Login Success")
+  if (true){
+    window.location.replace('/index');
+  }
+}
 
 function RegisterPage() {
   document.documentElement.classList.remove("nav-open");
@@ -37,71 +44,38 @@ function RegisterPage() {
       <ExamplesNavbar />
       <div
         className="page-header"
-        style={{
-          backgroundImage: "url(" + require("assets/img/login-image.jpg") + ")"
+        data-parallax={true}
+y        style={{
+          backgroundImage: "url(" + require("assets/img/grid_neon2.png") + ")",
         }}
       >
-        <div className="filter" />
+        <div className="" />
         <Container>
           <Row>
-            <Col className="ml-auto mr-auto" lg="4">
-              <Card className="card-register ml-auto mr-auto">
-                <h3 className="title mx-auto">Welcome</h3>
-                <div className="social-line text-center">
-                  <Button
-                    className="btn-neutral btn-just-icon mr-1"
-                    color="facebook"
-                    href="#pablo"
-                    onClick={e => e.preventDefault()}
-                  >
-                    <i className="fa fa-facebook-square" />
-                  </Button>
-                  <Button
-                    className="btn-neutral btn-just-icon mr-1"
-                    color="google"
-                    href="#pablo"
-                    onClick={e => e.preventDefault()}
-                  >
-                    <i className="fa fa-google-plus" />
-                  </Button>
-                  <Button
-                    className="btn-neutral btn-just-icon"
-                    color="twitter"
-                    href="#pablo"
-                    onClick={e => e.preventDefault()}
-                  >
-                    <i className="fa fa-twitter" />
-                  </Button>
-                </div>
-                <Form className="register-form">
-                  <label>Email</label>
-                  <Input placeholder="Email" type="text" />
-                  <label>Password</label>
-                  <Input placeholder="Password" type="password" />
-                  <Button block className="btn-round" color="danger">
-                    Register
+            <Col className="ml-auto mr-auto" lg="4" >
+                <h3 style={{textAlign:'center', fontWeight:'bold', fontSize:30}} className="title mx-auto">Sign In</h3>
+                <Form className="register-form" color="primary">
+                  <label color="neutral">Email</label>
+                  <Input placeholder="Email" type="email" />
+                  <label color="neutral">Password</label>
+                  <Input placeholder="Password" type="password" value=""/>
+                  <Button style={{marginTop:10}} block className="btn-round" onClick={e => submitForm()} color="primary">
+                    Login
                   </Button>
                 </Form>
                 <div className="forgot">
                   <Button
                     className="btn-link"
-                    color="danger"
-                    href="#pablo"
-                    onClick={e => e.preventDefault()}
+                    color="neutral"
+                    href="/index"
                   >
                     Forgot password?
                   </Button>
                 </div>
-              </Card>
             </Col>
           </Row>
         </Container>
-        <div className="footer register-footer text-center">
-          <h6>
-            © {new Date().getFullYear()}, made with{" "}
-            <i className="fa fa-heart heart" /> by Creative Tim
-          </h6>
-        </div>
+
       </div>
     </>
   );
