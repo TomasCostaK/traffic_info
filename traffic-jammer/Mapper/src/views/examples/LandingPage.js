@@ -120,7 +120,7 @@ function LandingPage() {
               <Col md="3">
                 <Card className="card-profile card-plain">
                   <div className="card-avatar">
-                    <a href="/profile/tomas" >
+                    <a href="/profile-page" >
                       <img
                         alt="..."
                         src={require("assets/img/faces/clem-onojeghuo-3.jpg")}
@@ -128,7 +128,7 @@ function LandingPage() {
                     </a>
                   </div>
                   <CardBody>
-                    <a href="/profile/tomas" >
+                    <a href="/profile-page" >
                       <div className="author">
                         <CardTitle tag="h4">Tomás Costa</CardTitle>
                         <h6 className="card-category">Team Manager</h6>

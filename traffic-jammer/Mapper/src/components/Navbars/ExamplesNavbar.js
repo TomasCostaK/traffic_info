@@ -110,7 +110,7 @@ function ExamplesNavbar() {
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink to="/register-page" tag={Link}>
+              <NavLink to="/login" tag={Link}>
                 <i className="nc-icon nc-chart-bar-32" /> Dashboard
               </NavLink>
             </NavItem>  
@@ -127,7 +127,7 @@ function ExamplesNavbar() {
                 className="btn-round"
                 size = "md"
                 color="primary"
-                href="/profile"
+                href="/app"
                 target="_blank"
               >
                 Traffic WEB
