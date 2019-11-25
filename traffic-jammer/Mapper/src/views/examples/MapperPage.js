@@ -20,7 +20,7 @@ import React from "react";
 
 import Konva from 'konva';
 import { render } from 'react-dom';
-import { Stage, Layer, Star, Text } from 'react-konva';
+import { Stage, Layer, Star,Line,Circle, Text } from 'react-konva';
 // reactstrap components
 import { Button, Form, Input, Container, Row, Col } from "reactstrap";
 
@@ -55,6 +55,9 @@ function handleDragEnd(e) {
     });
   };
 
+let window_height = 400;
+let window_width = 800;
+
 function RegisterPage() {
   document.documentElement.classList.remove("nav-open");
   React.useEffect(() => {
@@ -69,37 +72,189 @@ function RegisterPage() {
       <div
         className="page-header"
         data-parallax={true}
-y        style={{
-          backgroundImage: "url(" + require("assets/img/grid_neon2.png") + ")",
+        style={{
+          backgroundColor:'black',
         }}
       >
         <div className="" />
         <Container>
-          <Row>
-            <Col style={{backgroundColor:'white'}} className="ml-auto mr-auto" lg="4" >
-            <Stage width={window.innerWidth} height={window.innerHeight}>
+          <Row style={{alignContent:'center',justifyContent:'center',border:10,borderColor:'white'}}>
+            <Text style={{color:'white', fontWeight:'bold', fontSize:30}}>Map Analysis for: Espinho</Text>
+            <Stage width={window_width} height={window_height}>
                 <Layer>
-                <Text text="Try to drag a star" />
-                {[...Array(10)].map((_, i) => (
-                    <Star
-                    key={i}
-                    x={Math.random() * window.innerWidth}
-                    y={Math.random() * window.innerHeight}
-                    numPoints={5}
-                    innerRadius={20}
-                    outerRadius={40}
-                    fill="#89b717"
-                    opacity={0.8}
-                    draggable
-                    rotation={Math.random() * 180}
-                    shadowColor="black"
-                    shadowBlur={10}
-                    shadowOpacity={0.6}
-                    />
-                ))}
+                {/* Aqui fazer as linhas (mudar isto para um for e dar draw automatico, mt cancer para ja)*/}
+                {/* 1 linha */}
+                <Line
+                  x={250}
+                  y={100}
+                  id={1}
+                  points={[0, 0, 100, 0]}
+                  stroke="green"
+                  draggable
+                  strokeWidth="5"            
+                />
+                <Line
+                  x={350}
+                  y={100}
+                  points={[0, 0, 100, 0]}
+                  stroke="green"
+                  draggable
+                  strokeWidth="5"            
+                />
+                <Line
+                  x={450}
+                  y={100}
+                  points={[0, 0, 100, 0]}
+                  stroke="red"
+                  draggable
+                  strokeWidth="5"            
+                />
+                  {/* 2 linha */}
+                <Line
+                  x={250}
+                  y={200}
+                  points={[0, 0, 100, 0]}
+                  stroke="red"
+                  draggable
+                  strokeWidth="5"            
+                />
+                <Line
+                  x={350}
+                  y={200}
+                  points={[0, 0, 100, 0]}
+                  stroke="red"
+                  draggable
+                  strokeWidth="5"            
+                />
+                <Line
+                  x={450}
+                  y={200}
+                  points={[0, 0, 100, 0]}
+                  stroke="green"
+                  draggable
+                  strokeWidth="5"            
+                />
+                {/* 3 linha */}
+
+                <Line
+                  x={250}
+                  y={300}
+                  points={[0, 0, 100, 0]}
+                  stroke="green"
+                  draggable
+                  strokeWidth="5"            
+                />
+                <Line
+                  x={350}
+                  y={300}
+                  points={[0, 0, 100, 0]}
+                  stroke="green"
+                  draggable
+                  strokeWidth="5"            
+                />
+                <Line
+                  x={450}
+                  y={300}
+                  points={[0, 0, 100, 0]}
+                  stroke="red"
+                  draggable
+                  strokeWidth="5"            
+                />
+
+                {/* Agora fazer as colunas */}
+                {/* 1 coluna */}
+                <Line
+                  x={250}
+                  y={100}
+                  points={[0, 0, 0, 100]}
+                  stroke="red"
+                  draggable
+                  strokeWidth="5"            
+                />
+                <Line
+                  x={250}
+                  y={200}
+                  points={[0, 0, 0, 100]}
+                  stroke="green"
+                  draggable
+                  strokeWidth="5"            
+                />
+
+                {/* 2 coluna */}
+                <Line
+                  x={350}
+                  y={100}
+                  points={[0, 0, 0, 100]}
+                  stroke="red"
+                  draggable
+                  strokeWidth="5"            
+                />
+                <Line
+                  x={350}
+                  y={200}
+                  points={[0, 0, 0, 100]}
+                  stroke="green"
+                  draggable
+                  strokeWidth="5"            
+                />
+
+                {/* 3 coluna */}
+                <Line
+                  x={450}
+                  y={100}
+                  points={[0, 0, 0, 100]}
+                  stroke="green"
+                  draggable
+                  strokeWidth="5"            
+                />
+                <Line
+                  x={450}
+                  y={200}
+                  points={[0, 0, 0, 100]}
+                  stroke="yellow"
+                  draggable
+                  strokeWidth="5"            
+                />
+
+                {/* 4 coluna */}
+                <Line
+                  x={550}
+                  y={100}
+                  points={[0, 0, 0, 100]}
+                  stroke="red"
+                  draggable
+                  strokeWidth="5"            
+                />
+                <Line
+                  x={550}
+                  y={200}
+                  points={[0, 0, 0, 100]}
+                  stroke="green"
+                  draggable
+                  strokeWidth="5"            
+                />
+
+                {/* Diagonais */}
+                <Line
+                  x={250}
+                  y={100}
+                  points={[0, 0, 100, 100]}
+                  stroke="green"
+                  draggable
+                  strokeWidth="5"            
+                />
+
+                <Line
+                  x={450}
+                  y={200}
+                  points={[0, 0, 120, -120]}
+                  stroke="red"
+                  draggable
+                  strokeWidth="5"            
+                />
+
                 </Layer>
             </Stage>
-            </Col>
           </Row>
         </Container>
 
