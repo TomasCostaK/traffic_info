@@ -1,4 +1,17 @@
 # Traffic Jammer
+
+## The Product
+Traffic Jammer is a web application that allows you to view traffic close to you (as a regular user) and manage your city through a very detailed dashboard (administrator). Features include:
+* Simple interface for visualizing the traffic around you, don't waste time in traffic anymore.
+* Relevant statistics concerning your city's roads including: roadbloack, traffic jams and car crashes.
+* Beautiful and easily usable interface both for clients and administration.
+
+## Team
+* Team Manager - Tomás 
+* Product Owner - Mota
+* Architect - Joao
+* DevOps master - Pedro
+
 ## User Stories
 O João é um estudante universitário que vive em Ilhavo e estuda em Aveiro. Antes de sair de casa quer saber como está o transito no caminho até o departamento dele, para saber o melhor caminho e ter uma boa noção do tempo que vai demorar.
 
@@ -39,6 +52,7 @@ B -- Has --> D
      - Prime key: id+bool+beginning
  - Acidente is basically a logger entity:
      - Date of accident
+     - Coordinates for the accident (know the exact place)
  - Congestao is another logger:
      - Date of congestion
 Messaging queue may be done with RabbitMQ since we already have some knowledge using it from previous classes.
