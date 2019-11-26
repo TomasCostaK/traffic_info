@@ -47,9 +47,11 @@ function RegisterPage() {
         data-parallax={true}
 y        style={{
           backgroundImage: "url(" + require("assets/img/grid_neon2.png") + ")",
+          
         }}
       >
-        <div className="" />
+        
+        <div style={{background: "black"}} />
         <Container>
           <Row>
             <Col className="ml-auto mr-auto" lg="4" >
