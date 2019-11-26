@@ -34,7 +34,7 @@ var map_data_json = [
         "n_accident": 0,
         "beggining_coords_x": 0,
         "beggining_coords_y": 500,
-        "ending_coords_x": 0,
+        "ending_coords_x": 500,
         "ending_coords_y": 1000,
         "street": {
             "name": "14",
@@ -43,7 +43,7 @@ var map_data_json = [
     },
     {
         "id": 4,
-        "number_cars": 0,
+        "number_cars": 38,
         "actual_direction": false,
         "n_accident": 0,
         "beggining_coords_x": 0,

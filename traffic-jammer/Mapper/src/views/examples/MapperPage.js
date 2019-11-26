@@ -28,6 +28,7 @@ import ExamplesNavbar from "components/Navbars/ExamplesNavbar.js";
 
 let window_height = 400;
 let window_width = 800;
+//Ter em conta o zooming distance na width do stroke das estradas e nao so so seu tamanho
 let zooming_distance = 5;
 
 var map_data;
@@ -107,6 +108,17 @@ function makeRemoteRequest(){
   
 }
 
+function change_zoom(bool){
+  if(bool){
+    zooming_distance = zooming_distance - 1
+  }else{
+    zooming_distance = zooming_distance + 1
+  }
+
+  //Arrnjar maneira de conseguir mudar a zooming distance
+  return(fill_map())
+}
+
 function RegisterPage() {
   document.documentElement.classList.remove("nav-open");
   React.useEffect(() => {
@@ -122,13 +134,25 @@ function RegisterPage() {
         className="page-header"
         data-parallax={true}
         style={{
-          backgroundColor:'rgba(0,0,0,.76)',
+          backgroundColor:'rgba(0,0,0,.85)',
         }}
       >
         <div className="" />
         <Container>
           <Row style={{alignContent:'center',justifyContent:'center',border:10,borderColor:'white'}}>
-            <Text style={{color:'white', fontWeight:'bold', fontSize:30}}>Map Analysis for: Espinho</Text>
+            <div style={{padding:20}}>
+              <Text style={{color:'white', fontWeight:'bold', fontSize:30}}>Map Analysis for: Espinho</Text>
+              <Button
+                onClick={change_zoom(true)}
+              >
+                Zoom+
+              </Button>
+              <Button
+              onClick={change_zoom(false)}
+              >
+                Zoom-
+              </Button>
+            </div>
             <Stage width={window_width} height={window_height}>
                 <Layer id="map">
                 
