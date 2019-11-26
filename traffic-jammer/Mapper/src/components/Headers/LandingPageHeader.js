@@ -65,7 +65,7 @@ function LandingPageHeader() {
               <i className="fa fa-play" />
               Watch Tutorial
             </Button>
-            <Button className="btn-round" color="neutral" type="button">
+            <Button className="btn-round" href="/app" color="neutral" type="button">
               Use Traffic Jammer
             </Button>
           </div>
