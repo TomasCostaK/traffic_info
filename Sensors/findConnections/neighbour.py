@@ -1,4 +1,5 @@
 import json
+import sys
 
 def ccw(A,B,C):
     return (C[1]-A[1]) * (B[0]-A[0]) > (B[1]-A[1]) * (C[0]-A[0])
@@ -14,10 +15,11 @@ def intersect(A,B,C,D):
 
 neighbours = {}
 
-f = open("very_primordial_data.txt", "r")
-data = json.loads(f.read())
+f = open(sys.argv[1], "r")
+trechos = json.loads(f.read())
 f.close()
-trechos = data['Trechos']
+
+#trechos = trechos['Trechos']
 
 for trecho in trechos:
     begT1 = [trecho["beginning_coords_x"], trecho["beginning_coords_y"]]

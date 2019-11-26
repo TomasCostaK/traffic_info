@@ -4,6 +4,7 @@ import json
 import time
 from random import randint
 import os
+import sys
 
 #MAKE CONNECTION
 connection = pika.BlockingConnection(
@@ -14,7 +15,7 @@ channel = connection.channel()
 channel.queue_declare(queue='virtual_sensors')
 
 #INITIALIZE DATA
-f = open("neighbours.txt", "r")
+f = open(sys.argv[1], "r")
 neighbours = json.loads(f.read())
 f.close()
 number_of_trechos = len(neighbours)
@@ -29,9 +30,12 @@ def printInfo():
     for trecho in actual_info:
         print("Trecho %-2d : %-4d" % (trecho, actual_info[trecho]))
 
+
 #SENSOR
+i = 0   #just to debug
 while True:
-    printInfo()
+    if i % 100 == 0:
+        printInfo()
 
     trecho = randint(0,number_of_trechos-1)
     trechoOut = neighbours[str(trecho)][randint(0, len(neighbours[str(trecho)])-1)]
@@ -53,8 +57,9 @@ while True:
         msg = json.dumps({"id" : trechoOut, "info": "ADD_CAR"})
         channel.basic_publish(exchange='', routing_key='virtual_sensors', body=msg)     #CAR JOINED
     
-    
-    time.sleep(0.05)
+    i+=1
+    time.sleep(0.01)
+
 
 connection.close()
 
