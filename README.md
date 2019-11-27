@@ -12,6 +12,12 @@ Traffic Jammer is a web application that allows you to view traffic close to you
 * Architect - Joao
 * DevOps master - Pedro
 
+## Project Structure
+* [Documentation](https://gitlab.com/myiesgroup/iesproject_trafficjammer/blob/master/README.md)
+* [Prototype](https://gitlab.com/myiesgroup/iesproject_trafficjammer/tree/master/Prototype)
+* [Project Guidelines](https://gitlab.com/myiesgroup/iesproject_trafficjammer/blob/master/Reports/ProjectGuidelines.pdf)
+* [Website](https://gitlab.com/myiesgroup/iesproject_trafficjammer/tree/feature/frontend_react/traffic-jammer/Mapper)
+
 ## User Stories
 O João é um estudante universitário que vive em Ilhavo e estuda em Aveiro. Antes de sair de casa quer saber como está o transito no caminho até o departamento dele, para saber o melhor caminho e ter uma boa noção do tempo que vai demorar.
 
@@ -69,14 +75,8 @@ Street statistics: estatisticas de acidente, trafico medio, que rua se conecta a
 Extra: Route dum sitio (if able)
 
 ## Street attributes
-
-## Roles
-Team Manager - Tomas 
-Product Owner - Mota
-Architect - Joao
-DevOps master - Pedro
+Fill something in here
 
 ### Notes
 We are the group 35
 det-engsoft-14.ua.pt
-Use
