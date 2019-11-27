@@ -57,7 +57,7 @@ function draw_street(begx, begy, endx, endy, color,direction){
       y = {begy+40}
       points={points}
       stroke = {color}
-      strokeWidth = {4}
+      strokeWidth = {3}
     />
   )
 }
