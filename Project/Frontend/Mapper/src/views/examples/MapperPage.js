@@ -77,7 +77,9 @@ function analyse_traffic(number_cars){
 function fill_map(){
   //makeRemoteRequest();
   //Adicionar isto assim que tivermos o pedido
-  map_data = map_data_json
+  //map_data = map_data_json
+  makeRemoteRequest();
+  console.log(map_data);
   const lines = []
 
   for (let index = 0; index < map_data.length; index++) {
@@ -94,7 +96,7 @@ function fill_map(){
 
 function makeRemoteRequest(){
     console.log("Here");
-    return fetch('127.0.0.1:8000/info_street/')
+    return fetch('127.0.0.1:3000/info_street/')
     .then ( (response) => response.json() )
     .then ( (responseJson) =>{
     
