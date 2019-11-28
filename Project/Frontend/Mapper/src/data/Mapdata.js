@@ -11,7 +11,8 @@ var map_data_json = [
         "street": {
             "name": "Rua Tenente Joaquim Lopes Craveiro",
             "id": 1
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 2,
@@ -25,7 +26,8 @@ var map_data_json = [
         "street": {
             "name": "Rua Tenente Joaquim Lopes Craveiro",
             "id": 1
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 3,
@@ -39,7 +41,8 @@ var map_data_json = [
         "street": {
             "name": "Rua Tenente Joaquim Lopes Craveiro",
             "id": 1
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 4,
@@ -53,7 +56,8 @@ var map_data_json = [
         "street": {
             "name": "Rua Tenente Joaquim Lopes Craveiro",
             "id": 1
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 5,
@@ -67,7 +71,8 @@ var map_data_json = [
         "street": {
             "name": "Rua Tenente Joaquim Lopes Craveiro",
             "id": 1
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 6,
@@ -81,7 +86,8 @@ var map_data_json = [
         "street": {
             "name": "Rua Tenente Joaquim Lopes Craveiro",
             "id": 1
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 7,
@@ -95,11 +101,12 @@ var map_data_json = [
         "street": {
             "name": "Rua Tenente Joaquim Lopes Craveiro",
             "id": 1
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 8,
-        "number_cars": 12,
+        "number_cars": 0,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 0,
@@ -109,11 +116,12 @@ var map_data_json = [
         "street": {
             "name": "Rua Tenente Joaquim Lopes Craveiro",
             "id": 1
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 9,
-        "number_cars": 12,
+        "number_cars": 0,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 0,
@@ -123,11 +131,12 @@ var map_data_json = [
         "street": {
             "name": "Rua Tenente Joaquim Lopes Craveiro",
             "id": 1
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 10,
-        "number_cars": 12,
+        "number_cars": 311,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 0,
@@ -137,7 +146,8 @@ var map_data_json = [
         "street": {
             "name": "Rua Tenente Joaquim Lopes Craveiro",
             "id": 1
-        }
+        },
+        "transit_type": "Congested"
     },
     {
         "id": 11,
@@ -151,7 +161,8 @@ var map_data_json = [
         "street": {
             "name": "Rua de Caveiros",
             "id": 2
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 12,
@@ -165,7 +176,8 @@ var map_data_json = [
         "street": {
             "name": "Rua de Caveiros",
             "id": 2
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 13,
@@ -179,7 +191,8 @@ var map_data_json = [
         "street": {
             "name": "Rua de Caveiros",
             "id": 2
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 14,
@@ -193,7 +206,8 @@ var map_data_json = [
         "street": {
             "name": "Rua de Caveiros",
             "id": 2
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 15,
@@ -207,7 +221,8 @@ var map_data_json = [
         "street": {
             "name": "Rua de Caveiros",
             "id": 2
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 16,
@@ -221,7 +236,8 @@ var map_data_json = [
         "street": {
             "name": "Rua de Caveiros",
             "id": 2
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 17,
@@ -235,7 +251,8 @@ var map_data_json = [
         "street": {
             "name": "Rua de Caveiros",
             "id": 2
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 18,
@@ -249,11 +266,12 @@ var map_data_json = [
         "street": {
             "name": "Rua de Caveiros",
             "id": 2
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 19,
-        "number_cars": 59,
+        "number_cars": 0,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 500,
@@ -263,11 +281,12 @@ var map_data_json = [
         "street": {
             "name": "Rua de Caveiros",
             "id": 2
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 20,
-        "number_cars": 59,
+        "number_cars": 0,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 500,
@@ -277,11 +296,12 @@ var map_data_json = [
         "street": {
             "name": "Rua de Caveiros",
             "id": 2
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 21,
-        "number_cars": 59,
+        "number_cars": 0,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 1000,
@@ -291,11 +311,12 @@ var map_data_json = [
         "street": {
             "name": "Rua Romana",
             "id": 3
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 22,
-        "number_cars": 59,
+        "number_cars": 0,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 1000,
@@ -305,11 +326,12 @@ var map_data_json = [
         "street": {
             "name": "Rua Romana",
             "id": 3
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 23,
-        "number_cars": 59,
+        "number_cars": 0,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 1000,
@@ -319,7 +341,8 @@ var map_data_json = [
         "street": {
             "name": "Rua Romana",
             "id": 3
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 24,
@@ -333,7 +356,8 @@ var map_data_json = [
         "street": {
             "name": "Rua Romana",
             "id": 3
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 25,
@@ -347,7 +371,8 @@ var map_data_json = [
         "street": {
             "name": "Rua Romana",
             "id": 3
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 26,
@@ -361,7 +386,8 @@ var map_data_json = [
         "street": {
             "name": "Rua Romana",
             "id": 3
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 27,
@@ -375,7 +401,8 @@ var map_data_json = [
         "street": {
             "name": "Rua Romana",
             "id": 3
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 28,
@@ -389,7 +416,8 @@ var map_data_json = [
         "street": {
             "name": "Rua Romana",
             "id": 3
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 29,
@@ -403,7 +431,8 @@ var map_data_json = [
         "street": {
             "name": "Rua Romana",
             "id": 3
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 30,
@@ -417,7 +446,8 @@ var map_data_json = [
         "street": {
             "name": "Rua Romana",
             "id": 3
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 31,
@@ -431,7 +461,8 @@ var map_data_json = [
         "street": {
             "name": "Travessa da Agoncida",
             "id": 4
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 32,
@@ -445,7 +476,8 @@ var map_data_json = [
         "street": {
             "name": "Travessa da Agoncida",
             "id": 4
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 33,
@@ -459,7 +491,8 @@ var map_data_json = [
         "street": {
             "name": "Travessa da Agoncida",
             "id": 4
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 34,
@@ -473,7 +506,8 @@ var map_data_json = [
         "street": {
             "name": "Travessa da Agoncida",
             "id": 4
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 35,
@@ -487,7 +521,8 @@ var map_data_json = [
         "street": {
             "name": "Travessa da Agoncida",
             "id": 4
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 36,
@@ -501,7 +536,8 @@ var map_data_json = [
         "street": {
             "name": "Travessa da Agoncida",
             "id": 4
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 37,
@@ -515,7 +551,8 @@ var map_data_json = [
         "street": {
             "name": "Travessa da Agoncida",
             "id": 4
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 38,
@@ -529,7 +566,8 @@ var map_data_json = [
         "street": {
             "name": "Travessa da Agoncida",
             "id": 4
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 39,
@@ -543,7 +581,8 @@ var map_data_json = [
         "street": {
             "name": "Travessa da Agoncida",
             "id": 4
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 40,
@@ -557,7 +596,8 @@ var map_data_json = [
         "street": {
             "name": "Travessa da Agoncida",
             "id": 4
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 41,
@@ -571,7 +611,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida Antonio Henriques",
             "id": 5
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 42,
@@ -585,11 +626,12 @@ var map_data_json = [
         "street": {
             "name": "Avenida Antonio Henriques",
             "id": 5
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 43,
-        "number_cars": 40,
+        "number_cars": 0,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 2000,
@@ -599,11 +641,12 @@ var map_data_json = [
         "street": {
             "name": "Avenida Antonio Henriques",
             "id": 5
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 44,
-        "number_cars": 40,
+        "number_cars": 0,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 2000,
@@ -613,11 +656,12 @@ var map_data_json = [
         "street": {
             "name": "Avenida Antonio Henriques",
             "id": 5
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 45,
-        "number_cars": 40,
+        "number_cars": 0,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 2000,
@@ -627,11 +671,12 @@ var map_data_json = [
         "street": {
             "name": "Avenida Antonio Henriques",
             "id": 5
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 46,
-        "number_cars": 40,
+        "number_cars": 0,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 2000,
@@ -641,11 +686,12 @@ var map_data_json = [
         "street": {
             "name": "Avenida Antonio Henriques",
             "id": 5
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 47,
-        "number_cars": 40,
+        "number_cars": 0,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 2000,
@@ -655,11 +701,12 @@ var map_data_json = [
         "street": {
             "name": "Avenida Antonio Henriques",
             "id": 5
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 48,
-        "number_cars": 40,
+        "number_cars": 0,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 2000,
@@ -669,7 +716,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida Antonio Henriques",
             "id": 5
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 49,
@@ -683,7 +731,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida Antonio Henriques",
             "id": 5
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 50,
@@ -697,7 +746,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida Antonio Henriques",
             "id": 5
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 51,
@@ -711,7 +761,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida Benjamim Araujo",
             "id": 6
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 52,
@@ -725,7 +776,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida Benjamim Araujo",
             "id": 6
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 53,
@@ -739,7 +791,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida Benjamim Araujo",
             "id": 6
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 54,
@@ -753,7 +806,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida Benjamim Araujo",
             "id": 6
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 55,
@@ -767,11 +821,12 @@ var map_data_json = [
         "street": {
             "name": "Avenida Benjamim Araujo",
             "id": 6
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 56,
-        "number_cars": 53,
+        "number_cars": 0,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 1000,
@@ -781,11 +836,12 @@ var map_data_json = [
         "street": {
             "name": "Avenida Benjamim Araujo",
             "id": 6
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 57,
-        "number_cars": 53,
+        "number_cars": 0,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 1500,
@@ -795,11 +851,12 @@ var map_data_json = [
         "street": {
             "name": "Avenida Benjamim Araujo",
             "id": 6
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 58,
-        "number_cars": 53,
+        "number_cars": 0,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 1500,
@@ -809,11 +866,12 @@ var map_data_json = [
         "street": {
             "name": "Avenida Benjamim Araujo",
             "id": 6
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 59,
-        "number_cars": 53,
+        "number_cars": 0,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 2000,
@@ -823,7 +881,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida Benjamim Araujo",
             "id": 6
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 60,
@@ -837,7 +896,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida Benjamim Araujo",
             "id": 6
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 61,
@@ -851,7 +911,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida da Liberdade",
             "id": 7
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 62,
@@ -865,7 +926,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida da Liberdade",
             "id": 7
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 63,
@@ -879,7 +941,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida da Liberdade",
             "id": 7
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 64,
@@ -893,7 +956,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida da Liberdade",
             "id": 7
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 65,
@@ -907,7 +971,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida da Liberdade",
             "id": 7
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 66,
@@ -921,7 +986,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida da Liberdade",
             "id": 7
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 67,
@@ -935,7 +1001,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida da Liberdade",
             "id": 7
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 68,
@@ -949,7 +1016,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida da Liberdade",
             "id": 7
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 69,
@@ -963,7 +1031,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida da Liberdade",
             "id": 7
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 70,
@@ -977,7 +1046,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida da Liberdade",
             "id": 7
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 71,
@@ -991,7 +1061,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida da Misericordia",
             "id": 8
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 72,
@@ -1005,7 +1076,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida da Misericordia",
             "id": 8
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 73,
@@ -1019,7 +1091,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida da Misericordia",
             "id": 8
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 74,
@@ -1033,7 +1106,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida da Misericordia",
             "id": 8
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 75,
@@ -1047,7 +1121,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida da Misericordia",
             "id": 8
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 76,
@@ -1061,7 +1136,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida da Misericordia",
             "id": 8
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 77,
@@ -1075,7 +1151,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida da Misericordia",
             "id": 8
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 78,
@@ -1089,7 +1166,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida da Misericordia",
             "id": 8
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 79,
@@ -1103,7 +1181,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida da Misericordia",
             "id": 8
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 80,
@@ -1117,7 +1196,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida da Misericordia",
             "id": 8
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 81,
@@ -1131,7 +1211,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida do Brasil",
             "id": 9
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 82,
@@ -1145,11 +1226,12 @@ var map_data_json = [
         "street": {
             "name": "Avenida do Brasil",
             "id": 9
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 83,
-        "number_cars": 67,
+        "number_cars": 0,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 500,
@@ -1159,11 +1241,12 @@ var map_data_json = [
         "street": {
             "name": "Avenida do Brasil",
             "id": 9
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 84,
-        "number_cars": 67,
+        "number_cars": 0,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 500,
@@ -1173,11 +1256,12 @@ var map_data_json = [
         "street": {
             "name": "Avenida do Brasil",
             "id": 9
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 85,
-        "number_cars": 67,
+        "number_cars": 0,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 1000,
@@ -1187,7 +1271,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida do Brasil",
             "id": 9
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 86,
@@ -1201,7 +1286,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida do Brasil",
             "id": 9
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 87,
@@ -1215,7 +1301,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida do Brasil",
             "id": 9
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 88,
@@ -1229,7 +1316,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida do Brasil",
             "id": 9
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 89,
@@ -1243,7 +1331,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida do Brasil",
             "id": 9
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 90,
@@ -1257,7 +1346,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida do Brasil",
             "id": 9
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 91,
@@ -1271,7 +1361,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida do Vale",
             "id": 10
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 92,
@@ -1285,7 +1376,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida do Vale",
             "id": 10
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 93,
@@ -1299,7 +1391,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida do Vale",
             "id": 10
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 94,
@@ -1313,7 +1406,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida do Vale",
             "id": 10
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 95,
@@ -1327,7 +1421,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida do Vale",
             "id": 10
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 96,
@@ -1341,7 +1436,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida do Vale",
             "id": 10
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 97,
@@ -1355,7 +1451,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida do Vale",
             "id": 10
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 98,
@@ -1369,7 +1466,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida do Vale",
             "id": 10
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 99,
@@ -1383,7 +1481,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida do Vale",
             "id": 10
-        }
+        },
+        "transit_type": "Normal"
     },
     {
         "id": 100,
@@ -1397,7 +1496,8 @@ var map_data_json = [
         "street": {
             "name": "Avenida do Vale",
             "id": 10
-        }
+        },
+        "transit_type": "Normal"
     }
 ]
 
