@@ -4,8 +4,8 @@ services:
   backend:
     build: Backend
     ports:
-      - "3000:3000"
+      - "8000:8000"
   frontend:
     build: Frontend/Mapper/
     ports:
-      - "8000:8080"
+      - "8800:80"
