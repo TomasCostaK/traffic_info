@@ -78,7 +78,8 @@ function fill_map(){
   //makeRemoteRequest();
   //Adicionar isto assim que tivermos o pedido
   //map_data = map_data_json
-  makeRemoteRequest();
+  map_data = makeRemoteRequest();
+  console.log("ay lmao");
   console.log(map_data);
   const lines = []
 
@@ -97,16 +98,7 @@ function fill_map(){
 function makeRemoteRequest(){
     console.log("Here");
     return fetch('127.0.0.1:3000/info_street/')
-    .then ( (response) => response.json() )
-    .then ( (responseJson) =>{
-    
-    map_data = responseJson;
-    console.log(responseJson);
-
-    })
-  .catch((error) => {
-    console.log(error);
-  });
+    .then ( (response) => { return response} );
   
 }
 
