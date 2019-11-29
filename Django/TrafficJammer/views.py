@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+import pika
 import json
 import math
 from datetime import datetime,timezone,timedelta
@@ -14,7 +15,7 @@ from TrafficJammer.models import Street, \
     StreetInputSerializer, \
     AccidentSerializer
 
-# Create your views here.
+
 
 @csrf_exempt
 def info_street(request):
@@ -33,7 +34,6 @@ def street(request):
             Creating a new street
             '''
             data=json.loads(request.body)
-            print(data)
             name=data.get("name")
             begin_coord_x,begin_coord_y=(data.get("beginning_coords")[0],data.get("beginning_coords")[1])
             ending_coord_x,ending_coord_y=(data.get("ending_coords")[0],data.get("ending_coords")[1])
@@ -52,24 +52,29 @@ def street(request):
             the last section will be the rest 1200=500+500+200
             '''
             number_of_divisions=(length/(500))
+            stop=False
+            for i in range(0,math.ceil(number_of_divisions)+1):
 
-            for i in range(math.ceil(number_of_divisions)):
+                begin_x=begin_coord_x+(i*((ending_coord_x-begin_coord_x)/number_of_divisions))
+                begin_y=begin_coord_y+(i*((ending_coord_y-begin_coord_y)/number_of_divisions))
+                end_coord_x=begin_coord_x+((i+1)*((ending_coord_x-begin_coord_x)/number_of_divisions))
+                end_coord_y=begin_coord_y+((i+1)*((ending_coord_y-begin_coord_y)/number_of_divisions))
 
-                begin_x=i*((ending_coord_x-begin_coord_x)/number_of_divisions)
-                begin_y=i*((ending_coord_y-begin_coord_y)/number_of_divisions)
-                f=i
-                end_coord_x=((f+1)*((ending_coord_x-begin_coord_x)/number_of_divisions))
-                end_coord_y=((f+1)*((ending_coord_y-begin_coord_y)/number_of_divisions))
-
+                if i==0:
+                    begin_x=begin_coord_x
+                    begin_y=begin_coord_y
                 if end_coord_x>ending_coord_x:
                     end_coord_x=ending_coord_x
-                    print("changing")
+                    stop=True
                 if end_coord_y>ending_coord_y:
                     end_coord_y=ending_coord_y
-                    print("changing")
+                    stop=True
+                if begin_x==end_coord_x and begin_y==end_coord_y:
+                    break
                 create_section(street_obj,begin_x,begin_y,end_coord_x,end_coord_y,True)
                 create_section(street_obj,begin_x,begin_y,end_coord_x,end_coord_y,False)
-
+                if stop:
+                    break
             return HttpResponse(json.dumps(StreetInputSerializer(street_obj).data))
     except Exception as e:
         #TODO make this according to standards
@@ -91,6 +96,7 @@ def car_to_street(request):
             section.save()
             return HttpResponse(json.dumps(SectionSerializer(section).data))
     except Exception as e:
+        print(e)
         return HttpResponse("ERROR")
 
 @csrf_exempt
@@ -107,6 +113,9 @@ def add_to_transit(section,transit=200):
     time_of_transit = datetime.now(timezone.utc)
     last_time_of_transit = sorted(Transit.objects.filter(section=section),key=lambda transit:transit.date,reverse=True)
     if section.number_cars>transit:
+        if last_time_of_transit==[]:
+            transit = Transit(date=time_of_transit, section=section)
+            transit.save()
         if last_time_of_transit[0].date+timedelta(minutes=30)<time_of_transit:
             transit = Transit(date=time_of_transit,section=section)
             transit.save()

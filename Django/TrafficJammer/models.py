@@ -51,8 +51,6 @@ class StreetInputSerializer(serializers.ModelSerializer):
                   )
 '''End of serializables for input'''
 
-
-
 ''' Serializables to send data for roadmap '''
 class StreetSerializer(serializers.ModelSerializer):
     class Meta:
@@ -61,6 +59,17 @@ class StreetSerializer(serializers.ModelSerializer):
 
 class SectionSerializer(serializers.ModelSerializer):
     street=StreetSerializer()
+    transit_type=serializers.SerializerMethodField('type')
+    def type(self,Section):
+        if Section.n_accident>0:
+            return 'Congested'
+        if 100<Section.number_cars<200:
+            return 'Medium'
+        if Section.number_cars>200:
+            return 'Congested'
+        else:
+            return 'Normal'
+
     class Meta:
         model = Section
         fields=('id',
@@ -71,7 +80,8 @@ class SectionSerializer(serializers.ModelSerializer):
                 'beginning_coords_y',
                 'ending_coords_x',
                 'ending_coords_y',
-                'street')
+                'street',
+                'transit_type')
 ''' End of Serializables for Road Map'''
 
 class SmallSectionSerializer(serializers.ModelSerializer):
