@@ -77,6 +77,28 @@ Extra: Route dum sitio (if able)
 ## Street attributes
 Fill something in here
 
+##Sensores
+        -Objectos
+            -Trecho
+            -Time
+            -Matricula
+            -Tamanho (metros do objeto)
+        -Meterologia
+            -Time
+            -Trecho
+            -Type
+        -Visibilidade
+            -Trecho
+            -Int(0-100) (Menor menos visivel)
+        -Acidente
+            -Trecho
+        -Roadblock
+            -Trecho
+            -Time
+        -Policia
+            -Trecho
+            -Time
+        
 ### Notes
 We are the group 35
 det-engsoft-14.ua.pt
