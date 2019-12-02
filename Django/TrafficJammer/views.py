@@ -10,10 +10,12 @@ from TrafficJammer.models import Street, \
     Section, \
     Transit, \
     Accident, \
+    Car, \
     SectionSerializer, \
     StreetSerializer, \
     StreetInputSerializer, \
-    AccidentSerializer
+    AccidentSerializer, \
+    CarSerializer
 
 
 
@@ -128,3 +130,9 @@ def create_section(street,coord_x,coord_y,end_x,end_y,direction):
                       ending_coords_y=end_y,
                       actual_direction=direction)
     section.save()
+
+def get_car(request):
+    if request.method=='GET':
+        data=json.loads(request.body)
+        car=Car.objects.get(license_plate=data.get('license_plate'))
+        return HttpResponse(json.dumps(CarSerializer(car).data))
