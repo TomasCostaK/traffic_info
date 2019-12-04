@@ -5,6 +5,8 @@ import json
 import math
 from datetime import datetime,timezone,timedelta
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.response import responses
+from rest_framework import status
 
 from TrafficJammer.models import Street, \
     Section, \
@@ -30,9 +32,6 @@ def info_street(request):
 def street(request):
     try:
         if request.method=="POST":
-            #Todo serializable is_valid
-            #Todo check all parameters check if we need to send before-hand
-
             '''
             Creating a new street
             '''
@@ -79,12 +78,9 @@ def street(request):
                 if stop:
                     break
             return HttpResponse(json.dumps(StreetInputSerializer(street_obj).data))
-    except Exception as e:
-        #TODO make this according to standards
-        print(e)
-        return HttpResponse("ERROR")
+    except:
+        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
 
-#Todo standards
 @csrf_exempt
 def car_to_street(request):
     try:
@@ -105,19 +101,26 @@ def car_to_street(request):
             car.delete()
             section.save()
             return HttpResponse(json.dumps(SectionSerializer(section).data))
-    except Exception as e:
-        print(e)
-        return HttpResponse("ERROR")
+        else:
+            return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+    except Car.DoesNotExist:
+        return HttpResponse("Car not found",status=status.HTTP_404_NOT_FOUND)
+    except Section.DoesNotExist:
+        return HttpResponse("Section not found",status=status.HTTP_404_NOT_FOUND)
 
 @csrf_exempt
 def add_to_accident(request):
-    if request.method=="POST":
-        data=json.loads(request.body)
-        section=Section.objects.get(id=data.get("id"))
-        accident= Accident(section=section,coord_x=data.get("x_coord"),coord_y=data.get("y_coord"),date=datetime.now(timezone.utc))
-        accident.save()
-        return HttpResponse(json.dumps(AccidentSerializer(accident).data))
-    return
+    try:
+        if request.method=="POST":
+            data=json.loads(request.body)
+            section=Section.objects.get(id=data.get("id"))
+            accident= Accident(section=section,coord_x=data.get("x_coord"),coord_y=data.get("y_coord"),date=datetime.now(timezone.utc))
+            accident.save()
+            return HttpResponse(json.dumps(AccidentSerializer(accident).data))
+        else:
+            return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+    except Section.DoesNotExist:
+        return HttpResponse(status=status.HTTP_404_NOT_FOUND)
 
 def add_to_transit(section,transit=200):
     time_of_transit = datetime.now(timezone.utc)
@@ -141,29 +144,99 @@ def create_section(street,coord_x,coord_y,end_x,end_y,direction):
 
 
 def get_car(request):
-    if request.method=='GET':
-        data=json.loads(request.body)
-        car=Car.objects.get(license_plate=data.get('license_plate'))
-        return HttpResponse(json.dumps(CarSerializer(car).data))
+    try:
+        if request.method=='GET':
+            data=json.loads(request.body)
+            car=Car.objects.get(license_plate=data.get('license_plate'))
+            return HttpResponse(json.dumps(CarSerializer(car).data))
+        else:
+            return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+    except Car.DoesNotExist:
+        return HttpResponse(status=status.HTTP_404_NOT_FOUND)
 
 def all_cars(request):
-    if request.method=="GET":
-        data=json.loads(request.body)
-        section=Section.objects.get(id=data.get('id'))
-        car=Car.objects.filter(section=section)
-        return HttpResponse(json.dumps(CarSerializer(car,many=True).data))
+    try:
+        if request.method=="GET":
+            data=json.loads(request.body)
+            section=Section.objects.get(id=data.get('id'))
+            car=Car.objects.filter(section=section)
+            return HttpResponse(json.dumps(CarSerializer(car,many=True).data))
+        else:
+            return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+    except Section.DoesNotExist:
+        return HttpResponse(status=status.HTTP_404_NOT_FOUND)
 
 def statistics(request):
-    if request.method=="GET":
-        data=json.loads(request.body)
-        begin_time=data.get("begin").split("-")
-        begin_time=datetime(int(begin_time[0]), int(begin_time[1]), int(begin_time[2]), 0, 0, 0, 0, timezone.utc)
-        end_time=data.get("end").split("-")
-        end_time=datetime(int(end_time[0]),int(end_time[1]),int(end_time[2]),0,0,0,0,timezone.utc)
-        id=data.get("id")
-        section=Section.objects.get(id=id)
-        transit=Transit.objects.filter(date__range=(begin_time,end_time))
-        blocked=Blocked.objects.filter(begin__range=(begin_time,end_time),end__range=(begin_time,end_time))
-        accident=Accident.objects.filter(date__range=(begin_time,end_time))
-        return HttpResponse(json.dumps(SectionStatisticsSerializer(section,
-                                                                   context={"transit":transit,"blocked":blocked,"accident":accident}).data))
+    try:
+        if request.method=="GET":
+            data=json.loads(request.body)
+            begin_time=data.get("begin").split("-")
+            begin_time=datetime(int(begin_time[0]), int(begin_time[1]), int(begin_time[2]), 0, 0, 0, 0, timezone.utc)
+            end_time=data.get("end").split("-")
+            end_time=datetime(int(end_time[0]),int(end_time[1]),int(end_time[2]),0,0,0,0,timezone.utc)
+            id=data.get("id")
+            section=Section.objects.get(id=id)
+            transit=Transit.objects.filter(date__range=(begin_time,end_time))
+            blocked=Blocked.objects.filter(begin__range=(begin_time,end_time),end__range=(begin_time,end_time))
+            accident=Accident.objects.filter(date__range=(begin_time,end_time))
+            return HttpResponse(json.dumps(SectionStatisticsSerializer(section,
+                                                                       context={"transit":transit,"blocked":blocked,"accident":accident}).data))
+        else:
+            return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+    except Section.DoesNotExist:
+        return HttpResponse(status=status.HTTP_404_NOT_FOUND)
+
+@csrf_exempt
+def visibility(request):
+    if request.method=="POST":
+        try:
+            data=json.loads(request.body)
+            section=Section.objects.get(id=data.get("id"))
+            section.visibility=data.get("visibility")
+            section.save()
+            return HttpResponse(json.dumps(SectionSerializer(section).data))
+        except Section.DoesNotExist:
+            return HttpResponse(status=status.HTTP_404_NOT_FOUND)
+    else:
+        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+
+@csrf_exempt
+def police(request):
+    if request.method=="PUT":
+        try:
+            data= json.loads(request.body)
+            section=Section.objects.get(id=data.get)
+            section.police=data.get("police")
+            section.save()
+            return HttpResponse(json.dumps(SectionSerializer(section).data))
+        except Section.DoesNotExist:
+            return HttpResponse(status=status.HTTP_404_NOT_FOUND)
+    else:
+        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+
+#Todo see if time should come from sensor
+@csrf_exempt
+def roadblock(request):
+    try:
+        if request.method=="PUT":
+            data = json.loads(request.body)
+            section = Section.objects.get(id=data.get("id"))
+            section.roadblock=True
+            section.save()
+            if len(Blocked.objects.filter(section=section,end__isnull=True)):
+                return HttpResponse("A road can only be blocked once",status=status.HTTP_304_NOT_MODIFIED)
+            road_block=Blocked(section=section,begin=datetime.now(timezone.utc))
+            road_block.save()
+            return HttpResponse("Road Blocked",status=status.HTTP_202_ACCEPTED)
+        elif request.method=="DELETE":
+            data = json.loads(request.body)
+            road_block=Blocked.objects.get(section=data.get("id"),end__isnull=True)
+            road_block.end=datetime.now(timezone.utc)
+            road_block.save()
+            return HttpResponse("Road unblocked",status=status.HTTP_202_ACCEPTED)
+        else:
+            return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+    except Section.DoesNotExist:
+        return HttpResponse(status=status.HTTP_404_NOT_FOUND)
+    except Blocked.DoesNotExist:
+        return HttpResponse(status=status.HTTP_404_NOT_FOUND)

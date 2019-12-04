@@ -26,4 +26,7 @@ urlpatterns = [
     path('specific_car/',views.get_car,name='get_car'),
     path('all_cars/',views.all_cars,name='all_cars'),
     path('statistics/',views.statistics,name='statistics'),
+    path('visibility/',views.visibility,name='visibility'),
+    path('police/',views.police,name='police'),
+    path('roadblock/',views.roadblock,name='roadblock'),
 ]
