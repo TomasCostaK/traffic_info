@@ -23,5 +23,7 @@ urlpatterns = [
     path('street/',views.street,name="crud_street"),
     path('car/',views.car_to_street,name="crud_car"),
     path('accident/',views.add_to_accident,name="accident"),
-    path('specific_car/',views.get_car,name='get_car')
+    path('specific_car/',views.get_car,name='get_car'),
+    path('all_cars/',views.all_cars,name='all_cars'),
+    path('statistics/',views.statistics,name='statistics'),
 ]

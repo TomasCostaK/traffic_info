@@ -11,11 +11,13 @@ from TrafficJammer.models import Street, \
     Transit, \
     Accident, \
     Car, \
+    Blocked, \
     SectionSerializer, \
     StreetSerializer, \
     StreetInputSerializer, \
-    AccidentSerializer, \
-    CarSerializer
+    SectionStatisticsSerializer, \
+    CarSerializer, \
+    AccidentSerializer
 
 
 
@@ -30,8 +32,7 @@ def street(request):
         if request.method=="POST":
             #Todo serializable is_valid
             #Todo check all parameters check if we need to send before-hand
-            #todo check if there isnt any overlap
-            #Todo when creating a section need to verify the connections
+
             '''
             Creating a new street
             '''
@@ -83,18 +84,25 @@ def street(request):
         print(e)
         return HttpResponse("ERROR")
 
+#Todo standards
 @csrf_exempt
 def car_to_street(request):
     try:
         if request.method=="PUT":
-            section=Section.objects.get(id=json.loads(request.body).get('id'))
+            data=json.loads(request.body)
+            section=Section.objects.get(id=data.get('id'))
             section.number_cars += 1
             section.save()
             add_to_transit(section)
-            return HttpResponse(json.dumps(SectionSerializer(section).data))
+            car=Car(license_plate=data.get('plate'),section=section)
+            car.save()
+            return HttpResponse(json.dumps(SectionSerializer(section).data)+json.dumps(CarSerializer(car).data))
         elif request.method=="DELETE":
-            section = Section.objects.get(id=json.loads(request.body).get('id'))
-            section.number_cars -= 1
+            data=json.loads(request.body)
+            car=Car.objects.get(license_plate=data.get('plate'))
+            section=Section.objects.get(id=car.section.id)
+            section.number_cars-=1
+            car.delete()
             section.save()
             return HttpResponse(json.dumps(SectionSerializer(section).data))
     except Exception as e:
@@ -131,8 +139,31 @@ def create_section(street,coord_x,coord_y,end_x,end_y,direction):
                       actual_direction=direction)
     section.save()
 
+
 def get_car(request):
     if request.method=='GET':
         data=json.loads(request.body)
         car=Car.objects.get(license_plate=data.get('license_plate'))
         return HttpResponse(json.dumps(CarSerializer(car).data))
+
+def all_cars(request):
+    if request.method=="GET":
+        data=json.loads(request.body)
+        section=Section.objects.get(id=data.get('id'))
+        car=Car.objects.filter(section=section)
+        return HttpResponse(json.dumps(CarSerializer(car,many=True).data))
+
+def statistics(request):
+    if request.method=="GET":
+        data=json.loads(request.body)
+        begin_time=data.get("begin").split("-")
+        begin_time=datetime(int(begin_time[0]), int(begin_time[1]), int(begin_time[2]), 0, 0, 0, 0, timezone.utc)
+        end_time=data.get("end").split("-")
+        end_time=datetime(int(end_time[0]),int(end_time[1]),int(end_time[2]),0,0,0,0,timezone.utc)
+        id=data.get("id")
+        section=Section.objects.get(id=id)
+        transit=Transit.objects.filter(date__range=(begin_time,end_time))
+        blocked=Blocked.objects.filter(begin__range=(begin_time,end_time),end__range=(begin_time,end_time))
+        accident=Accident.objects.filter(date__range=(begin_time,end_time))
+        return HttpResponse(json.dumps(SectionStatisticsSerializer(section,
+                                                                   context={"transit":transit,"blocked":blocked,"accident":accident}).data))
