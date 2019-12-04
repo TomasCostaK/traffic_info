@@ -3,7 +3,7 @@ import json
 import random
 import time
 while True:
-    req=json.loads(requests.get('http://127.0.0.1:8080/info_street').content)
+    req=json.loads(requests.get('http://127.0.0.1:8000/info_street').content)
     data={d['id']:True if d['transit_type']=='Blocked' else False for d in req }
     time.sleep(5)
     # Generating positive values to go negative and negative to go positive
