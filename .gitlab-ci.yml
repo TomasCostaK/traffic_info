@@ -5,10 +5,11 @@ services:
 stages:
  - deploy
 
+before-script:
+  - apt-get update -qq && apt-get install -y -qq python-pip
+
 step-backend:
  stage: deploy
- before-script:
-  - apt-get update -qq && apt-get install -y -qq python-pip
  script:
   - pip install docker-compose
   - docker-compose -f Project/docker-compose.yml build --no-cache
