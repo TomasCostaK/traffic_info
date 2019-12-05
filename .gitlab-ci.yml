@@ -6,7 +6,8 @@ stages:
 
 step-backend:
  image: docker:latest
- services: docker:dind
+ services:
+  - docker:dind
  stage: deploy
  script:
   - pip install docker-compose
