@@ -22,5 +22,11 @@ urlpatterns = [
     path('info_street/',views.info_street,name="info"),
     path('street/',views.street,name="crud_street"),
     path('car/',views.car_to_street,name="crud_car"),
-    path('accident/',views.add_to_accident,name="accident")
+    path('accident/',views.add_to_accident,name="accident"),
+    path('specific_car/',views.get_car,name='get_car'),
+    path('all_cars/',views.all_cars,name='all_cars'),
+    path('statistics/',views.statistics,name='statistics'),
+    path('visibility/',views.visibility,name='visibility'),
+    path('police/',views.police,name='police'),
+    path('roadblock/',views.roadblock,name='roadblock'),
 ]
