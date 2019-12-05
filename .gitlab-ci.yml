@@ -5,7 +5,7 @@ services:
 stages:
  - deploy
 
-before-script:
+before_script:
   - apk update -qq && apk add -y -qq py-pip
 
 step-backend:
