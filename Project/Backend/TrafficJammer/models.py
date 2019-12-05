@@ -1,7 +1,7 @@
 from django.db import models
 from rest_framework import serializers
 
-
+'''Start of models'''
 class Street(models.Model):
     name=models.CharField(max_length=80)
     begin_coord_x=models.IntegerField()
@@ -24,7 +24,9 @@ class Section(models.Model):
     ending_coords_y=models.IntegerField()
     street=models.ForeignKey(Street,on_delete=models.CASCADE)
     connect_to=models.ManyToManyField("self",blank=True)
-
+    visibility=models.IntegerField(default=100)
+    roadblock=models.BooleanField(default=False)
+    police=models.BooleanField(default=False)
     class Meta:
         unique_together=(('street','beginning_coords_x','beginning_coords_y','actual_direction'),)
 
@@ -37,6 +39,17 @@ class Accident(models.Model):
 class Transit(models.Model):
     date=models.DateTimeField()
     section=models.ForeignKey(Section,on_delete=models.CASCADE)
+
+class Blocked(models.Model):
+    section=models.ForeignKey(Section,on_delete=models.CASCADE)
+    begin=models.DateTimeField()
+    end=models.DateTimeField(blank=True,null=True)
+
+class Car(models.Model):
+    license_plate=models.CharField(max_length=6,primary_key=True)
+    section=models.ForeignKey(Section,on_delete=models.CASCADE)
+
+'''End of models'''
 
 '''Serializables for input'''
 class StreetInputSerializer(serializers.ModelSerializer):
@@ -60,12 +73,17 @@ class StreetSerializer(serializers.ModelSerializer):
 class SectionSerializer(serializers.ModelSerializer):
     street=StreetSerializer()
     transit_type=serializers.SerializerMethodField('type')
-    def type(self,Section):
-        if Section.n_accident>0:
+    def type(self,Section,transit_limit=100):
+        if Section.visibility<50:
+            transit_limit=50
+
+        if Section.roadblock:
+            return 'Blocked'
+        elif Section.n_accident>0:
             return 'Congested'
-        if 100<Section.number_cars<200:
+        elif transit_limit<Section.number_cars<2*transit_limit:
             return 'Medium'
-        if Section.number_cars>200:
+        elif Section.number_cars>2*transit_limit:
             return 'Congested'
         else:
             return 'Normal'
@@ -81,9 +99,13 @@ class SectionSerializer(serializers.ModelSerializer):
                 'ending_coords_x',
                 'ending_coords_y',
                 'street',
-                'transit_type')
+                'transit_type',
+                'police',
+                'visibility')
+
 ''' End of Serializables for Road Map'''
 
+'''Serializables and Cars'''
 class SmallSectionSerializer(serializers.ModelSerializer):
     class Meta:
         model=Section
@@ -93,12 +115,47 @@ class SmallSectionSerializer(serializers.ModelSerializer):
                  'n_accident',
                  'beginning_coords_x',
                  'beginning_coords_y',
-                 'street']
-
+                 'street',
+                 'transit_type',
+                 'police',
+                 'visibility']
 class AccidentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Accident
-        fields=('coord_x',
+        fields = ('coord_x',
                 'coord_y',
                 'date',
                 'section')
+class CarSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Car
+        fields=('license_plate',
+                'section')
+''' End Serializables for Accident and Car'''
+
+
+'''Serializable for Roadblock'''
+##TODO
+'''End of Serializable for Roadblock'''
+'''Serializables for Statistics'''
+
+class SectionStatisticsSerializer(serializers.ModelSerializer):
+    transit_count=serializers.SerializerMethodField("transit")
+    road_block=serializers.SerializerMethodField("blocked")
+    total_accident=serializers.SerializerMethodField("accident")
+    def transit(self,Section):
+        transit_count=self.context.get("transit")
+        return len(transit_count)
+    def blocked(self,Section):
+        roadblocks=self.context.get("blocked")
+        total_time=0
+        for r in roadblocks:
+            total_time+=((r.end-r.begin).seconds)/60
+        return {"total_time":total_time,"times":len(roadblocks)}
+    def accident(self,Section):
+        total_accident=self.context.get("accident")
+        return AccidentSerializer(total_accident,many=True).data
+    class Meta:
+        model=Section
+        fields = ('id','transit_count','road_block','total_accident')
+'''End of Statistics'''
