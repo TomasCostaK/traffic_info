@@ -7,6 +7,7 @@ stages:
 
 before_script:
   - apk update -qq && apk add -y -qq py-pip
+  - apk add python-dev libffi-dev openssl-dev gcc libc-dev make
 
 step-backend:
  stage: deploy
@@ -14,3 +15,5 @@ step-backend:
   - pip install docker-compose
   - docker-compose -f Project/docker-compose.yml build --no-cache
   - docker-compose -f Project/docker-compose.yml up -d
+
+  
