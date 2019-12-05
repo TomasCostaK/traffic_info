@@ -20,9 +20,9 @@
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 0,
-        "beginning_coords_y": 500,
+        "beginning_coords_y": 0,
         "ending_coords_x": 0,
-        "ending_coords_y": 0,
+        "ending_coords_y": 500,
         "street": {
             "name": "Rua Tenente Joaquim Lopes Craveiro",
             "id": 1
@@ -50,9 +50,9 @@
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 0,
-        "beginning_coords_y": 1000,
+        "beginning_coords_y": 500,
         "ending_coords_x": 0,
-        "ending_coords_y": 500,
+        "ending_coords_y": 1000,
         "street": {
             "name": "Rua Tenente Joaquim Lopes Craveiro",
             "id": 1
@@ -80,9 +80,9 @@
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 0,
-        "beginning_coords_y": 1500,
+        "beginning_coords_y": 1000,
         "ending_coords_x": 0,
-        "ending_coords_y": 1000,
+        "ending_coords_y": 1500,
         "street": {
             "name": "Rua Tenente Joaquim Lopes Craveiro",
             "id": 1
@@ -110,9 +110,9 @@
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 0,
-        "beginning_coords_y": 2000,
+        "beginning_coords_y": 1500,
         "ending_coords_x": 0,
-        "ending_coords_y": 1500,
+        "ending_coords_y": 2000,
         "street": {
             "name": "Rua Tenente Joaquim Lopes Craveiro",
             "id": 1
@@ -140,9 +140,9 @@
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 500,
-        "beginning_coords_y": 500,
+        "beginning_coords_y": 0,
         "ending_coords_x": 500,
-        "ending_coords_y": 0,
+        "ending_coords_y": 500,
         "street": {
             "name": "Rua de Caveiros",
             "id": 2
@@ -170,9 +170,9 @@
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 500,
-        "beginning_coords_y": 1000,
+        "beginning_coords_y": 500,
         "ending_coords_x": 500,
-        "ending_coords_y": 500,
+        "ending_coords_y": 1000,
         "street": {
             "name": "Rua de Caveiros",
             "id": 2
@@ -200,9 +200,9 @@
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 500,
-        "beginning_coords_y": 1500,
+        "beginning_coords_y": 1000,
         "ending_coords_x": 500,
-        "ending_coords_y": 1000,
+        "ending_coords_y": 1500,
         "street": {
             "name": "Rua de Caveiros",
             "id": 2
@@ -230,9 +230,9 @@
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 500,
-        "beginning_coords_y": 2000,
+        "beginning_coords_y": 1500,
         "ending_coords_x": 500,
-        "ending_coords_y": 1500,
+        "ending_coords_y": 2000,
         "street": {
             "name": "Rua de Caveiros",
             "id": 2
@@ -260,9 +260,9 @@
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 1000,
-        "beginning_coords_y": 500,
+        "beginning_coords_y": 0,
         "ending_coords_x": 1000,
-        "ending_coords_y": 0,
+        "ending_coords_y": 500,
         "street": {
             "name": "Rua Romana",
             "id": 3
@@ -290,9 +290,9 @@
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 1000,
-        "beginning_coords_y": 1000,
+        "beginning_coords_y": 500,
         "ending_coords_x": 1000,
-        "ending_coords_y": 500,
+        "ending_coords_y": 1000,
         "street": {
             "name": "Rua Romana",
             "id": 3
@@ -320,9 +320,9 @@
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 1000,
-        "beginning_coords_y": 1500,
+        "beginning_coords_y": 1000,
         "ending_coords_x": 1000,
-        "ending_coords_y": 1000,
+        "ending_coords_y": 1500,
         "street": {
             "name": "Rua Romana",
             "id": 3
@@ -350,9 +350,9 @@
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 1000,
-        "beginning_coords_y": 2000,
+        "beginning_coords_y": 1500,
         "ending_coords_x": 1000,
-        "ending_coords_y": 1500,
+        "ending_coords_y": 2000,
         "street": {
             "name": "Rua Romana",
             "id": 3
@@ -380,9 +380,9 @@
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 1500,
-        "beginning_coords_y": 500,
+        "beginning_coords_y": 0,
         "ending_coords_x": 1500,
-        "ending_coords_y": 0,
+        "ending_coords_y": 500,
         "street": {
             "name": "Travessa da Agoncida",
             "id": 4
@@ -410,9 +410,9 @@
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 1500,
-        "beginning_coords_y": 1000,
+        "beginning_coords_y": 500,
         "ending_coords_x": 1500,
-        "ending_coords_y": 500,
+        "ending_coords_y": 1000,
         "street": {
             "name": "Travessa da Agoncida",
             "id": 4
@@ -440,9 +440,9 @@
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 1500,
-        "beginning_coords_y": 1500,
+        "beginning_coords_y": 1000,
         "ending_coords_x": 1500,
-        "ending_coords_y": 1000,
+        "ending_coords_y": 1500,
         "street": {
             "name": "Travessa da Agoncida",
             "id": 4
@@ -470,9 +470,9 @@
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 1500,
-        "beginning_coords_y": 2000,
+        "beginning_coords_y": 1500,
         "ending_coords_x": 1500,
-        "ending_coords_y": 1500,
+        "ending_coords_y": 2000,
         "street": {
             "name": "Travessa da Agoncida",
             "id": 4
@@ -500,9 +500,9 @@
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 2000,
-        "beginning_coords_y": 500,
+        "beginning_coords_y": 0,
         "ending_coords_x": 2000,
-        "ending_coords_y": 0,
+        "ending_coords_y": 500,
         "street": {
             "name": "Avenida Antonio Henriques",
             "id": 5
@@ -530,9 +530,9 @@
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 2000,
-        "beginning_coords_y": 1000,
+        "beginning_coords_y": 500,
         "ending_coords_x": 2000,
-        "ending_coords_y": 500,
+        "ending_coords_y": 1000,
         "street": {
             "name": "Avenida Antonio Henriques",
             "id": 5
@@ -560,9 +560,9 @@
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 2000,
-        "beginning_coords_y": 1500,
+        "beginning_coords_y": 1000,
         "ending_coords_x": 2000,
-        "ending_coords_y": 1000,
+        "ending_coords_y": 1500,
         "street": {
             "name": "Avenida Antonio Henriques",
             "id": 5
@@ -590,9 +590,9 @@
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 2000,
-        "beginning_coords_y": 2000,
+        "beginning_coords_y": 1500,
         "ending_coords_x": 2000,
-        "ending_coords_y": 1500,
+        "ending_coords_y": 2000,
         "street": {
             "name": "Avenida Antonio Henriques",
             "id": 5
@@ -619,9 +619,9 @@
         "number_cars": 0,
         "actual_direction": false,
         "n_accident": 0,
-        "beginning_coords_x": 500,
+        "beginning_coords_x": 0,
         "beginning_coords_y": 0,
-        "ending_coords_x": 0,
+        "ending_coords_x": 500,
         "ending_coords_y": 0,
         "street": {
             "name": "Avenida Benjamim Araujo",
@@ -649,9 +649,9 @@
         "number_cars": 0,
         "actual_direction": false,
         "n_accident": 0,
-        "beginning_coords_x": 1000,
+        "beginning_coords_x": 500,
         "beginning_coords_y": 0,
-        "ending_coords_x": 500,
+        "ending_coords_x": 1000,
         "ending_coords_y": 0,
         "street": {
             "name": "Avenida Benjamim Araujo",
@@ -679,9 +679,9 @@
         "number_cars": 0,
         "actual_direction": false,
         "n_accident": 0,
-        "beginning_coords_x": 1500,
+        "beginning_coords_x": 1000,
         "beginning_coords_y": 0,
-        "ending_coords_x": 1000,
+        "ending_coords_x": 1500,
         "ending_coords_y": 0,
         "street": {
             "name": "Avenida Benjamim Araujo",
@@ -709,9 +709,9 @@
         "number_cars": 0,
         "actual_direction": false,
         "n_accident": 0,
-        "beginning_coords_x": 2000,
+        "beginning_coords_x": 1500,
         "beginning_coords_y": 0,
-        "ending_coords_x": 1500,
+        "ending_coords_x": 2000,
         "ending_coords_y": 0,
         "street": {
             "name": "Avenida Benjamim Araujo",
@@ -739,9 +739,9 @@
         "number_cars": 0,
         "actual_direction": false,
         "n_accident": 0,
-        "beginning_coords_x": 500,
+        "beginning_coords_x": 0,
         "beginning_coords_y": 500,
-        "ending_coords_x": 0,
+        "ending_coords_x": 500,
         "ending_coords_y": 500,
         "street": {
             "name": "Avenida da Liberdade",
@@ -769,9 +769,9 @@
         "number_cars": 0,
         "actual_direction": false,
         "n_accident": 0,
-        "beginning_coords_x": 1000,
+        "beginning_coords_x": 500,
         "beginning_coords_y": 500,
-        "ending_coords_x": 500,
+        "ending_coords_x": 1000,
         "ending_coords_y": 500,
         "street": {
             "name": "Avenida da Liberdade",
@@ -799,9 +799,9 @@
         "number_cars": 0,
         "actual_direction": false,
         "n_accident": 0,
-        "beginning_coords_x": 1500,
+        "beginning_coords_x": 1000,
         "beginning_coords_y": 500,
-        "ending_coords_x": 1000,
+        "ending_coords_x": 1500,
         "ending_coords_y": 500,
         "street": {
             "name": "Avenida da Liberdade",
@@ -829,9 +829,9 @@
         "number_cars": 0,
         "actual_direction": false,
         "n_accident": 0,
-        "beginning_coords_x": 2000,
+        "beginning_coords_x": 1500,
         "beginning_coords_y": 500,
-        "ending_coords_x": 1500,
+        "ending_coords_x": 2000,
         "ending_coords_y": 500,
         "street": {
             "name": "Avenida da Liberdade",
@@ -859,9 +859,9 @@
         "number_cars": 0,
         "actual_direction": false,
         "n_accident": 0,
-        "beginning_coords_x": 500,
+        "beginning_coords_x": 0,
         "beginning_coords_y": 1000,
-        "ending_coords_x": 0,
+        "ending_coords_x": 500,
         "ending_coords_y": 1000,
         "street": {
             "name": "Avenida da Misericordia",
@@ -889,9 +889,9 @@
         "number_cars": 0,
         "actual_direction": false,
         "n_accident": 0,
-        "beginning_coords_x": 1000,
+        "beginning_coords_x": 500,
         "beginning_coords_y": 1000,
-        "ending_coords_x": 500,
+        "ending_coords_x": 1000,
         "ending_coords_y": 1000,
         "street": {
             "name": "Avenida da Misericordia",
@@ -919,9 +919,9 @@
         "number_cars": 0,
         "actual_direction": false,
         "n_accident": 0,
-        "beginning_coords_x": 1500,
+        "beginning_coords_x": 1000,
         "beginning_coords_y": 1000,
-        "ending_coords_x": 1000,
+        "ending_coords_x": 1500,
         "ending_coords_y": 1000,
         "street": {
             "name": "Avenida da Misericordia",
@@ -949,9 +949,9 @@
         "number_cars": 0,
         "actual_direction": false,
         "n_accident": 0,
-        "beginning_coords_x": 2000,
+        "beginning_coords_x": 1500,
         "beginning_coords_y": 1000,
-        "ending_coords_x": 1500,
+        "ending_coords_x": 2000,
         "ending_coords_y": 1000,
         "street": {
             "name": "Avenida da Misericordia",
@@ -979,9 +979,9 @@
         "number_cars": 0,
         "actual_direction": false,
         "n_accident": 0,
-        "beginning_coords_x": 500,
+        "beginning_coords_x": 0,
         "beginning_coords_y": 1500,
-        "ending_coords_x": 0,
+        "ending_coords_x": 500,
         "ending_coords_y": 1500,
         "street": {
             "name": "Avenida do Brasil",
@@ -1009,9 +1009,9 @@
         "number_cars": 0,
         "actual_direction": false,
         "n_accident": 0,
-        "beginning_coords_x": 1000,
+        "beginning_coords_x": 500,
         "beginning_coords_y": 1500,
-        "ending_coords_x": 500,
+        "ending_coords_x": 1000,
         "ending_coords_y": 1500,
         "street": {
             "name": "Avenida do Brasil",
@@ -1039,9 +1039,9 @@
         "number_cars": 0,
         "actual_direction": false,
         "n_accident": 0,
-        "beginning_coords_x": 1500,
+        "beginning_coords_x": 1000,
         "beginning_coords_y": 1500,
-        "ending_coords_x": 1000,
+        "ending_coords_x": 1500,
         "ending_coords_y": 1500,
         "street": {
             "name": "Avenida do Brasil",
@@ -1069,9 +1069,9 @@
         "number_cars": 0,
         "actual_direction": false,
         "n_accident": 0,
-        "beginning_coords_x": 2000,
+        "beginning_coords_x": 1500,
         "beginning_coords_y": 1500,
-        "ending_coords_x": 1500,
+        "ending_coords_x": 2000,
         "ending_coords_y": 1500,
         "street": {
             "name": "Avenida do Brasil",
@@ -1099,9 +1099,9 @@
         "number_cars": 0,
         "actual_direction": false,
         "n_accident": 0,
-        "beginning_coords_x": 500,
+        "beginning_coords_x": 0,
         "beginning_coords_y": 2000,
-        "ending_coords_x": 0,
+        "ending_coords_x": 500,
         "ending_coords_y": 2000,
         "street": {
             "name": "Avenida do Vale",
@@ -1129,9 +1129,9 @@
         "number_cars": 0,
         "actual_direction": false,
         "n_accident": 0,
-        "beginning_coords_x": 1000,
+        "beginning_coords_x": 500,
         "beginning_coords_y": 2000,
-        "ending_coords_x": 500,
+        "ending_coords_x": 1000,
         "ending_coords_y": 2000,
         "street": {
             "name": "Avenida do Vale",
@@ -1159,9 +1159,9 @@
         "number_cars": 0,
         "actual_direction": false,
         "n_accident": 0,
-        "beginning_coords_x": 1500,
+        "beginning_coords_x": 1000,
         "beginning_coords_y": 2000,
-        "ending_coords_x": 1000,
+        "ending_coords_x": 1500,
         "ending_coords_y": 2000,
         "street": {
             "name": "Avenida do Vale",
@@ -1189,9 +1189,9 @@
         "number_cars": 0,
         "actual_direction": false,
         "n_accident": 0,
-        "beginning_coords_x": 2000,
+        "beginning_coords_x": 1500,
         "beginning_coords_y": 2000,
-        "ending_coords_x": 1500,
+        "ending_coords_x": 2000,
         "ending_coords_y": 2000,
         "street": {
             "name": "Avenida do Vale",

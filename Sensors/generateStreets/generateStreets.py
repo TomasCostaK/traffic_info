@@ -70,42 +70,42 @@ print(len(streets))
 
 #GENERATE TRECHOS
 
-# data = {"Streets" : streets}
-# trechos = []
-# id = 0
-# for street in streets:
-#     street_name = street["name"]
-#     beg_street = street["beginning_coords"]
-#     end_street = street["ending_coords"]
-#     length = int(calclen(beg_street,end_street))
-#     for i in range(0, length, step):
+data = {"Streets" : streets}
+trechos = []
+id = 0
+for street in streets:
+    street_name = street["name"]
+    beg_street = street["beginning_coords"]
+    end_street = street["ending_coords"]
+    length = int(calclen(beg_street,end_street))
+    for i in range(0, length, step):
 
 
-#         ## Check if it"s vertical or horizontal
-#         if beg_street[0]==end_street[0]:        #V
-#             beg_trecho_du = (beg_street[0], i)
-#             end_trecho_du = (beg_street[0], i+step)
-#             beg_trecho_ud = (beg_street[0], squareY-i)
-#             end_trecho_ud = (beg_street[0], squareY-i - step)
+        ## Check if it"s vertical or horizontal
+        if beg_street[0]==end_street[0]:        #V
+            beg_trecho_du = (beg_street[0], i)
+            end_trecho_du = (beg_street[0], i+step)
+            beg_trecho_ud = (beg_street[0], squareY-i)
+            end_trecho_ud = (beg_street[0], squareY-i - step)
 
-#             trechos.append(Trecho(id, street_name, beg_trecho_du, end_trecho_du, True).getDict())
-#             trechos.append(Trecho(id + 1, street_name, beg_trecho_ud, end_trecho_ud, False).getDict())
-#         else:   #H
-#             beg_trecho_lr = (i, beg_street[1])
-#             end_trecho_lr = (i + step , beg_street[1])
-#             beg_trecho_rl = (squareX-i, beg_street[1])
-#             end_trecho_rl = (squareX-i - step, beg_street[1])
+            trechos.append(Trecho(id, street_name, beg_trecho_du, end_trecho_du, True).getDict())
+            trechos.append(Trecho(id + 1, street_name, beg_trecho_ud, end_trecho_ud, False).getDict())
+        else:   #H
+            beg_trecho_lr = (i, beg_street[1])
+            end_trecho_lr = (i + step , beg_street[1])
+            beg_trecho_rl = (squareX-i, beg_street[1])
+            end_trecho_rl = (squareX-i - step, beg_street[1])
 
-#             trechos.append(Trecho(id, street_name, beg_trecho_lr, end_trecho_lr, True).getDict())
-#             trechos.append(Trecho(id +1, street_name, beg_trecho_rl, end_trecho_rl, False).getDict())
+            trechos.append(Trecho(id, street_name, beg_trecho_lr, end_trecho_lr, True).getDict())
+            trechos.append(Trecho(id +1, street_name, beg_trecho_rl, end_trecho_rl, False).getDict())
 
-#         id += 2
-# data['Trechos'] = trechos
+        id += 2
+data['Trechos'] = trechos
 
 
 print(json.dumps(streets, indent=4))
 f = open("very_primordial_data.txt", "w")
-f.write(json.dumps(streets, indent=4))
+f.write(json.dumps(trechos, indent=4))
 f.close()
 
 
