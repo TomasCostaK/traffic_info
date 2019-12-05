@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Row, Col, Card, CardHeader, CardBody, Button } from "shards-react";
 
 import RangeDatePicker from "../common/RangeDatePicker";
-import Chart from "../../utils/chart";
+//import Chart from "./../../utils/chart";
 
 class UsersOverview extends React.Component {
   constructor(props) {
@@ -67,22 +67,24 @@ class UsersOverview extends React.Component {
       },
       ...this.props.chartOptions
     };
-
+    /*
     const BlogUsersOverview = new Chart(this.canvasRef.current, {
       type: "LineWithLine",
       data: this.props.chartData,
       options: chartOptions
     });
+    */
 
     // They can still be triggered on hover.
+    /*
     const buoMeta = BlogUsersOverview.getDatasetMeta(0);
     buoMeta.data[0]._model.radius = 0;
     buoMeta.data[
       this.props.chartData.datasets[0].data.length - 1
-    ]._model.radius = 0;
+    ]._model.radius = 0;*/
 
     // Render the chart.
-    BlogUsersOverview.render();
+    //BlogUsersOverview.render();
   }
 
   render() {
