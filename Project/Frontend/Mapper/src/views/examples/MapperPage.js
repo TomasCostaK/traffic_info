@@ -45,7 +45,7 @@ class RegisterPage extends Component {
   }
 
   componentDidMount() {
-    this.interval = setInterval(() => this.setState({ time: Date.now() }), 10000);
+    this.interval = setInterval(() => this.setState({ time: Date.now() } && this.getData()), 5000);
   }
 
   componentWillUnmount() {
@@ -104,10 +104,10 @@ class RegisterPage extends Component {
   }
 
   getData(){
-    console.log(API+DEFAULT_QUERY); 
-    fetch(API + DEFAULT_QUERY)
+    console.log('http://192.168.160.237:8000/info_street/'); 
+    fetch('http://192.168.160.237:8000/info_street/')
       .then(response => {
-        response.json();
+        console.log(response.json());
       })
       .then(data => {
         this.setState({
@@ -118,7 +118,7 @@ class RegisterPage extends Component {
   }
 
   fill_map(){
-    this.getData();
+    //this.getData();
     //Adicionar isto assim que tivermos o pedido
     /*this.setState({
       map_data:map_data_json

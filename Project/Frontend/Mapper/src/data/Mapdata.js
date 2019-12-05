@@ -1,12 +1,12 @@
 var map_data_json = [
     {
         "id": 1,
-        "number_cars": 0,
+        "number_cars": 250,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 0,
         "beginning_coords_y": 0,
-        "ending_coords_x": 0,
+        "ending_coords_x": 500,
         "ending_coords_y": 500,
         "street": {
             "name": "Rua Tenente Joaquim Lopes Craveiro",
@@ -16,7 +16,7 @@ var map_data_json = [
     },
     {
         "id": 2,
-        "number_cars": 0,
+        "number_cars": 250,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 0,
@@ -31,7 +31,7 @@ var map_data_json = [
     },
     {
         "id": 3,
-        "number_cars": 0,
+        "number_cars": 250,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 0,
@@ -46,7 +46,7 @@ var map_data_json = [
     },
     {
         "id": 4,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 0,
@@ -61,7 +61,7 @@ var map_data_json = [
     },
     {
         "id": 5,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 0,
@@ -76,7 +76,7 @@ var map_data_json = [
     },
     {
         "id": 6,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 0,
@@ -91,7 +91,7 @@ var map_data_json = [
     },
     {
         "id": 7,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 0,
@@ -106,7 +106,7 @@ var map_data_json = [
     },
     {
         "id": 8,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 0,
@@ -121,7 +121,7 @@ var map_data_json = [
     },
     {
         "id": 9,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 0,
@@ -136,7 +136,7 @@ var map_data_json = [
     },
     {
         "id": 10,
-        "number_cars": 311,
+        "number_cars": 5311,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 0,
@@ -151,7 +151,7 @@ var map_data_json = [
     },
     {
         "id": 11,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 500,
@@ -166,7 +166,7 @@ var map_data_json = [
     },
     {
         "id": 12,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 500,
@@ -181,7 +181,7 @@ var map_data_json = [
     },
     {
         "id": 13,
-        "number_cars": 0,
+        "number_cars": 550,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 500,
@@ -196,7 +196,7 @@ var map_data_json = [
     },
     {
         "id": 14,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 500,
@@ -211,7 +211,7 @@ var map_data_json = [
     },
     {
         "id": 15,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 500,
@@ -226,7 +226,7 @@ var map_data_json = [
     },
     {
         "id": 16,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 500,
@@ -241,7 +241,7 @@ var map_data_json = [
     },
     {
         "id": 17,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 500,
@@ -256,7 +256,7 @@ var map_data_json = [
     },
     {
         "id": 18,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 500,
@@ -271,7 +271,7 @@ var map_data_json = [
     },
     {
         "id": 19,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 500,
@@ -286,7 +286,7 @@ var map_data_json = [
     },
     {
         "id": 20,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 500,
@@ -301,7 +301,7 @@ var map_data_json = [
     },
     {
         "id": 21,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 1000,
@@ -316,7 +316,7 @@ var map_data_json = [
     },
     {
         "id": 22,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 1000,
@@ -331,7 +331,7 @@ var map_data_json = [
     },
     {
         "id": 23,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 1000,
@@ -346,7 +346,7 @@ var map_data_json = [
     },
     {
         "id": 24,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 1000,
@@ -361,7 +361,7 @@ var map_data_json = [
     },
     {
         "id": 25,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 1000,
@@ -376,7 +376,7 @@ var map_data_json = [
     },
     {
         "id": 26,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 1000,
@@ -391,7 +391,7 @@ var map_data_json = [
     },
     {
         "id": 27,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 1000,
@@ -406,7 +406,7 @@ var map_data_json = [
     },
     {
         "id": 28,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 1000,
@@ -421,7 +421,7 @@ var map_data_json = [
     },
     {
         "id": 29,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 1000,
@@ -436,7 +436,7 @@ var map_data_json = [
     },
     {
         "id": 30,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 1000,
@@ -451,7 +451,7 @@ var map_data_json = [
     },
     {
         "id": 31,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 1500,
@@ -466,7 +466,7 @@ var map_data_json = [
     },
     {
         "id": 32,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 1500,
@@ -481,7 +481,7 @@ var map_data_json = [
     },
     {
         "id": 33,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 1500,
@@ -496,7 +496,7 @@ var map_data_json = [
     },
     {
         "id": 34,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 1500,
@@ -511,7 +511,7 @@ var map_data_json = [
     },
     {
         "id": 35,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 1500,
@@ -526,7 +526,7 @@ var map_data_json = [
     },
     {
         "id": 36,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 1500,
@@ -541,7 +541,7 @@ var map_data_json = [
     },
     {
         "id": 37,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 1500,
@@ -556,7 +556,7 @@ var map_data_json = [
     },
     {
         "id": 38,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 1500,
@@ -571,7 +571,7 @@ var map_data_json = [
     },
     {
         "id": 39,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 1500,
@@ -586,7 +586,7 @@ var map_data_json = [
     },
     {
         "id": 40,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 1500,
@@ -601,7 +601,7 @@ var map_data_json = [
     },
     {
         "id": 41,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 2000,
@@ -616,7 +616,7 @@ var map_data_json = [
     },
     {
         "id": 42,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 2000,
@@ -631,7 +631,7 @@ var map_data_json = [
     },
     {
         "id": 43,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 2000,
@@ -646,7 +646,7 @@ var map_data_json = [
     },
     {
         "id": 44,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 2000,
@@ -661,7 +661,7 @@ var map_data_json = [
     },
     {
         "id": 45,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 2000,
@@ -676,7 +676,7 @@ var map_data_json = [
     },
     {
         "id": 46,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 2000,
@@ -691,7 +691,7 @@ var map_data_json = [
     },
     {
         "id": 47,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 2000,
@@ -706,7 +706,7 @@ var map_data_json = [
     },
     {
         "id": 48,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 2000,
@@ -721,7 +721,7 @@ var map_data_json = [
     },
     {
         "id": 49,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 2000,
@@ -736,7 +736,7 @@ var map_data_json = [
     },
     {
         "id": 50,
-        "number_cars": 0,
+        "number_cars": 50,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 2000,
@@ -751,7 +751,7 @@ var map_data_json = [
     },
     {
         "id": 51,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 0,
@@ -766,7 +766,7 @@ var map_data_json = [
     },
     {
         "id": 52,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 0,
@@ -781,7 +781,7 @@ var map_data_json = [
     },
     {
         "id": 53,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 500,
@@ -796,7 +796,7 @@ var map_data_json = [
     },
     {
         "id": 54,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 500,
@@ -811,7 +811,7 @@ var map_data_json = [
     },
     {
         "id": 55,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 1000,
@@ -826,7 +826,7 @@ var map_data_json = [
     },
     {
         "id": 56,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 1000,
@@ -841,7 +841,7 @@ var map_data_json = [
     },
     {
         "id": 57,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 1500,
@@ -856,7 +856,7 @@ var map_data_json = [
     },
     {
         "id": 58,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 1500,
@@ -871,7 +871,7 @@ var map_data_json = [
     },
     {
         "id": 59,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 2000,
@@ -886,7 +886,7 @@ var map_data_json = [
     },
     {
         "id": 60,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 2000,
@@ -901,7 +901,7 @@ var map_data_json = [
     },
     {
         "id": 61,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 0,
@@ -916,7 +916,7 @@ var map_data_json = [
     },
     {
         "id": 62,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 0,
@@ -931,7 +931,7 @@ var map_data_json = [
     },
     {
         "id": 63,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 500,
@@ -946,7 +946,7 @@ var map_data_json = [
     },
     {
         "id": 64,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 500,
@@ -961,7 +961,7 @@ var map_data_json = [
     },
     {
         "id": 65,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 1000,
@@ -976,7 +976,7 @@ var map_data_json = [
     },
     {
         "id": 66,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 1000,
@@ -991,7 +991,7 @@ var map_data_json = [
     },
     {
         "id": 67,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 1500,
@@ -1006,7 +1006,7 @@ var map_data_json = [
     },
     {
         "id": 68,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 1500,
@@ -1021,7 +1021,7 @@ var map_data_json = [
     },
     {
         "id": 69,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 2000,
@@ -1036,7 +1036,7 @@ var map_data_json = [
     },
     {
         "id": 70,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 2000,
@@ -1051,7 +1051,7 @@ var map_data_json = [
     },
     {
         "id": 71,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 0,
@@ -1066,7 +1066,7 @@ var map_data_json = [
     },
     {
         "id": 72,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 0,
@@ -1081,7 +1081,7 @@ var map_data_json = [
     },
     {
         "id": 73,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 500,
@@ -1096,7 +1096,7 @@ var map_data_json = [
     },
     {
         "id": 74,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 500,
@@ -1111,7 +1111,7 @@ var map_data_json = [
     },
     {
         "id": 75,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 1000,
@@ -1126,7 +1126,7 @@ var map_data_json = [
     },
     {
         "id": 76,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 1000,
@@ -1141,7 +1141,7 @@ var map_data_json = [
     },
     {
         "id": 77,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 1500,
@@ -1156,7 +1156,7 @@ var map_data_json = [
     },
     {
         "id": 78,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 1500,
@@ -1171,7 +1171,7 @@ var map_data_json = [
     },
     {
         "id": 79,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 2000,
@@ -1186,7 +1186,7 @@ var map_data_json = [
     },
     {
         "id": 80,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 2000,
@@ -1201,7 +1201,7 @@ var map_data_json = [
     },
     {
         "id": 81,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 0,
@@ -1216,7 +1216,7 @@ var map_data_json = [
     },
     {
         "id": 82,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 0,
@@ -1231,7 +1231,7 @@ var map_data_json = [
     },
     {
         "id": 83,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 500,
@@ -1246,7 +1246,7 @@ var map_data_json = [
     },
     {
         "id": 84,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 500,
@@ -1261,7 +1261,7 @@ var map_data_json = [
     },
     {
         "id": 85,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 1000,
@@ -1276,7 +1276,7 @@ var map_data_json = [
     },
     {
         "id": 86,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 1000,
@@ -1291,7 +1291,7 @@ var map_data_json = [
     },
     {
         "id": 87,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 1500,
@@ -1306,7 +1306,7 @@ var map_data_json = [
     },
     {
         "id": 88,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 1500,
@@ -1321,7 +1321,7 @@ var map_data_json = [
     },
     {
         "id": 89,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 2000,
@@ -1336,7 +1336,7 @@ var map_data_json = [
     },
     {
         "id": 90,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 2000,
@@ -1351,7 +1351,7 @@ var map_data_json = [
     },
     {
         "id": 91,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 0,
@@ -1366,7 +1366,7 @@ var map_data_json = [
     },
     {
         "id": 92,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 0,
@@ -1381,7 +1381,7 @@ var map_data_json = [
     },
     {
         "id": 93,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 500,
@@ -1396,7 +1396,7 @@ var map_data_json = [
     },
     {
         "id": 94,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 500,
@@ -1411,7 +1411,7 @@ var map_data_json = [
     },
     {
         "id": 95,
-        "number_cars": 0,
+        "number_cars": 20,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 1000,
@@ -1426,7 +1426,7 @@ var map_data_json = [
     },
     {
         "id": 96,
-        "number_cars": 0,
+        "number_cars": 250,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 1000,
@@ -1441,7 +1441,7 @@ var map_data_json = [
     },
     {
         "id": 97,
-        "number_cars": 0,
+        "number_cars": 250,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 1500,
@@ -1456,7 +1456,7 @@ var map_data_json = [
     },
     {
         "id": 98,
-        "number_cars": 0,
+        "number_cars": 250,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 1500,
@@ -1471,7 +1471,7 @@ var map_data_json = [
     },
     {
         "id": 99,
-        "number_cars": 0,
+        "number_cars": 250,
         "actual_direction": true,
         "n_accident": 0,
         "beginning_coords_x": 2000,
@@ -1486,7 +1486,7 @@ var map_data_json = [
     },
     {
         "id": 100,
-        "number_cars": 0,
+        "number_cars": 250,
         "actual_direction": false,
         "n_accident": 0,
         "beginning_coords_x": 2000,
