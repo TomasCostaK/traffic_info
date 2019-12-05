@@ -31,7 +31,7 @@ let window_width = 800;
 let zooming_distance = 7;
 var map_data;
 
-const API = '127.0.0.1:3000/';
+const API = '127.0.0.1:8000/';
 const DEFAULT_QUERY = 'info_street/';
 
 class RegisterPage extends Component {
@@ -39,13 +39,18 @@ class RegisterPage extends Component {
     super(props);
     this.state = {
       hits: [],
+      time: Date.now(),
       dataSource: [],
     };
   }
+
   componentDidMount() {
-    console.log("Mounted Component")
+    this.interval = setInterval(() => this.setState({ time: Date.now() }), 10000);
   }
 
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
 
   draw_street(begx, begy, endx, endy, color,direction){
     var delta_x,delta_y,points
@@ -102,7 +107,7 @@ class RegisterPage extends Component {
     console.log(API+DEFAULT_QUERY); 
     fetch(API + DEFAULT_QUERY)
       .then(response => {
-        return response.json();
+        response.json();
       })
       .then(data => {
         this.setState({
