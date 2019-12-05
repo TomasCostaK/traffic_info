@@ -8,7 +8,7 @@ stages:
 step-backend:
  stage: deploy
  script:
-  - sudo apt-get install -y python-pip
-  - sudo pip install docker-compose
-  - sudo docker-compose -f Project/docker-compose.yml build --no-cache
-  - sudo docker-compose -f Project/docker-compose.yml up -d
+  - apt-get install -y python-pip
+  - pip install docker-compose
+  - docker-compose -f Project/docker-compose.yml build --no-cache
+  - docker-compose -f Project/docker-compose.yml up -d
