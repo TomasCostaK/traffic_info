@@ -6,7 +6,7 @@ stages:
  - deploy
 
 before-script:
-  - apt-get update -qq && apt-get install -y -qq python-pip
+  - apk update -qq && apk add -y -qq py-pip
 
 step-backend:
  stage: deploy
