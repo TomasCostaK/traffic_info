@@ -1,14 +1,12 @@
-image: docker:latest
-services:
- - docker:dind
+before-script:
+  - apt-get update -qq && apt-get install -y -qq python-pip
 
 stages:
  - deploy
 
-before-script:
-  - apt-get update -qq && apt-get install -y -qq python-pip
-
 step-backend:
+ image: docker:latest
+ services: docker:dind
  stage: deploy
  script:
   - pip install docker-compose
