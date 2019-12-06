@@ -2,17 +2,37 @@
 import pika
 import json
 import requests
+import time
 
+t = time.time()
+queu = []
+
+def sendToServer():
+    msg = json.dumps({"type":"various_cars", "data":queu})
+    #requests.put("http://192.168.160.237:8000/car/", data = msg)
 
 def callback(ch, method, properties, body):
-    body = json.loads(body)
+    global queu
 
-    if body["info"] == "ADD_CAR":
+    body = json.loads(body)
+    queu.append(body)
+    
+    '''if body["info"] == "ADD_CAR":
         requests.put("http://192.168.160.237:8000/car/", data = json.dumps({"id":body["id"], "plate":body["plate"]}))
         pass
     elif body["info"] == "REMOVE_CAR":
         requests.delete("http://192.168.160.237:8000/car/", data = json.dumps({"id":body["id"], "plate":body["plate"]}))
         pass
+        '''
+
+    if len(queu) == 100:
+        global t
+        print(time.time() - t)
+
+        sendToServer()
+        queu = []
+        t = time.time()
+
 
 
 #MAKE CONNECTION
