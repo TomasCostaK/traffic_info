@@ -104,7 +104,7 @@ class RegisterPage extends Component {
   }
 
   getData(){
-    console.log('http://192.168.160.237:8000/info_street/lmao'); 
+    console.log('http://192.168.160.237:8000/info_street/lmaofacil'); 
     fetch('http://192.168.160.237:8000/info_street/')
       .then(response => {
         console.log(response.json());
@@ -124,7 +124,6 @@ class RegisterPage extends Component {
       map_data:map_data_json
     })*/
     //map_data = this.state.dataSource
-    console.log("ay ay ay")
     map_data = map_data_json
     const lines = []
 
