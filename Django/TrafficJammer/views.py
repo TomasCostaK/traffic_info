@@ -7,7 +7,6 @@ from datetime import datetime,timezone,timedelta
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.response import responses
 from rest_framework import status
-import time
 
 from TrafficJammer.models import Street, \
     Section, \
