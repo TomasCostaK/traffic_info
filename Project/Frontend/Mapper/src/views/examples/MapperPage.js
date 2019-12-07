@@ -118,7 +118,7 @@ class RegisterPage extends Component {
         });
         console.log(data); 
       });*/
-    console.log("Making request")
+    console.log("Making request to info_street")
     fetch('http://localhost:8000/info_street/', { headers: {'Content-Type': 'application/json'}}).
       then(resp => resp.json()).
       then(responseData => {
