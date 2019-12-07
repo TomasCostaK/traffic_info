@@ -104,7 +104,7 @@ class RegisterPage extends Component {
   }
 
   getData(){
-    /*
+    console.log('http://192.168.160.237:8000/info_street/lmaofacil'); 
     fetch('http://192.168.160.237:8000/info_street/')
       .then(response => {
         console.log(response.json());

@@ -7,6 +7,7 @@ from datetime import datetime,timezone,timedelta
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.response import responses
 from rest_framework import status
+import time
 
 from TrafficJammer.models import Street, \
     Section, \
@@ -86,23 +87,21 @@ def car_to_street(request):
     try:
         if request.method=="PUT":
             data=json.loads(request.body)
-            section=Section.objects.get(id=data.get('id'))
-            section.number_cars += 1
-            section.save()
-            add_to_transit(section)
-            car=Car(license_plate=data.get('plate'),section=section)
-            car.save()
-            return HttpResponse(json.dumps(SectionSerializer(section).data)+json.dumps(CarSerializer(car).data),status=status.HTTP_200_OK)
-        elif request.method=="DELETE":
-            data=json.loads(request.body)
-            car=Car.objects.get(license_plate=data.get('plate'))
-            section=Section.objects.get(id=car.section.id)
-            section.number_cars-=1
-            car.delete()
-            section.save()
-            return HttpResponse(json.dumps(SectionSerializer(section).data),status=status.HTTP_200_OK)
-        else:
-            return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+            crud_ops=data.get("data")
+            for op in crud_ops:
+                if op.get("type")=="insert":
+                    section=Section.objects.get(id=op.get("id"))
+                    section.number_cars+=1
+                    car=Car(license_plate=op.get("plate"),section=section)
+                    car.save()
+                elif op.get("type")=="delete":
+                    section=Section.objects.get(id=op.get("id"))
+                    section.number_cars-=1
+                    car=Car.objects.get(license_plate=op.get("plate"))
+                    car.delete()
+                else:
+                    return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+            return HttpResponse(status=status.HTTP_200_OK)
     except Car.DoesNotExist:
         return HttpResponse("Car not found",status=status.HTTP_404_NOT_FOUND)
     except Section.DoesNotExist:
@@ -122,7 +121,7 @@ def add_to_accident(request):
     except Section.DoesNotExist:
         return HttpResponse(status=status.HTTP_404_NOT_FOUND)
 
-def add_to_transit(section,transit=200):
+def add_to_transit(section,transit=75):
     time_of_transit = datetime.now(timezone.utc)
     last_time_of_transit = sorted(Transit.objects.filter(section=section),key=lambda transit:transit.date,reverse=True)
     if section.number_cars>transit:
@@ -221,7 +220,6 @@ def police(request):
     else:
         return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
 
-#Todo see if time should come from sensor
 @csrf_exempt
 def roadblock(request):
     try:
