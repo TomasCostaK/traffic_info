@@ -104,7 +104,7 @@ class RegisterPage extends Component {
   }
 
   getData(){
-    console.log('http://192.168.160.237:8000/info_street/'); 
+    /*
     fetch('http://192.168.160.237:8000/info_street/')
       .then(response => {
         console.log(response.json());
@@ -114,7 +114,17 @@ class RegisterPage extends Component {
           dataSource : data 
         });
         console.log(data); 
-      });
+      });*/
+      fetch('http://192.168.160.237:8000/info_street/', { headers: {'Content-Type': 'application/json'}}).
+      then(resp => resp.json()).
+      then(responseData => {
+        console.log(responseData);
+        return responseData;
+      })
+      .then(data => {this.setState({
+        dataSource : data
+      })
+    });
   }
 
   fill_map(){
@@ -123,8 +133,8 @@ class RegisterPage extends Component {
     /*this.setState({
       map_data:map_data_json
     })*/
-    //map_data = this.state.dataSource
-    map_data = map_data_json
+    map_data = this.state.dataSource
+    //map_data = map_data_json
     const lines = []
 
     for (let index = 0; index < map_data.length; index++) {
