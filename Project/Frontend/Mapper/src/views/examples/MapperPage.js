@@ -91,12 +91,15 @@ class RegisterPage extends Component {
     )
   }
 
-  analyse_traffic(number_cars){
-    if (number_cars > 40) {
-      return "red"
-    } 
-    else if (number_cars > 20){
+  analyse_traffic(congestion){
+    if (congestion.toLowerCase() == "medium") {
       return "yellow"
+    } 
+    else if (congestion.toLowerCase() == "congested"){
+      return "red"
+    }
+    else if(congestion.toLowerCase() == "blocked") {
+      return "black"
     }
     else{
       return "green"
@@ -104,7 +107,7 @@ class RegisterPage extends Component {
   }
 
   getData(){
-    console.log('http://192.168.160.237:8000/info_street/lmaofacil'); 
+    /*console.log('http://192.168.160.237:8000/info_street/lmaofacil'); 
     fetch('http://192.168.160.237:8000/info_street/')
       .then(response => {
         console.log(response.json());
@@ -115,7 +118,8 @@ class RegisterPage extends Component {
         });
         console.log(data); 
       });*/
-      fetch('http://192.168.160.237:8000/info_street/', { headers: {'Content-Type': 'application/json'}}).
+    console.log("Making request")
+    fetch('http://localhost:8000/info_street/', { headers: {'Content-Type': 'application/json'}}).
       then(resp => resp.json()).
       then(responseData => {
         console.log(responseData);
@@ -139,7 +143,7 @@ class RegisterPage extends Component {
 
     for (let index = 0; index < map_data.length; index++) {
       const trecho = map_data[index];
-      var traffic = this.analyse_traffic(trecho.number_cars)
+      var traffic = this.analyse_traffic(trecho.transit_type)
       //Por isto num array? E dar push do return inteiro
       lines.push( this.draw_street(trecho.beginning_coords_x/zooming_distance, trecho.beginning_coords_y/zooming_distance, trecho.ending_coords_x/zooming_distance, trecho.ending_coords_y/zooming_distance, traffic , trecho.actual_direction))
     }
