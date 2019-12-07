@@ -8,6 +8,7 @@ stages:
 before_script:
   - apk update -qq && apk add -y -qq py-pip
   - apk add python-dev libffi-dev openssl-dev gcc libc-dev make
+  - docker info
 
 step-backend:
  stage: deploy
