@@ -28,6 +28,7 @@ import "assets/demo/demo.css";
 import Index from "views/Index.js";
 import NucleoIcons from "views/NucleoIcons.js";
 import LandingPage from "views/examples/LandingPage.js";
+import Dashboard from "views/examples/Dashboard.js";
 import ProfilePage from "views/examples/ProfilePage.js";
 import RegisterPage from "views/examples/RegisterPage.js";
 import MapperPage from "views/examples/MapperPage.js";
@@ -44,6 +45,10 @@ ReactDOM.render(
       <Route
         path="/landing-page"
         render={props => <LandingPage {...props} />}
+      />
+      <Route
+        path="/dashboard"
+        render={props => <Dashboard {...props} />}
       />
       <Route
         path="/profile-page"
