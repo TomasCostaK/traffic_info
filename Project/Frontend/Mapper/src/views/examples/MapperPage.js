@@ -18,26 +18,38 @@
 */
 import React, { Component } from "react";
 import map_data_json from "../../data/Mapdata"
-import { Stage, Layer, Star,Line,Circle, Text } from 'react-konva';
+import { Stage, Layer, Star,Line,Circle, Text, Image } from 'react-konva';
 // reactstrap components
 import { Button, Form, Input, Container, Row, Col } from "reactstrap";
+import useImage from 'use-image';
 
 // core components
 import ExamplesNavbar from "components/Navbars/ExamplesNavbar.js";
 
-let window_height = 400;
+let window_height = 450;
 let window_width = 800;
 //Ter em conta o zooming distance na width do stroke das estradas e nao so so seu tamanho
-let zooming_distance = 6;
 var map_data;
 
-const API = '127.0.0.1:8000/';
+const API = '192.168.160.237:8000/';
 const DEFAULT_QUERY = 'info_street/';
+
+const PoliceImage = (begx,begy) => {
+  const [image] = useImage('../../assets/img/car.jpg');
+  return <Image image={image} 
+  x = {begx+220}
+  y = {begy+40}
+  height = {30}
+  width = {30}
+  />;
+};
+
 
 class RegisterPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      zooming_distance : 6,
       hits: [],
       time: Date.now(),
       dataSource: [],
@@ -52,7 +64,7 @@ class RegisterPage extends Component {
     clearInterval(this.interval);
   }
 
-  draw_street(begx, begy, endx, endy, color,direction){
+  draw_street(begx, begy, endx, endy, traffic,direction,police){
     var delta_x,delta_y,points
     delta_x = endx - begx
     delta_y = endy - begy
@@ -60,13 +72,14 @@ class RegisterPage extends Component {
 
     if (direction){
       points = [0,0,delta_x, delta_y]
-      //color = "green"
+      //traffic = "green"
     } else {
       points = [!(delta_x)*8, !(delta_y)*8,delta_x+!(delta_x)*8,delta_y+!(delta_y)*8]
       if (delta_x !== 0 && delta_y !== 0){
         points = [0,8,delta_x-8,delta_y]
+
       }
-      //color = "yellow"
+      //traffic = "yellow"
     }
     return (
     <>
@@ -74,12 +87,30 @@ class RegisterPage extends Component {
         x = {begx+220}
         y = {begy+40}
         points={points}
-        stroke = {color}
+        stroke = {traffic}
         strokeWidth = {3}
       />
-
+      
+      {/*this.renderBlock(begx,begy,traffic)*/}
+      {this.renderPoints(begx,begy,endx,endy)}
     </>
     )
+  }
+
+  //Conseguimos fazer tambem uma bola no final
+  renderBlock(begx,begy,traffic){
+    if(traffic=="white"){
+      return <Circle x={begx+220} y={begy+40} radius={6} fill="pink" />
+
+    }
+           
+  }
+
+  renderPoints(begx,begy,endx,endy,traffic){
+    return <>
+      <Circle x={begx+220} y={begy+40} radius={5} fill="white" />
+      <Circle x={endx+220} y={endy+40} radius={5} fill="white" />
+    </>       
   }
 
   analyse_traffic(congestion){
@@ -112,11 +143,6 @@ class RegisterPage extends Component {
   }
 
   fill_map(){
-    //this.getData();
-    //Adicionar isto assim que tivermos o pedido
-    /*this.setState({
-      map_data:map_data_json
-    })*/
     map_data = this.state.dataSource
     //map_data = map_data_json
     const lines = []
@@ -125,11 +151,23 @@ class RegisterPage extends Component {
       const trecho = map_data[index];
       var traffic = this.analyse_traffic(trecho.transit_type)
       //Por isto num array? E dar push do return inteiro
-      lines.push( this.draw_street(trecho.beginning_coords_x/zooming_distance, trecho.beginning_coords_y/zooming_distance, trecho.ending_coords_x/zooming_distance, trecho.ending_coords_y/zooming_distance, traffic , trecho.actual_direction))
+      lines.push( this.draw_street(trecho.beginning_coords_x/this.state.zooming_distance, trecho.beginning_coords_y/this.state.zooming_distance, trecho.ending_coords_x/this.state.zooming_distance, trecho.ending_coords_y/this.state.zooming_distance, traffic , trecho.actual_direction, trecho.police))
     }
 
     return ( lines )
 
+  }
+
+  changeZoom(flag){
+    if(flag){
+      this.setState({
+        zooming_distance : this.state.zooming_distance + 1
+      })
+    }else{
+      this.setState({
+        zooming_distance : this.state.zooming_distance - 1
+      })
+    }
   }
 
   render() {
@@ -141,7 +179,7 @@ class RegisterPage extends Component {
           className="page-header"
           data-parallax={true}
           style={{
-            backgroundColor:'rgba(0,0,0,.75)',
+            backgroundColor:'rgba(0,0,0,.85)',
           }}
         >
           <div className="" />
@@ -149,6 +187,8 @@ class RegisterPage extends Component {
             <Row style={{alignContent:'center',justifyContent:'center',border:10,borderColor:'white'}}>
               <div style={{padding:20}}>
                 <Text style={{color:'white', fontWeight:'bold', fontSize:30}}>Map Analysis for: Espinho</Text>
+                <Button onClick={() => this.changeZoom(true)}>- Zoom</Button>
+                <Button onClick={() => this.changeZoom(false)}>+ Zoom</Button>
               </div>
               <Stage width={window_width} height={window_height}>
                   <Layer id="map">
