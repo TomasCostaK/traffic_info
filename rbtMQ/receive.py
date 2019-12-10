@@ -15,7 +15,10 @@ def callback(ch, method, properties, body):
     global queu
 
     body = json.loads(body)
-    queu.append(body)
+    if body["type"] in ["insert", "delete"]:
+        queu.append(body)
+    else:
+        print(body)
     
     '''if body["info"] == "ADD_CAR":
         requests.put("http://192.168.160.237:8000/car/", data = json.dumps({"id":body["id"], "plate":body["plate"]}))
@@ -24,10 +27,9 @@ def callback(ch, method, properties, body):
         requests.delete("http://192.168.160.237:8000/car/", data = json.dumps({"id":body["id"], "plate":body["plate"]}))
         pass
         '''
-
     if len(queu) == 100:
         global t
-        print(time.time() - t)
+        #print(time.time() - t)
 
         sendToServer()
         queu = []

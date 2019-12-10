@@ -105,7 +105,7 @@ data['Trechos'] = trechos
 
 print(json.dumps(streets, indent=4))
 f = open("very_primordial_data.txt", "w")
-f.write(json.dumps(trechos, indent=4))
+f.write(json.dumps(streets, indent=4))
 f.close()
 
 
