@@ -28,7 +28,7 @@ import ExamplesNavbar from "components/Navbars/ExamplesNavbar.js";
 let window_height = 400;
 let window_width = 800;
 //Ter em conta o zooming distance na width do stroke das estradas e nao so so seu tamanho
-let zooming_distance = 7;
+let zooming_distance = 6;
 var map_data;
 
 const API = '127.0.0.1:8000/';
@@ -71,22 +71,13 @@ class RegisterPage extends Component {
     return (
     <>
       <Line 
-        x = {begx+280}
+        x = {begx+220}
         y = {begy+40}
         points={points}
         stroke = {color}
         strokeWidth = {3}
       />
-      <Circle
-        x={begx+283}
-        y={begy+41}
-        radius= {5}
-        fill= {'white'}
-        stroke= {'black'}
-        strokeWidth= {1}
-      >
-        
-      </Circle>
+
     </>
     )
   }
@@ -107,19 +98,8 @@ class RegisterPage extends Component {
   }
 
   getData(){
-    /*console.log('http://192.168.160.237:8000/info_street/lmaofacil'); 
-    fetch('http://192.168.160.237:8000/info_street/')
-      .then(response => {
-        console.log(response.json());
-      })
-      .then(data => {
-        this.setState({
-          dataSource : data 
-        });
-        console.log(data); 
-      });*/
     console.log("Making request to info_street")
-    fetch('http://localhost:8000/info_street/', { headers: {'Content-Type': 'application/json'}}).
+    fetch('http://192.168.160.237:8000/info_street/', { headers: {'Content-Type': 'application/json'}}).
       then(resp => resp.json()).
       then(responseData => {
         console.log(responseData);
@@ -161,7 +141,7 @@ class RegisterPage extends Component {
           className="page-header"
           data-parallax={true}
           style={{
-            backgroundColor:'rgba(0,0,0,.85)',
+            backgroundColor:'rgba(0,0,0,.75)',
           }}
         >
           <div className="" />
