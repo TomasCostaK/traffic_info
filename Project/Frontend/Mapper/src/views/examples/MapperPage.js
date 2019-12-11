@@ -18,7 +18,7 @@
 */
 import React, { Component } from "react";
 import map_data_json from "../../data/Mapdata"
-import { Stage, Layer, Star,Line,Circle, Text, Image } from 'react-konva';
+import { Stage, Layer, Star,Line,Circle, Text, Image,Rect } from 'react-konva';
 // reactstrap components
 import { Button, Form, Input, Container, Row, Col } from "reactstrap";
 import useImage from 'use-image';
@@ -69,14 +69,15 @@ class RegisterPage extends Component {
     delta_x = endx - begx
     delta_y = endy - begy
     points = []
+    var street_distance = 6;
 
     if (direction){
       points = [0,0,delta_x, delta_y]
       //traffic = "green"
     } else {
-      points = [!(delta_x)*8, !(delta_y)*8,delta_x+!(delta_x)*8,delta_y+!(delta_y)*8]
+      points = [!(delta_x)*street_distance, !(delta_y)*street_distance,delta_x+!(delta_x)*street_distance,delta_y+!(delta_y)*street_distance]
       if (delta_x !== 0 && delta_y !== 0){
-        points = [0,8,delta_x-8,delta_y]
+        points = [0,street_distance,delta_x-street_distance,delta_y]
 
       }
       //traffic = "yellow"
@@ -108,8 +109,8 @@ class RegisterPage extends Component {
 
   renderPoints(begx,begy,endx,endy,traffic){
     return <>
-      <Circle x={begx+220} y={begy+40} radius={5} fill="white" />
-      <Circle x={endx+220} y={endy+40} radius={5} fill="white" />
+      <Circle x={begx+220} y={begy+40} radius={4} fill="white" />
+      <Circle x={endx+220} y={endy+40} radius={4} fill="white" />
     </>       
   }
 
@@ -192,10 +193,8 @@ class RegisterPage extends Component {
               </div>
               <Stage width={window_width} height={window_height}>
                   <Layer id="map">
-                  
                   {/* Aqui desenhamos o mapa */}
                   {this.fill_map()}
-  
                   </Layer>
               </Stage>
             </Row>

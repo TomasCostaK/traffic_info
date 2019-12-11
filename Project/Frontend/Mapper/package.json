@@ -16,7 +16,8 @@
     "react-konva": "^16.10.1-0",
     "react-router": "5.0.1",
     "react-router-dom": "5.0.1",
-    "react-scripts": "3.0.1",
+    "react-scripts": "^3.3.0",
+    "react-search-box": "^2.0.2",
     "reactstrap": "8.0.0",
     "shards-react": "^1.0.3",
     "use-image": "^1.0.5"
