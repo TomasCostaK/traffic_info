@@ -244,3 +244,13 @@ def roadblock(request):
         return HttpResponse("Section doesn't exist",status=status.HTTP_404_NOT_FOUND)
     except Blocked.DoesNotExist:
         return HttpResponse("Road isn't blocked",status=status.HTTP_404_NOT_FOUND)
+
+def all_streets(request):
+    try:
+        if request.method=="GET":
+            streets=Street.objects.all()
+            return HttpResponse(json.dumps(StreetSerializer(streets,many=True).data))
+        else:
+            return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+    except:
+        return HttpResponse(status=status.HTTP_404_NOT_FOUND)
