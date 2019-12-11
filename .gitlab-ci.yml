@@ -9,12 +9,12 @@ stages:
 build-backend:
  stage: build
  script:
-  - docker build --tag "backend" /Project/Backend
+  - docker build --tag "backend" Project/Backend
 
 build-frontend:
  stage: build
  script:
-  - docker build --tag "frontend" /Project/Frontend/Mapper
+  - docker build --tag "frontend" Project/Frontend/Mapper
 
 deploy-backend:
  stage: deploy
