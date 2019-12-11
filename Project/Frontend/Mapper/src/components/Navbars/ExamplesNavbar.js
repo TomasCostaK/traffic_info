@@ -74,7 +74,6 @@ function ExamplesNavbar() {
           <NavbarBrand
             data-placement="bottom"
             to="/index"
-            target="_blank"
             title="Traffic Jammer"
             tag={Link}
           >
@@ -110,7 +109,7 @@ function ExamplesNavbar() {
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink to="/login" tag={Link}>
+              <NavLink to="/dashboard" tag={Link}>
                 <i className="nc-icon nc-chart-bar-32" /> Dashboard
               </NavLink>
             </NavItem>  
