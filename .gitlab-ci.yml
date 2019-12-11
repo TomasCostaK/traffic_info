@@ -3,19 +3,26 @@ services:
  - docker:dind
 
 stages:
+ - build
  - deploy
 
-before_script:
-  - apk update -qq && apk add -y -qq py-pip
-  - apk add python-dev libffi-dev openssl-dev gcc libc-dev make
-  - docker info
+build-backend:
+ stage: build
+ script:
+  - docker build --tag "backend" /Project/Backend
 
-step-backend:
+build-frontend:
+ stage: build
+ script:
+  - docker build --tag "frontend" /Project/Frontend/Mapper
+
+deploy-backend:
  stage: deploy
  script:
-  - pip install docker-compose
-  - docker-compose -f Project/docker-compose.yml stop
-  - docker-compose -f Project/docker-compose.yml build --no-cache
-  - docker-compose -f Project/docker-compose.yml up -d
+  - docker run -p 8000:8000 backend
 
+deploy-frontend:
+ stage: deploy
+ script:
+  - docker run -p 8800:80 frontend
   
