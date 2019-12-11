@@ -7,7 +7,6 @@ from datetime import datetime,timezone,timedelta
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.response import responses
 from rest_framework import status
-import time
 
 from TrafficJammer.models import Street, \
     Section, \
@@ -242,6 +241,6 @@ def roadblock(request):
         else:
             return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
     except Section.DoesNotExist:
-        return HttpResponse(status=status.HTTP_404_NOT_FOUND)
+        return HttpResponse("Section doesn't exist",status=status.HTTP_404_NOT_FOUND)
     except Blocked.DoesNotExist:
-        return HttpResponse(status=status.HTTP_404_NOT_FOUND)
+        return HttpResponse("Road isn't blocked",status=status.HTTP_404_NOT_FOUND)
