@@ -135,25 +135,25 @@ class CarSerializer(serializers.ModelSerializer):
 ''' End Serializables for Accident and Car'''
 
 '''Serializables for Statistics'''
-class SectionStatisticsSerializer(serializers.ModelSerializer):
+class StreetStatisticsSerializer(serializers.ModelSerializer):
     transit_count=serializers.SerializerMethodField("transit")
     road_block=serializers.SerializerMethodField("blocked")
     total_accident=serializers.SerializerMethodField("accident")
-    def transit(self,Section):
+    def transit(self,Street):
         transit_count=self.context.get("transit")
         return len(transit_count)
 
-    def blocked(self,Section):
+    def blocked(self,Street):
         roadblocks=self.context.get("blocked")
         total_time=0
         for r in roadblocks:
             total_time+=((r.end-r.begin).seconds)/60
         return {"total_time":total_time,"times":len(roadblocks)}
 
-    def accident(self,Section):
+    def accident(self,Street):
         total_accident=self.context.get("accident")
         return AccidentSerializer(total_accident,many=True).data
     class Meta:
-        model=Section
-        fields = ('id','transit_count','road_block','total_accident')
+        model=Street
+        fields = ('name','transit_count','road_block','total_accident')
 '''End of Statistics'''

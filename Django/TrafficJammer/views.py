@@ -17,7 +17,7 @@ from TrafficJammer.models import Street, \
     SectionSerializer, \
     StreetSerializer, \
     StreetInputSerializer, \
-    SectionStatisticsSerializer, \
+    StreetStatisticsSerializer, \
     CarSerializer, \
     AccidentSerializer
 
@@ -163,13 +163,13 @@ def all_cars(request):
             return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
     except Section.DoesNotExist:
         return HttpResponse(status=status.HTTP_404_NOT_FOUND)
-
+'''
+TODO CHECK IF WE WANT STATISTICS BY SECTION
 def statistics(request):
     day_to_int={"Monday":2,"Tuesday":3,"Wednesday":4,"Thursday":5,"Friday":6,"Saturday":7,"Sunday":1}
     try:
         if request.method=="GET":
             data=json.loads(request.body)
-            print(data)
             begin_time=data.get("begin").split("-")
             begin_time=datetime(int(begin_time[0]), int(begin_time[1]), int(begin_time[2]), 0, 0, 0, 0, timezone.utc)
             end_time=data.get("end").split("-")
@@ -184,8 +184,47 @@ def statistics(request):
                 transit=Transit.objects.filter(date__range=(begin_time,end_time))
                 accident=Accident.objects.filter(date__range=(begin_time,end_time))
             return HttpResponse(json.dumps(SectionStatisticsSerializer(section,
-                                                                       context={"transit":transit,"blocked":blocked,"accident":accident}).data)
-                                ,status=status.HTTP_200_OK)
+                                context={"transit":transit,"blocked":blocked,"accident":accident}).data),status=status.HTTP_200_OK)
+        else:
+            return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+    except Section.DoesNotExist:
+        return HttpResponse(status=status.HTTP_404_NOT_FOUND)'''
+
+def statistics(request):
+    day_to_int={"Monday":2,"Tuesday":3,"Wednesday":4,"Thursday":5,"Friday":6,"Saturday":7,"Sunday":1}
+    try:
+        if request.method=="GET":
+            data=json.loads(request.body)
+            begin_time=data.get("begin").split("-")
+            begin_time=datetime(int(begin_time[0]), int(begin_time[1]), int(begin_time[2]), 0, 0, 0, 0, timezone.utc)
+            end_time=data.get("end").split("-")
+            end_time=datetime(int(end_time[0]),int(end_time[1]),int(end_time[2]),0,0,0,0,timezone.utc)
+            id=data.get("id")
+            street=Street.objects.get(id=id)
+            section_list=Section.objects.filter(street=street)
+            # Generation of empty querysets
+            transit=Transit.objects.none()
+            blocked=Blocked.objects.none()
+            accident=Accident.objects.none()
+            # iteration of each section of that street
+            for section in section_list:
+                temp_blocked=Blocked.objects.filter(section=section,begin__range=(begin_time,end_time),end__range=(begin_time,end_time))
+                blocked = blocked | temp_blocked
+                if "week_day" in data:
+                    temp_transit = Transit.objects.filter(section=section,date__range=(begin_time, end_time),date__week_day=day_to_int.get(data.get("week_day")))
+                    temp_accident = Accident.objects.filter(section=section,date__range=(begin_time, end_time),date__week_day=day_to_int.get(data.get("week_day")))
+                    # Join of Query Sets
+                    transit = transit | temp_transit
+                    accident = accident | temp_accident
+                else:
+                    temp_transit=Transit.objects.filter(section=section,date__range=(begin_time,end_time))
+                    temp_accident=Accident.objects.filter(section=section,date__range=(begin_time,end_time))
+                    # Join of Query Sets
+                    transit = transit | temp_transit
+                    accident = temp_accident | temp_accident
+
+            return HttpResponse(json.dumps(StreetStatisticsSerializer(street,
+                                context={"transit":transit,"blocked":blocked,"accident":accident}).data),status=status.HTTP_200_OK)
         else:
             return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
     except Section.DoesNotExist:
