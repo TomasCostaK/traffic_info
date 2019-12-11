@@ -19,10 +19,10 @@ build-frontend:
 deploy-backend:
  stage: deploy
  script:
-  - docker run -p 8000:8000 backend -d
+  - docker run -p 8000:8000 -d backend
 
 deploy-frontend:
  stage: deploy
  script:
-  - docker run -p 8800:80 frontend -d
+  - docker run -p 8800:80 -d frontend
   
