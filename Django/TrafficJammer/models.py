@@ -153,7 +153,15 @@ class StreetStatisticsSerializer(serializers.ModelSerializer):
     def accident(self,Street):
         total_accident=self.context.get("accident")
         return AccidentSerializer(total_accident,many=True).data
+
     class Meta:
         model=Street
         fields = ('name','transit_count','road_block','total_accident')
 '''End of Statistics'''
+
+class AllStreetSerializer(serializers.ModelSerializer):
+    key=serializers.IntegerField(source='id')
+    value=serializers.CharField(source='name')
+    class Meta:
+        model=Street
+        fields=('key','value')

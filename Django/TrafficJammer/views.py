@@ -19,7 +19,8 @@ from TrafficJammer.models import Street, \
     StreetInputSerializer, \
     StreetStatisticsSerializer, \
     CarSerializer, \
-    AccidentSerializer
+    AccidentSerializer, \
+    AllStreetSerializer
 
 
 
@@ -288,8 +289,9 @@ def all_streets(request):
     try:
         if request.method=="GET":
             streets=Street.objects.all()
-            return HttpResponse(json.dumps(StreetSerializer(streets,many=True).data))
+            return HttpResponse(json.dumps(AllStreetSerializer(streets,many=True).data))
         else:
             return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
-    except:
+    except Exception as e:
+        print(e)
         return HttpResponse(status=status.HTTP_404_NOT_FOUND)
