@@ -246,17 +246,24 @@ def visibility(request):
 
 @csrf_exempt
 def police(request):
-    if request.method=="PUT":
-        try:
+    try:
+        if request.method == "PUT":
             data= json.loads(request.body)
-            section=Section.objects.get(id=data.get)
-            section.police=data.get("police")
+            section=Section.objects.get(id=data.get("id"))
+            section.police=True
             section.save()
             return HttpResponse(json.dumps(SectionSerializer(section).data),status=status.HTTP_200_OK)
-        except Section.DoesNotExist:
+        elif request.method == "DELETE":
+            data=json.loads(request.body)
+            section = Section.objects.get(id=data.get("id"))
+            section.police = False
+            section.save()
+            return HttpResponse(json.dumps(SectionSerializer(section).data),status=status.HTTP_200_OK)
+        else:
+            return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+    except Section.DoesNotExist:
             return HttpResponse(status=status.HTTP_404_NOT_FOUND)
-    else:
-        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+
 
 @csrf_exempt
 def roadblock(request):
@@ -276,6 +283,9 @@ def roadblock(request):
             road_block=Blocked.objects.get(section=data.get("id"),end__isnull=True)
             road_block.end=datetime.now(timezone.utc)
             road_block.save()
+            section = Section.objects.get(id=data.get("id"))
+            section.roadblock = False
+            section.save()
             return HttpResponse("Road unblocked",status=status.HTTP_200_OK)
         else:
             return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
