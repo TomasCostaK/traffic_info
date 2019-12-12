@@ -9,7 +9,6 @@ stages:
 
 default:
   before_script:
-    - docker ps -aq
     - docker kill $(docker ps -aq)
     - docker rm $(docker ps -aq)
 
