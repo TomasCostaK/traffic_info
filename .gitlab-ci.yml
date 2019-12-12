@@ -9,8 +9,8 @@ stages:
 
 default:
   before_script:
-    - docker ps -q
-    - docker kill $(docker ps -q)
+    - docker ps -aq
+    - docker kill $(docker ps -aq)
     - docker rm $(docker ps -aq)
 
 deploy-backend:
