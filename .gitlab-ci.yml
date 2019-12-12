@@ -2,13 +2,16 @@ image: docker:latest
 services:
  - docker:dind
 
+stages:
+ - default
+ - deploy
+
+
 default:
   before_script:
+    - docker ps -q
     - docker kill $(docker ps -q)
     - docker rm $(docker ps -aq)
-
-stages:
- - deploy
 
 deploy-backend:
  stage: deploy
