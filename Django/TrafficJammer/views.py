@@ -199,8 +199,7 @@ def statistics(request,street,begin,end,week_day=None):
             begin_time=datetime(int(begin_time[0]), int(begin_time[1]), int(begin_time[2]), 0, 0, 0, 0, timezone.utc)
             end_time=end.split("-")
             end_time=datetime(int(end_time[0]),int(end_time[1]),int(end_time[2]),0,0,0,0,timezone.utc)
-            id=street
-            street=Street.objects.get(id=id)
+            street=Street.objects.get(id=street)
             section_list=Section.objects.filter(street=street)
             # Generation of empty query sets
             transit=Transit.objects.none()
