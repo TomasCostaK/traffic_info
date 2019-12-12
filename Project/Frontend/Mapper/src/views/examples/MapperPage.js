@@ -51,13 +51,14 @@ class RegisterPage extends Component {
     this.state = {
       zooming_distance : 6,
       hits: [],
+      loading_map:true,
       time: Date.now(),
       dataSource: [],
     };
   }
 
   componentDidMount() {
-    this.interval = setInterval(() => this.setState({ time: Date.now() } && this.getData()), 5000);
+    this.interval = setInterval(() => this.setState({ time: Date.now(), loading_map:false } && this.getData()), 2000);
   }
 
   componentWillUnmount() {
@@ -69,7 +70,7 @@ class RegisterPage extends Component {
     delta_x = endx - begx
     delta_y = endy - begy
     points = []
-    var street_distance = 6;
+    var street_distance = 7;
 
     if (direction){
       points = [0,0,delta_x, delta_y]
@@ -89,7 +90,7 @@ class RegisterPage extends Component {
         y = {begy+40}
         points={points}
         stroke = {traffic}
-        strokeWidth = {3}
+        strokeWidth = {4}
       />
       
       {/*this.renderBlock(begx,begy,traffic)*/}
@@ -109,8 +110,8 @@ class RegisterPage extends Component {
 
   renderPoints(begx,begy,endx,endy,traffic){
     return <>
-      <Circle x={begx+220} y={begy+40} radius={4} fill="white" />
-      <Circle x={endx+220} y={endy+40} radius={4} fill="white" />
+      <Circle x={begx+220} y={begy+40} radius={6} fill="green" />
+      <Circle x={endx+220} y={endy+40} radius={6} fill="green" />
     </>       
   }
 
@@ -185,14 +186,14 @@ class RegisterPage extends Component {
         >
           <div className="" />
           <Container>
-            <Row style={{alignContent:'center',justifyContent:'center',border:10,borderColor:'white'}}>
+            <Row style={{alignContent:'center',justifyContent:'center',border:10,marginTop:30,borderColor:'white'}}>
               <div style={{padding:20}}>
                 <Text style={{color:'white', fontWeight:'bold', fontSize:30}}>Map Analysis for: Espinho</Text>
-                <Button onClick={() => this.changeZoom(true)}>- Zoom</Button>
+                <Button style={{marginLeft:20}} onClick={() => this.changeZoom(true)}>- Zoom</Button>
                 <Button onClick={() => this.changeZoom(false)}>+ Zoom</Button>
               </div>
-              <Stage width={window_width} height={window_height}>
-                  <Layer id="map">
+                <Stage style={{backgroundColor:'white'}} width={window_width} height={window_height}>
+                  <Layer  id="map">
                   {/* Aqui desenhamos o mapa */}
                   {this.fill_map()}
                   </Layer>
