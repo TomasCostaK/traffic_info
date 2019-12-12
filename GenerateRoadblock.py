@@ -3,7 +3,7 @@ import json
 import random
 import time
 #while True:
-req=json.loads(requests.get('http://127.0.0.1:8000/info_street').content)
+req=json.loads(requests.get('http://192.168.160.237:8000/info_street').content)
 data={d['id']:True if d['transit_type']=='Blocked' else False for d in req }
 time.sleep(5)
 print(data)
@@ -31,13 +31,12 @@ json_update_false=[{"info":"roadblock_up","id":d} for d in random_data_negative]
 
 for i in json_update_true:
     print(i)
-    #r=requests.delete("http://192.168.160.237:8000/roadblock/",data=json.dumps(i),headers={"Content-Type":"text/plain"})
-    r=requests.delete("http://127.0.0.1:8000/roadblock/",data=json.dumps(i),headers={"Content-Type":"text/plain"})
+    r=requests.delete("http://192.168.160.237:8000/roadblock/",data=json.dumps(i),headers={"Content-Type":"text/plain"})
 
     print(r)
     print(r.text)
 for f in json_update_false:
     print(f)
-    r=requests.put("http://127.0.0.1:8000/roadblock/",data=json.dumps(f),headers= {"Content-Type":"text/plain"})
+    r=requests.put("http://192.168.160.237:8000/roadblock/",data=json.dumps(f),headers= {"Content-Type":"text/plain"})
     print(r)
     print(r.text)
