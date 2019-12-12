@@ -67,7 +67,7 @@ class Sensor:
             plate = ''.join(choice(string.ascii_uppercase + string.digits) for _ in range(6))
             self.actual_info[trecho].append(plate)
             self.add(trecho, plate)
-            time.sleep(0.01)
+            time.sleep(0.05)
 
 
     def reduceTraffic(self):
@@ -99,7 +99,7 @@ class Sensor:
 
                     self.actual_info[trechoOut].append(plateOut)
                     self.add(trechoOut, plateOut)
-                time.sleep(0.01)
+                time.sleep(0.05)
 
     def populate(self):
         self.add(1, 'TESTE1')
@@ -114,14 +114,15 @@ class Sensor:
     
     def visibility(self):
         req=json.loads(requests.get('http://192.168.160.237:8000/info_street').content)
+        print(req)
         temp_data={d['id']:d['visibility'] for d in req }
 
         random_alter=[choice(list(temp_data.keys())) for i in range(math.floor(len(temp_data)/5))]
         for d in random_alter:
             temp_data[d]=min(100,max(0,math.ceil(gauss(60,25))))
             
-        #[print(f"ID- {d} Value-{temp_data[d]}") for d in temp_data]
-        [channel.basic_publish(exchange='', routing_key='cars', body=json.dumps({"type":"visibility", "id":d, "value": temp_data[d]} )) for d in temp_data]
+        [print(f"ID- {d} Value-{temp_data[d]}") for d in temp_data]
+        [channel.basic_publish(exchange='', routing_key='cars', body=json.dumps({"type":"visibility", "id":d, "visibility": temp_data[d]} )) for d in temp_data]
 
     
     def roadBlock(self,req):    
@@ -159,19 +160,17 @@ class Sensor:
             [channel.basic_publish(exchange='', routing_key='cars', body=i) for i in json_update_false]
 
 
-
     def startSensor(self):
 
         #SENSOR
         i = 1   #just to debug
         while True:
+            print(i)
             if i % 200 == 0:
-                self.printInfo()
+                #self.printInfo()
                 self.visibility()
-                pass
             if i % 500 == 0:
                 req=json.loads(requests.get('http://192.168.160.237:8000/info_street').content)
-
                 self.forceTraffic() 
                 self.roadBlock(req)   
                 self.police(req)   
@@ -192,7 +191,7 @@ class Sensor:
             i+=1
             if i == 1000000:
                 i = 0
-            time.sleep(0.01)
+            time.sleep(0.05)
 
 
 sensor = Sensor(sys.argv[1])
