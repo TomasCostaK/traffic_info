@@ -2,6 +2,10 @@ image: docker:latest
 services:
  - docker:dind
 
+before_script:
+  - docker kill $(docker ps -q)
+  - docker rm $(docker ps -aq)
+
 stages:
  - deploy
 
