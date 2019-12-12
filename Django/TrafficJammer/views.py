@@ -292,6 +292,5 @@ def all_streets(request):
             return HttpResponse(json.dumps(AllStreetSerializer(streets,many=True).data))
         else:
             return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
-    except Exception as e:
-        print(e)
+    except:
         return HttpResponse(status=status.HTTP_404_NOT_FOUND)
