@@ -114,14 +114,13 @@ class Sensor:
     
     def visibility(self):
         req=json.loads(requests.get('http://192.168.160.237:8000/info_street').content)
-        print(req)
         temp_data={d['id']:d['visibility'] for d in req }
 
         random_alter=[choice(list(temp_data.keys())) for i in range(math.floor(len(temp_data)/5))]
         for d in random_alter:
             temp_data[d]=min(100,max(0,math.ceil(gauss(60,25))))
             
-        [print(f"ID- {d} Value-{temp_data[d]}") for d in temp_data]
+        #[print(f"ID- {d} Value-{temp_data[d]}") for d in temp_data]
         [channel.basic_publish(exchange='', routing_key='cars', body=json.dumps({"type":"visibility", "id":d, "visibility": temp_data[d]} )) for d in temp_data]
 
     
@@ -164,16 +163,19 @@ class Sensor:
 
         #SENSOR
         i = 1   #just to debug
+        self.printInfo()
         while True:
-            print(i)
+            if i % 50 == 0:
+                self.printInfo()
             if i % 200 == 0:
-                #self.printInfo()
-                self.visibility()
+                #self.visibility()
+                pass
             if i % 500 == 0:
-                req=json.loads(requests.get('http://192.168.160.237:8000/info_street').content)
-                self.forceTraffic() 
+                '''req=json.loads(requests.get('http://192.168.160.237:8000/info_street').content)
                 self.roadBlock(req)   
-                self.police(req)   
+                self.police(req)   '''
+                self.forceTraffic() 
+
             if i % 2000 == 0:
                 self.reduceTraffic()
 
