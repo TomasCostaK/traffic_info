@@ -21,9 +21,10 @@ import React, { Component } from "react";
 import { Button, Form, Input, Container, Row, Col } from "reactstrap";
 import { Text } from 'react-konva';
 import ReactSearchBox from 'react-search-box'
+import DatePicker from "react-datepicker";
+import "../../../node_modules/react-datepicker/dist/react-datepicker.css"
 // core components
 import ExamplesNavbar from "components/Navbars/ExamplesNavbar.js";
-import { findByLabelText } from "@testing-library/dom";
 
 const API = '192.168.160.237:8000/';
 const DEFAULT_QUERY = 'all_streets/';
@@ -95,20 +96,35 @@ class Dashboard extends Component {
       hits: [],
       street_name: '',
       street_id: 1,
-      begin_date:'',
-      end_date:'',
+      begin_date: new Date('2017-01-01'),
+      end_date: new Date(),
+      dayofweek:'',
       dataSource: [],
       dataSourceStats: []
     };
   }
+
+  //date-format: AAAA-MM-DD
 
   componentDidMount() {
     //somting in here
   }
 
   componentWillUnmount() {
-    clearInterval(this.interval);
+    //sumting heya
   }
+
+  handleChangeStart = date => {
+    this.setState({
+      begin_date: date
+    });
+  };
+
+  handleChangeEnd = date => {
+    this.setState({
+      end_date:date
+    });
+  };
 
   getData(){
     console.log("Making request to info_street")
@@ -126,14 +142,9 @@ class Dashboard extends Component {
 
   getDataStats(){
     console.log("Making request to statistics")
-    console.log(API+STATS_QUERY)
-    fetch(API+STATS_QUERY, { 
-      method: 'GET', 
-      body: {
-        "id":this.state.street_id,
-        "begin":this.state.start_date,
-        "end":this.state.end_date
-      }, 
+    var final_url = this.state.street_id + '/' + this.state.begin_date + '/' + this.state.end_date + '/' + this.state.dayofweek;
+    console.log(API + STATS_QUERY + final_url)
+    fetch( API + STATS_QUERY + final_url, {  
       headers: {'Content-Type': 'application/json'} 
     }).
       then(resp => resp.json()).
@@ -152,7 +163,7 @@ class Dashboard extends Component {
       street_name: response.value,
       street_id : response.key
     })
-    //this.getDataStats()
+    this.getDataStats()
   }
 
   render() {
@@ -174,14 +185,27 @@ class Dashboard extends Component {
             <ReactSearchBox
               placeholder="Search street"
               value="Rua Tenente Joaquim Lopes Craveiro"
-              style={{width:50}}
               data={this.data}
               color={'black'}
-              style={{fontWeight:'bold'}}
+              style={{fontWeight:'bold',width:40}}
               inputBoxFontColor={'black'}
               dropDownHoverColor={'rgba(0,255,255,0.3)'}
               onSelect={record => this.changeStreetDisplayed(record)}
             />
+            <Row style={{flex:1, alignContent:'center',justifyContent:'center'}}>
+            <Text style={{color:'white', fontSize:20, marginTop:5, fontWeight:'bolder'}}>Start Date: </Text>
+            <DatePicker
+              selected={this.state.begin_date}
+              onChange={this.handleChangeStart}
+              onSelect={this.getDataStats()}
+            />
+            <Text style={{color:'white', fontSize:20, marginTop:5, fontWeight:'bolder' ,marginLeft:20}}>End Date: </Text>
+            <DatePicker
+              selected={this.state.end_date}
+              onChange={this.handleChangeEnd}
+              onSelect={this.getDataStats()}
+            />
+            </Row>
             
         <Text style={{color:'white', fontWeight:'bold', marginTop:80, textAlign:'center',fontSize:30}}>{this.state.street_name}</Text>
             <div style={{display:'flex', flexDirection:'row' , justifyContent:'space-between',alignContent:'space-between'}}>
