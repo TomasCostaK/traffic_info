@@ -13,7 +13,7 @@ clean-dockers:
     - docker rm $(docker ps -aq) || true
 
 deploy-backend-frontend:
- stage: backend
+ stage: deploy
  script:
   - docker build --tag "backend" Project/Backend
   - docker run -p 8000:8000 -d backend
