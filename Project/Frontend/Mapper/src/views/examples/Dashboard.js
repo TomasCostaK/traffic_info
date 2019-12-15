@@ -20,6 +20,9 @@ import React, { Component } from "react";
 // reactstrap components
 import { Button, Form, Input, Container, Row, Col } from "reactstrap";
 import { Text } from 'react-konva';
+import moment from 'moment';
+import Dropdown from 'react-dropdown';
+import 'react-dropdown/style.css';
 import ReactSearchBox from 'react-search-box'
 import DatePicker from "react-datepicker";
 import "../../../node_modules/react-datepicker/dist/react-datepicker.css"
@@ -43,52 +46,6 @@ class Stats extends React.Component {
 }
 
 class Dashboard extends Component {
-  data = [
-    {
-        "key": 1,
-        "value": "Rua Tenente Joaquim Lopes Craveiro"
-    },
-    {
-        "key": 2,
-        "value": "Rua de Caveiros"
-    },
-    {
-        "key": 3,
-        "value": "Rua Romana"
-    },
-    {
-        "key": 4,
-        "value": "Travessa da Agoncida"
-    },
-    {
-        "key": 5,
-        "value": "Avenida Antonio Henriques"
-    },
-    {
-        "key": 6,
-        "value": "Avenida Benjamim Araujo"
-    },
-    {
-        "key": 7,
-        "value": "Avenida da Liberdade"
-    },
-    {
-        "key": 8,
-        "value": "Avenida da Misericordia"
-    },
-    {
-        "key": 9,
-        "value": "Avenida do Brasil"
-    },
-    {
-        "key": 10,
-        "value": "Avenida do Vale"
-    },
-    {
-        "key": 11,
-        "value": "Avenida do Vale"
-    }
-]
 
   constructor(props) {
     super(props);
@@ -96,37 +53,49 @@ class Dashboard extends Component {
       hits: [],
       street_name: '',
       street_id: 1,
-      begin_date: new Date('2017-01-01'),
-      end_date: new Date(),
+      begin_date: moment().format('YYYY-MM-DD'),
+      end_date: moment().format('YYYY-MM-DD'),
+      begin_date_cal: new Date(),
+      end_date_cal: new Date(),
       dayofweek:'',
       dataSource: [],
-      dataSourceStats: []
+      dataSourceStats: [{
+        "name": "Rua Tenente Joaquim Lopes Craveiro", 
+        "transit_count": 0, 
+        "road_block": {"total_time": 0, "times": 0},
+        "total_accident": []
+      }],
+      options : ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
     };
   }
 
   //date-format: AAAA-MM-DD
 
   componentDidMount() {
-    //somting in here
+    this.getData()
   }
 
   componentWillUnmount() {
     //sumting heya
   }
 
-  handleChangeStart = date => {
-    this.setState({
-      begin_date: date
+  handleChangeStart = async date => {
+    await this.setState({
+      begin_date: moment(date).format('YYYY-MM-DD'),
+      begin_date_cal: date
     });
+    this.getDataStats()
   };
 
-  handleChangeEnd = date => {
-    this.setState({
-      end_date:date
+  handleChangeEnd = async date => {
+    await this.setState({
+      end_date: moment(date).format('YYYY-MM-DD'),
+      end_date_cal: date
     });
+    this.getDataStats()
   };
 
-  getData(){
+  getData = () => {
     console.log("Making request to info_street")
     fetch(API+DEFAULT_QUERY, { headers: {'Content-Type': 'application/json'}}).
       then(resp => resp.json()).
@@ -140,20 +109,20 @@ class Dashboard extends Component {
     });
   }
 
-  getDataStats(){
+  getDataStats = () => {
     console.log("Making request to statistics")
     var final_url = this.state.street_id + '/' + this.state.begin_date + '/' + this.state.end_date + '/' + this.state.dayofweek;
     console.log(API + STATS_QUERY + final_url)
     fetch( API + STATS_QUERY + final_url, {  
+      method: 'GET',
       headers: {'Content-Type': 'application/json'} 
     }).
-      then(resp => resp.json()).
-      then(responseData => {
-        console.log(responseData);
-        return responseData;
+      then(resp => {
+        console.log(JSON.stringify(resp.body))
+        return resp;
       })
       .then(data => {this.setState({
-        dataSourceStats : data[0]
+        //dataSourceStats : [data]
       })
     });
   }
@@ -164,6 +133,13 @@ class Dashboard extends Component {
       street_id : response.key
     })
     this.getDataStats()
+  }
+
+  changeDay = async (day) => {
+    await this.setState({
+      dayofweek : day.value
+    })
+    this.getDataStats();
   }
 
   render() {
@@ -185,34 +161,36 @@ class Dashboard extends Component {
             <ReactSearchBox
               placeholder="Search street"
               value="Rua Tenente Joaquim Lopes Craveiro"
-              data={this.data}
+              data={this.state.dataSource}
               color={'black'}
               style={{fontWeight:'bold',width:40}}
               inputBoxFontColor={'black'}
               dropDownHoverColor={'rgba(0,255,255,0.3)'}
               onSelect={record => this.changeStreetDisplayed(record)}
             />
-            <Row style={{flex:1, alignContent:'center',justifyContent:'center'}}>
-            <Text style={{color:'white', fontSize:20, marginTop:5, fontWeight:'bolder'}}>Start Date: </Text>
-            <DatePicker
-              selected={this.state.begin_date}
-              onChange={this.handleChangeStart}
-              onSelect={this.getDataStats()}
-            />
-            <Text style={{color:'white', fontSize:20, marginTop:5, fontWeight:'bolder' ,marginLeft:20}}>End Date: </Text>
-            <DatePicker
-              selected={this.state.end_date}
-              onChange={this.handleChangeEnd}
-              onSelect={this.getDataStats()}
-            />
+            <Row style={{flex:1, alignContent:'space-between',justifyContent:'space-between'}}>
+              <Container style={{flex:1, alignContent:'center',justifyContent:'center'}}>
+                <Text style={{color:'white', fontSize:20, marginTop:5, fontWeight:'bolder'}}>Start Date: </Text>
+                <DatePicker
+                  selected={this.state.begin_date_cal}
+                  onChange={this.handleChangeStart}
+                />
+              </Container>
+              <Container style={{flex:1, alignContent:'center',justifyContent:'center'}}>
+                <Text style={{color:'white', fontSize:20, marginTop:5, fontWeight:'bolder'}}>End Date: </Text>
+                <DatePicker
+                  selected={this.state.end_date_cal}
+                  onChange={this.handleChangeEnd}
+                />
+              </Container>
+              <Dropdown style={{marginRight:40}} options={this.state.options} onChange={(day) =>this.changeDay(day)} value={this.state.dayofweek} placeholder="Select a day" />
             </Row>
-            
         <Text style={{color:'white', fontWeight:'bold', marginTop:80, textAlign:'center',fontSize:30}}>{this.state.street_name}</Text>
             <div style={{display:'flex', flexDirection:'row' , justifyContent:'space-between',alignContent:'space-between'}}>
-              <Stats style={{flex:1}} stat_name="Acidentes" number="12"/>
-              <Stats style={{flex:1}} stat_name="Roadblock total time" number="0.6h"/>
-              <Stats style={{flex:1}} stat_name="Nº of roadblocks" number="2"/>
-              <Stats style={{flex:1}} stat_name="Transit Count" number="5"/>
+              <Stats style={{flex:1}} stat_name="Nº of accidents" number={this.state.dataSourceStats[0].total_accident}/>
+              <Stats style={{flex:1}} stat_name="Roadblock total time" number={this.state.dataSourceStats[0].road_block.total_time}/>
+              <Stats style={{flex:1}} stat_name="Nº of roadblocks" number={this.state.dataSourceStats[0].road_block.times}/>
+              <Stats style={{flex:1}} stat_name="Transit Count" number={this.state.dataSourceStats[0].transit_count}/>
 
             </div>
             </Container>

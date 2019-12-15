@@ -113,6 +113,11 @@ function ExamplesNavbar() {
                 <i className="nc-icon nc-chart-bar-32" /> Dashboard
               </NavLink>
             </NavItem>  
+            <NavItem>
+              <NavLink to="/admin" tag={Link}>
+                <i className="nc-icon nc-chart-bar-32" /> Administration
+              </NavLink>
+            </NavItem>  
             <NavItem> 
               <NavLink
                 href="https://gitlab.com/myiesgroup/iesproject_trafficjammer/blob/master/README.md"
