@@ -5,45 +5,61 @@ import requests
 import time
 
 t = time.time()
-queu = []
+queu1 = []
+queu2 = []
 
 def callback(ch, method, properties, body):
-    global queu
+    global queu1
+    global queu2
+    global t
 
     body = json.loads(body)
     if body["type"] in ["insert", "delete"]:
-        queu.append(body)
+        if body['city'] == 'neighbours':
+            queu1.append(body)
+        else:
+            queu2.append(body)
+
     elif body["type"] == "visibility":
-        msg = json.dumps({"id" : body["id"], "visibility": body["visibility"]})
+        msg = json.dumps({"id" : body["id"], "visibility": body["visibility"], "city":body["city"]})
         print(msg)
         #requests.put("http://192.168.160.237:8000/visibility/", data = msg, headers={"Content-Type":"text/plain"})
     elif body["type"] == "roadblock_down":
-        msg = json.dumps({"id" : body["id"]})
+        msg = json.dumps({"id" : body["id"], "city":body["city"]})
         print(msg)
         #requests.delete("http://192.168.160.237:8000/roadblock/", data = msg, headers={"Content-Type":"text/plain"})
     elif body["type"] == "roadblock_up":
-        msg = json.dumps({"id" : body["id"]})
+        msg = json.dumps({"id" : body["id"], "city":body["city"]})
         print(msg)
         #requests.put("http://192.168.160.237:8000/roadblock/", data = msg, headers={"Content-Type":"text/plain"})
     elif body["type"] == "police_down":
-        msg = json.dumps({"id" : body["id"]})
+        msg = json.dumps({"id" : body["id"], "city":body["city"]})
         print(msg)
         #requests.delete("http://192.168.160.237:8000/police/", data = msg, headers={"Content-Type":"text/plain"})
     elif body["type"] == "police_up":
-        msg = json.dumps({"id" : body["id"]})
+        msg = json.dumps({"id" : body["id"], "city":body["city"]})
         print(msg)
         #requests.put("http://192.168.160.237:8000/police/", data = msg, headers={"Content-Type":"text/plain"})
 
     
-    if len(queu) == 100:    #SEND CARS IN BULK
-        global t
-        print(time.time() - t)
+    if len(queu1) == 100:    #SEND CARS IN BULK
+        #print(time.time() - t)
 
-        msg = json.dumps({"type":"various_cars", "data":queu})
-        #print(msg)
+        msg = json.dumps({"type":"various_cars", "city": "aaaa", "data":queu1})
+        print(msg)
         #requests.put("http://192.168.160.237:8000/car/", data = msg, headers={"Content-Type":"text/plain"})
 
-        queu = []
+        queu1 = []
+        t = time.time()
+
+    if len(queu2) == 100:
+        #print(time.time() - t)
+
+        msg = json.dumps({"type":"various_cars","city": "bbbb", "data":queu2})
+        print(msg)
+        #requests.put("http://192.168.160.237:8000/car/", data = msg, headers={"Content-Type":"text/plain"})
+
+        queu2 = []
         t = time.time()
 
 #MAKE CONNECTION

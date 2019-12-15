@@ -27,18 +27,23 @@ class Sensor:
         f.close()
         self.number_of_trechos = len(self.neighbours)
 
+        self.cityname = neighboursFile[:-4]
+        #req = licenses_by_city/cityname
+
         self.actual_info = {}
+        # for trecho in req:
+        #     self.actual_info[trecho["id"]] = trecho["licenses"]
+
         for i in range(1,self.number_of_trechos+1):
             self.actual_info[i] = []
 
-
     def add(self,trecho, plate):
-        msg = json.dumps({"type": "insert", "id" : trecho, "plate":plate })
+        msg = json.dumps({"type": "insert", "id" : trecho, "plate":plate, "city":self.cityname})
         #print(msg)
         channel.basic_publish(exchange='', routing_key='cars', body=msg)
 
     def remove(self,trecho, plate):
-        msg = json.dumps({"type": "delete", "id" : trecho, "plate":plate })
+        msg = json.dumps({"type": "delete", "id" : trecho, "plate":plate , "city":self.cityname})
         #print(msg)
         channel.basic_publish(exchange='', routing_key='cars', body=msg)
 
@@ -102,6 +107,7 @@ class Sensor:
                 time.sleep(0.05)
 
     def populate(self):
+        print("populating")
         self.add(1, 'TESTE1')
         self.actual_info[1].append('TESTE1')
 
@@ -112,8 +118,8 @@ class Sensor:
             self.actual_info[trecho].append(plate)
             self.add(trecho, plate)
     
-    def visibility(self):
-        req=json.loads(requests.get('http://192.168.160.237:8000/info_street').content)
+    def visibility(self, req):
+        #req=json.loads(requests.get('http://192.168.160.237:8000/info_street').content)
         temp_data={d['id']:d['visibility'] for d in req }
 
         random_alter=[choice(list(temp_data.keys())) for i in range(math.floor(len(temp_data)/5))]
@@ -121,7 +127,7 @@ class Sensor:
             temp_data[d]=min(100,max(0,math.ceil(gauss(60,25))))
             
         #[print(f"ID- {d} Value-{temp_data[d]}") for d in temp_data]
-        [channel.basic_publish(exchange='', routing_key='cars', body=json.dumps({"type":"visibility", "id":d, "visibility": temp_data[d]} )) for d in temp_data]
+        [channel.basic_publish(exchange='', routing_key='cars', body=json.dumps({"type":"visibility", "id":d, "visibility": temp_data[d], "city":self.cityname} )) for d in temp_data]
 
     
     def roadBlock(self,req):    
@@ -133,12 +139,12 @@ class Sensor:
 
         if len(data_positive)!=0:
             random_data_positive=[choice(data_positive) for i in range(min(5,len(data_positive)))]
-            json_update_true=[json.dumps({"type":"roadblock_down","id":d}) for d in random_data_positive]
+            json_update_true=[json.dumps({"type":"roadblock_down","id":d, "city":self.cityname}) for d in random_data_positive]
             [channel.basic_publish(exchange='', routing_key='cars', body=i) for i in json_update_true]
 
         if len(data_negative)!=0:
             random_data_negative=[choice(data_negative) for i in range(min(2,len(data_negative)))]
-            json_update_false=[json.dumps({"type":"roadblock_up","id":d}) for d in random_data_negative]
+            json_update_false=[json.dumps({"type":"roadblock_up","id":d, "city":self.cityname}) for d in random_data_negative]
             [channel.basic_publish(exchange='', routing_key='cars', body=i) for i in json_update_false]
 
 
@@ -150,28 +156,27 @@ class Sensor:
         data_negative=[d for d in data if data[d]==False]
         if len(data_positive)!=0:
             random_data_positive=[choice(data_positive) for i in range(min(5,len(data_positive)))]
-            json_update_true=[json.dumps({"type":"police_down","id":d}) for d in random_data_positive]
+            json_update_true=[json.dumps({"type":"police_down","id":d, "city":self.cityname}) for d in random_data_positive]
             [channel.basic_publish(exchange='', routing_key='cars', body=i) for i in json_update_true]
 
         if len(data_negative)!=0:
             random_data_negative=[choice(data_negative) for i in range(min(2,len(data_negative)))]
-            json_update_false=[json.dumps({"type":"police_up","id":d}) for d in random_data_negative]
+            json_update_false=[json.dumps({"type":"police_up","id":d, "city":self.cityname}) for d in random_data_negative]
             [channel.basic_publish(exchange='', routing_key='cars', body=i) for i in json_update_false]
 
 
     def startSensor(self):
 
         #SENSOR
-        i = 1   #just to debug
+        i = 1 
         self.printInfo()
         while True:
             if i % 50 == 0:
                 self.printInfo()
-            if i % 200 == 0:
-                #self.visibility()
-                pass
+
             if i % 500 == 0:
-                '''req=json.loads(requests.get('http://192.168.160.237:8000/info_street').content)
+                '''req=json.loads(requests.get('http://192.168.160.237:8000/info_street'/ + self.cityname).content)
+                self.visibility(req)
                 self.roadBlock(req)   
                 self.police(req)   '''
                 self.forceTraffic() 
@@ -197,7 +202,6 @@ class Sensor:
 
 
 sensor = Sensor(sys.argv[1])
-print("populating")
 sensor.populate()
 sensor.startSensor()
 
