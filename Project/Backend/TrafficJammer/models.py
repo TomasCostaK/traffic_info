@@ -8,6 +8,7 @@ class Street(models.Model):
     begin_coord_y=models.IntegerField()
     ending_coord_x=models.IntegerField()
     ending_coord_y=models.IntegerField()
+    city=models.CharField(max_length=80)
     length=models.IntegerField()
 
 
@@ -61,6 +62,7 @@ class StreetInputSerializer(serializers.ModelSerializer):
                   'ending_coord_x',
                   'ending_coord_y',
                   'length',
+                  'city'
                   )
 '''End of serializables for input'''
 
@@ -165,3 +167,17 @@ class AllStreetSerializer(serializers.ModelSerializer):
     class Meta:
         model=Street
         fields=('key','value')
+
+
+''' Serializers for Cars In a City '''
+class LicensesSerializer(serializers.ModelSerializer):
+    licenses=serializers.SerializerMethodField("license_plates")
+
+    def license_plates(self,Section):
+        return list(Car.objects.filter(section=Section).values_list("license_plate",flat=True))
+
+    class Meta:
+        model=Section
+        fields=("id","licenses")
+
+'''End of Serializers for Cars In a City'''
