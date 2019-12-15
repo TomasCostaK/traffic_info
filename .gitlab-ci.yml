@@ -3,12 +3,13 @@ services:
  - docker:dind
 
 stages:
- - default
+ - cleanup
  - deploy
 
 
-default:
-  before_script:
+clean-dockers:
+  stage: cleanup
+  script:
     - docker kill $(docker ps -aq) || true
     - docker rm $(docker ps -aq) || true
 
