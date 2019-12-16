@@ -126,18 +126,16 @@ class Dashboard extends Component {
     this.getDataStats()
   };
 
-  getData = () => {
+  getData() {
     console.log("Making request to info_street")
     fetch(API+DEFAULT_QUERY, { headers: {'Content-Type': 'application/json'}}).
       then(resp => resp.json()).
       then(responseData => {
         console.log(responseData);
-        return responseData;
-      })
-      .then(data => {this.setState({
-        dataSource : data
-      })
-    });
+        this.setState({
+          dataSource : responseData
+        })
+      });
   }
 
   getDataStats = () => {
@@ -145,15 +143,13 @@ class Dashboard extends Component {
     var final_url = this.state.street_id + '/' + this.state.begin_date + '/' + this.state.end_date + '/' + this.state.dayofweek;
     console.log(API + STATS_QUERY + final_url)
     fetch( API + STATS_QUERY + final_url, {  
-      method: 'GET',
       headers: {'Content-Type': 'application/json'} 
-    }).
-      then(resp => {
-        console.log(JSON.stringify(resp.body))
-        return resp;
-      })
-      .then(data => {this.setState({
-        //dataSourceStats : [data]
+    })
+      .then(results => results.json())
+      .then(data => {
+        console.log(data)
+        this.setState({
+        dataSourceStats : [data]
       })
     });
   }
@@ -173,17 +169,17 @@ class Dashboard extends Component {
     this.getDataStats();
   }
 
-  render() {
-    const { hits } = this.state;
-  
+  render() {  
     return (
       <>
         <BlackNavbar />
         <div
-          className="page-header"
+          className=""
           data-parallax={true}
           style={{
+            marginTop:100,
             backgroundColor:'rgba(0,0,0,0)',
+            fontWeight:'medium',
           }}
         >
           <Container style={{display:'flex',flex:1,flexDirection:'column',maringTop:50}}>
@@ -193,7 +189,7 @@ class Dashboard extends Component {
             <Text style={{color:'rgba(0,0,0,0.6)', fontSize:13, marginTop:5, fontWeight:'bolder'}}>Street name: </Text>
             <ReactSearchBox
               placeholder="Search street"
-              value="Rua Tenente Joaquim Lopes Craveiro"
+              value=""
               data={this.state.dataSource}
               color={'black'}
               style={{fontWeight:'bold',width:40}}
@@ -219,7 +215,7 @@ class Dashboard extends Component {
               </Container>
               <Container style={{flex:1, alignContent:'center',justifyContent:'center'}}>
                 <Text style={{color:'rgba(0,0,0,0.6)', fontSize:13, marginTop:5, fontWeight:'bolder'}}>Week Day: </Text>
-                <Dropdown options={this.state.options} onChange={(day) =>this.changeDay(day)} value={this.state.dayofweek} placeholder="Select a day" />
+                <Dropdown options={this.state.options} onChange={(day) => this.changeDay(day)} value={this.state.dayofweek} placeholder="Select a day" />
 
               </Container>
             </Row>

@@ -22,7 +22,7 @@ import { Button, Form, Input, Container, Row, Col } from "reactstrap";
 import { Text } from 'react-konva';
 import "../../../node_modules/react-datepicker/dist/react-datepicker.css"
 // core components
-import ExamplesNavbar from "components/Navbars/ExamplesNavbar.js";
+import BlackNavbar from "components/Navbars/BlackNavbar.js";
 
 const API = '192.168.160.237:8000/';
 const DEFAULT_QUERY = 'all_streets/';
@@ -69,17 +69,17 @@ class Admin extends Component {
   render() {
     return (
       <>
-        <ExamplesNavbar />
+        <BlackNavbar />
         <div
           className="page-header"
           data-parallax={true}
           style={{
-            backgroundColor:'rgba(0,0,0,.85)',
+            backgroundColor:'rgba(255,255,255,1)',
           }}
         >
             <Container style={{display:'flex',flex:1,flexDirection:'column'}}>
                 <Row>
-                    <Text style={{color:'white',fontWeight:'bolder'}}>ADMIN CHANGING STREETS</Text>
+                    <Text style={{color:'black',fontWeight:'bolder'}}>ADMIN CHANGING STREETS</Text>
                 </Row>
             </Container>
         </div>

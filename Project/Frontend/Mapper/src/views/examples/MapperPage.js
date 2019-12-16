@@ -24,10 +24,10 @@ import { Button, Form, Input, Container, Row, Col } from "reactstrap";
 import useImage from 'use-image';
 
 // core components
-import ExamplesNavbar from "components/Navbars/ExamplesNavbar.js";
+import BlackNavbar from "components/Navbars/BlackNavbar.js";
 
-let window_height = 400;
-let window_width = 800;
+let window_height = 650;
+let window_width = 850;
 //Ter em conta o zooming distance na width do stroke das estradas e nao so so seu tamanho
 var map_data;
 
@@ -173,26 +173,26 @@ class RegisterPage extends Component {
   }
 
   render() {
-    const { hits } = this.state;
     return (
       <>
-        <ExamplesNavbar />
+        <BlackNavbar />
         <div
-          className="page-header"
+          className=""
           data-parallax={true}
           style={{
-            backgroundColor:'rgba(0,0,0,.85)',
+            marginTop:100,
+            backgroundColor:'rgba(0,0,0,0)',
           }}
         >
           <div className="" />
           <Container>
-            <Row style={{alignContent:'center',justifyContent:'center',border:10,marginTop:30,borderColor:'white'}}>
+            <Row style={{alignContent:'center',justifyContent:'center',border:10,marginTop:30,borderColor:'rgba(0,0,0,0.75)'}}>
               <div style={{padding:20}}>
-                <Text style={{color:'white', fontWeight:'bold', fontSize:30}}>Map Analysis for: Espinho</Text>
+                <Text style={{color:'rgba(0,0,0,0.75)', fontWeight:'bold', fontSize:30}}>Map Analysis for: Espinho</Text>
                 <Button style={{marginLeft:20}} onClick={() => this.changeZoom(true)}>- Zoom</Button>
                 <Button onClick={() => this.changeZoom(false)}>+ Zoom</Button>
               </div>
-                <Stage style={{backgroundColor:'white'}} width={window_width} height={window_height}>
+                <Stage style={{backgroundColor:'rgba(0,0,0,0.75)'}} width={window_width} height={window_height}>
                   <Layer  id="map">
                   {/* Aqui desenhamos o mapa */}
                   {this.fill_map()}
