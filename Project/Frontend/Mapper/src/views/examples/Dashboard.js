@@ -24,10 +24,11 @@ import moment from 'moment';
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import ReactSearchBox from 'react-search-box'
+import { Bar, Line, defaults } from 'react-chartjs-2';
 import DatePicker from "react-datepicker";
 import "../../../node_modules/react-datepicker/dist/react-datepicker.css"
 // core components
-import ExamplesNavbar from "components/Navbars/ExamplesNavbar.js";
+import BlackNavbar from "components/Navbars/BlackNavbar.js";
 
 const API = '192.168.160.237:8000/';
 const DEFAULT_QUERY = 'all_streets/';
@@ -38,8 +39,8 @@ class Stats extends React.Component {
   render() {
     return (
         <div>
-          <h3 style={{color:'white', fontWeight:'bold', fontSize:20}}>{this.props.stat_name}</h3>
-          <h4 style={{color:'white', fontWeight:'bold', textAlign:'center' ,fontSize:20}}> {this.props.number} </h4>
+          <h3 style={{color:'rgba(0,0,0,0.6)', fontWeight:'bolder', fontSize:20}}>{this.props.stat_name}</h3>
+          <h4 style={{color:'rgba(0,0,0,0.6)', fontWeight:'bolder', textAlign:'center' ,fontSize:22}}> {this.props.number} </h4>
         </div>
     );
   }
@@ -68,7 +69,6 @@ class Dashboard extends Component {
       options : ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
     };
   }
-
   //date-format: AAAA-MM-DD
 
   componentDidMount() {
@@ -79,6 +79,35 @@ class Dashboard extends Component {
     //sumting heya
   }
 
+  fillStats = () => {
+    let dataSourceGraph = {
+      labels: [moment(this.state.begin_date).format("YYYY-MM-DD"), moment(this.state.begin_date).add(1, 'days').format("YYYY-MM-DD") ,moment(this.state.begin_date).add(2, 'days').format("YYYY-MM-DD") ,moment(this.state.begin_date).add(3, 'days').format("YYYY-MM-DD") ,moment(this.state.begin_date).add(4, 'days').format("YYYY-MM-DD") ,moment(this.state.begin_date).add(5, 'days').format("YYYY-MM-DD") ],
+      datasets: [{
+          label: '# of Accidents',
+          data: [1, 7, 4, 5, 0, 3],
+          backgroundColor: [
+            'cyan',
+              'cyan',
+              'cyan',
+              'cyan',
+              'cyan',
+              'cyan',
+        ],
+          borderColor: [
+              'cyan',
+              'cyan',
+              'cyan',
+              'cyan',
+              'cyan',
+              'cyan',
+          ],
+          backgroundColor:'transparent',
+          borderWidth: 3
+      }]
+  }
+  return dataSourceGraph;
+  }
+
   handleChangeStart = async date => {
     await this.setState({
       begin_date: moment(date).format('YYYY-MM-DD'),
@@ -86,6 +115,8 @@ class Dashboard extends Component {
     });
     this.getDataStats()
   };
+
+  
 
   handleChangeEnd = async date => {
     await this.setState({
@@ -144,20 +175,22 @@ class Dashboard extends Component {
 
   render() {
     const { hits } = this.state;
+  
     return (
       <>
-        <ExamplesNavbar />
+        <BlackNavbar />
         <div
           className="page-header"
           data-parallax={true}
           style={{
-            backgroundColor:'rgba(0,0,0,.85)',
+            backgroundColor:'rgba(0,0,0,0)',
           }}
         >
           <Container style={{display:'flex',flex:1,flexDirection:'column'}}>
             <Row style={{alignContent:'center',justifyContent:'center',border:10,borderColor:'white'}}> 
-                <Text style={{color:'white', fontWeight:'bold', fontSize:30}}>Analytics for streets in: Espinho</Text>
+                <Text style={{color:'rgba(0,0,0,0.6)', fontWeight:'bold', fontSize:30}}>Analytics for streets in: Espinho</Text>
             </Row>
+            <Text style={{color:'rgba(0,0,0,0.6)', fontSize:13, marginTop:5, fontWeight:'bolder'}}>Street name: </Text>
             <ReactSearchBox
               placeholder="Search street"
               value="Rua Tenente Joaquim Lopes Craveiro"
@@ -168,24 +201,29 @@ class Dashboard extends Component {
               dropDownHoverColor={'rgba(0,255,255,0.3)'}
               onSelect={record => this.changeStreetDisplayed(record)}
             />
+            
             <Row style={{flex:1, alignContent:'space-between',justifyContent:'space-between'}}>
               <Container style={{flex:1, alignContent:'center',justifyContent:'center'}}>
-                <Text style={{color:'white', fontSize:20, marginTop:5, fontWeight:'bolder'}}>Start Date: </Text>
+                <Text style={{color:'rgba(0,0,0,0.6)', fontSize:13, marginTop:5, fontWeight:'bolder'}}>Start Date: </Text>
                 <DatePicker
                   selected={this.state.begin_date_cal}
                   onChange={this.handleChangeStart}
                 />
               </Container>
               <Container style={{flex:1, alignContent:'center',justifyContent:'center'}}>
-                <Text style={{color:'white', fontSize:20, marginTop:5, fontWeight:'bolder'}}>End Date: </Text>
+                <Text style={{color:'rgba(0,0,0,0.6)', fontSize:13, marginTop:5, fontWeight:'bolder'}}>End Date: </Text>
                 <DatePicker
                   selected={this.state.end_date_cal}
                   onChange={this.handleChangeEnd}
                 />
               </Container>
-              <Dropdown style={{marginRight:40}} options={this.state.options} onChange={(day) =>this.changeDay(day)} value={this.state.dayofweek} placeholder="Select a day" />
+              <Container style={{flex:1, alignContent:'center',justifyContent:'center'}}>
+                <Text style={{color:'rgba(0,0,0,0.6)', fontSize:13, marginTop:5, fontWeight:'bolder'}}>Week Day: </Text>
+                <Dropdown options={this.state.options} onChange={(day) =>this.changeDay(day)} value={this.state.dayofweek} placeholder="Select a day" />
+
+              </Container>
             </Row>
-        <Text style={{color:'white', fontWeight:'bold', marginTop:80, textAlign:'center',fontSize:30}}>{this.state.street_name}</Text>
+        <Text style={{color:'rgba(0,0,0,0.6)', fontWeight:'bold', marginTop:80, textAlign:'center',fontSize:30}}>{this.state.street_name}</Text>
             <div style={{display:'flex', flexDirection:'row' , justifyContent:'space-between',alignContent:'space-between'}}>
               <Stats style={{flex:1}} stat_name="Nº of accidents" number={this.state.dataSourceStats[0].total_accident}/>
               <Stats style={{flex:1}} stat_name="Roadblock total time" number={this.state.dataSourceStats[0].road_block.total_time}/>
@@ -193,7 +231,18 @@ class Dashboard extends Component {
               <Stats style={{flex:1}} stat_name="Transit Count" number={this.state.dataSourceStats[0].transit_count}/>
 
             </div>
-            </Container>
+
+          {/* ChartJS */}
+          <Row style={{alignContent:'center',justifyContent:'center', marginTop:30}}>
+          <div
+            style={{
+              backgroundColor:'rgba(255,255,255,1)',
+            }}
+          >
+            <Line width={1000} height={250} data={this.fillStats()} />
+          </div>
+          </Row>
+            </Container>    
         </div>
     </>
     )
