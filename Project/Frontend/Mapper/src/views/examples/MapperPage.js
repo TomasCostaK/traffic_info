@@ -22,12 +22,12 @@ import { Stage, Layer, Star,Line,Circle, Text, Image,Rect } from 'react-konva';
 // reactstrap components
 import { Button, Form, Input, Container, Row, Col } from "reactstrap";
 import useImage from 'use-image';
-
+import ReactSearchBox from 'react-search-box'
 // core components
 import BlackNavbar from "components/Navbars/BlackNavbar.js";
 
-let window_height = 650;
-let window_width = 850;
+let window_height = 350;
+let window_width = 700;
 //Ter em conta o zooming distance na width do stroke das estradas e nao so so seu tamanho
 var map_data;
 
@@ -49,9 +49,11 @@ class RegisterPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      zooming_distance : 6,
+      zooming_distance : 7,
       hits: [],
       loading_map:true,
+      car_trecho:null,
+      car_plate:'',
       time: Date.now(),
       dataSource: [],
     };
@@ -65,7 +67,7 @@ class RegisterPage extends Component {
     clearInterval(this.interval);
   }
 
-  draw_street(begx, begy, endx, endy, traffic,direction,police){
+  draw_street(opt,begx, begy, endx, endy, traffic,direction,police){
     var delta_x,delta_y,points
     delta_x = endx - begx
     delta_y = endy - begy
@@ -90,11 +92,11 @@ class RegisterPage extends Component {
         y = {begy+40}
         points={points}
         stroke = {traffic}
-        strokeWidth = {4}
+        strokeWidth = {2}
       />
       
-      {/*this.renderBlock(begx,begy,traffic)*/}
-      {this.renderPoints(begx,begy,endx,endy)}
+      {this.renderBlock(begx,begy,traffic)}
+      {/*this.renderPoints(begx,begy,endx,endy)*/}
     </>
     )
   }
@@ -153,11 +155,20 @@ class RegisterPage extends Component {
       const trecho = map_data[index];
       var traffic = this.analyse_traffic(trecho.transit_type)
       //Por isto num array? E dar push do return inteiro
-      lines.push( this.draw_street(trecho.beginning_coords_x/this.state.zooming_distance, trecho.beginning_coords_y/this.state.zooming_distance, trecho.ending_coords_x/this.state.zooming_distance, trecho.ending_coords_y/this.state.zooming_distance, traffic , trecho.actual_direction, trecho.police))
+      console.log("TrechoID :" + trecho.id + ", carID: " + this.state.car_trecho)
+      if (this.state.car_trecho != null && this.state.car_trecho==trecho.id) {
+        lines.push( this.draw_street(false,trecho.beginning_coords_x/this.state.zooming_distance, trecho.beginning_coords_y/this.state.zooming_distance, trecho.ending_coords_x/this.state.zooming_distance, trecho.ending_coords_y/this.state.zooming_distance, traffic , trecho.actual_direction, trecho.police))
+      } else {
+        lines.push( this.draw_street(true,trecho.beginning_coords_x/this.state.zooming_distance, trecho.beginning_coords_y/this.state.zooming_distance, trecho.ending_coords_x/this.state.zooming_distance, trecho.ending_coords_y/this.state.zooming_distance, traffic , trecho.actual_direction, trecho.police))
+      }
     }
 
     return ( lines )
 
+  }
+
+  searchPlate = (plate) => {
+    console.log("New plate:" + plate)
   }
 
   changeZoom(flag){
@@ -180,13 +191,14 @@ class RegisterPage extends Component {
           className=""
           data-parallax={true}
           style={{
-            marginTop:100,
+            marginTop:80,
             backgroundColor:'rgba(0,0,0,0)',
           }}
         >
           <div className="" />
-          <Container>
-            <Row style={{alignContent:'center',justifyContent:'center',border:10,marginTop:30,borderColor:'rgba(0,0,0,0.75)'}}>
+          <Row>
+          <Container style={{flex:8}}>
+            <Row style={{alignContent:'center',justifyContent:'center',border:10,borderColor:'rgba(0,0,0,0.75)'}}>
               <div style={{padding:20}}>
                 <Text style={{color:'rgba(0,0,0,0.75)', fontWeight:'bold', fontSize:30}}>Map Analysis for: Espinho</Text>
                 <Button style={{marginLeft:20}} onClick={() => this.changeZoom(true)}>- Zoom</Button>
@@ -200,6 +212,25 @@ class RegisterPage extends Component {
               </Stage>
             </Row>
           </Container>
+          <Container style={{flex:3,marginRight:50,fontWeight:'medium',flexDirection:'column',alignContent:'center',marginTop:150 ,justifyContent:'center'}}>
+          <Text style={{color:'black', fontWeight:'bolder', fontSize:20}}>Search Plate:</Text>
+          <ReactSearchBox
+            placeholder="Search Plate"
+            value={this.state.car_plate}
+            style={{fontSize:10,fontWeight:'bolder'}}
+            data={this.state.car_plate}
+            callback={record => console.log(record)}
+          />
+            <Text style={{color:'black', fontWeight:'bolder', fontSize:20}}>Legenda:</Text>
+            <Container style={{flex:1,flexDirection:'column',alignContent:'center',justifyContent:'center',border:10,marginTop:30,borderColor:'rgba(0,0,0,0.75)'}}>
+              <Row><Text style={{color:'green', fontWeight:1000, fontSize:18}}>---  </Text><Text style={{color:'black', fontWeight:'bolder', fontSize:15, marginLeft: 10}}>Trânsito Leve</Text></Row>
+              <Row><Text style={{color:'yellow', fontWeight:1000, fontSize:18}}>---  </Text><Text style={{color:'black', fontWeight:'bolder', fontSize:15, marginLeft: 10}}>Trânsito Médio</Text></Row>
+              <Row><Text style={{color:'red', fontWeight:1000, fontSize:18}}>---  </Text><Text style={{color:'black', fontWeight:'bolder', fontSize:15, marginLeft: 10}}>Trânsito Alto</Text></Row>
+              <Row><Text style={{color:'black', fontWeight:1000, fontSize:18}}>---  </Text><Text style={{color:'black', fontWeight:'bolder', fontSize:15, marginLeft: 10}}>Bloqueio</Text></Row>
+              <Row><Text style={{color:'blue', fontWeight:1000, fontSize:18}}>---  </Text><Text style={{color:'black', fontWeight:'bolder', fontSize:15, marginLeft: 10}}>Policiamento</Text></Row>
+            </Container>
+          </Container>
+          </Row>
   
         </div>
     </>
