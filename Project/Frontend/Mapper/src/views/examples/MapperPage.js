@@ -26,7 +26,7 @@ import useImage from 'use-image';
 // core components
 import ExamplesNavbar from "components/Navbars/ExamplesNavbar.js";
 
-let window_height = 450;
+let window_height = 400;
 let window_width = 800;
 //Ter em conta o zooming distance na width do stroke das estradas e nao so so seu tamanho
 var map_data;

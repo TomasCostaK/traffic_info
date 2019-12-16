@@ -33,8 +33,8 @@ import {
   Container
 } from "reactstrap";
 
-function ExamplesNavbar() {
-  const [navbarColor, setNavbarColor] = React.useState("navbar-transparent");
+function BlackNavbar() {
+  const [navbarColor, setNavbarColor] = React.useState("");
   const [navbarCollapse, setNavbarCollapse] = React.useState(false);
 
   const toggleNavbarCollapse = () => {
@@ -48,12 +48,12 @@ function ExamplesNavbar() {
         document.documentElement.scrollTop > 299 ||
         document.body.scrollTop > 299
       ) {
-        setNavbarColor("");
+        setNavbarColor("navbar-transparent");
       } else if (
         document.documentElement.scrollTop < 300 ||
         document.body.scrollTop < 300
       ) {
-        setNavbarColor("navbar-transparent");
+        setNavbarColor("");
       }
     };
 
@@ -145,4 +145,4 @@ function ExamplesNavbar() {
   );
 }
 
-export default ExamplesNavbar;
+export default BlackNavbar;
