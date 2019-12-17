@@ -7,7 +7,7 @@ from datetime import datetime,timezone,timedelta
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.response import responses
 from rest_framework import status
-
+import traceback
 from TrafficJammer.models import Street, \
     Section, \
     Transit, \
@@ -26,13 +26,15 @@ from TrafficJammer.models import Street, \
 
 
 @csrf_exempt
-def info_street(request):
-    if request.method=="GET":
-        return HttpResponse(json.dumps(SectionSerializer(Section.objects.all(),many=True).data),status=status.HTTP_200_OK)
+def info_street(request,city):
+    try:
+        if request.method=="GET":
+            sections=Section.objects.filter(street__city=city)
+            return HttpResponse(json.dumps(SectionSerializer(sections,many=True).data),status=status.HTTP_200_OK)
+    except Section.DoesNotExist:
+        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
 
 
-
-'''TODOO FIX THIS '''
 @csrf_exempt
 def street(request):
     try:
@@ -59,7 +61,7 @@ def street(request):
             else:
                 y_length = start[1] - end[1]
                 increase_y = -1
-            
+
             path_length = math.hypot(x_length, y_length)
 
             city=data.get("city")
@@ -86,16 +88,15 @@ def street(request):
                         start[0] + i*x_length/num_subsections*increase_x,
                         start[1] + i*y_length/num_subsections*increase_y
                     )
-                
+
                 create_section(street_obj,start_section[0], start_section[1],end_section[0], end_section[1], True)
                 create_section(street_obj,start_section[0], start_section[1],end_section[0], end_section[1], False)
-            
+
             create_section(street_obj, end_section[0], end_section[1], end[0], end[1], True)
             create_section(street_obj, end_section[0], end_section[1], end[0], end[1], False)
-            
+
             return HttpResponse(json.dumps(StreetInputSerializer(street_obj).data),status=status.HTTP_200_OK)
-    except Exception as e:
-        print(e)
+    except:
         return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
 
 @csrf_exempt
@@ -285,7 +286,7 @@ def all_streets(request):
     try:
         if request.method=="GET":
             streets=Street.objects.all()
-            return HttpResponse(json.dumps(AllStreetSerializer(streets,many=True).data))
+            return HttpResponse(json.dumps(AllStreetSerializer(streets,many=True).data),status=status.HTTP_200_OK)
         else:
             return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
     except:
@@ -296,6 +297,22 @@ def licenses_by_section(request,city):
         if request.method=="GET":
             section=Section.objects.filter(street__city=city)
             return HttpResponse(json.dumps(LicensesSerializer(section,many=True).data))
+        else:
+            return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+    except:
+        return HttpResponse(status=status.HTTP_404_NOT_FOUND)
+
+def charts(request,type,street,begin,end):
+    try:
+        if request.method=="GET":
+            dates=[]
+            ammount=[]
+            accidents=Accident.objects.filter(date__range=(begin,end),section__street=street)
+            for i in accidents:
+                if f"{i.date.year}-{i.date.month}-{i.date.day}" not in dates:
+                    dates.append(f"{i.date.year}-{i.date.month}-{i.date.day}")
+                    ammount.append(len(Accident.objects.filter(date__year=i.date.year, date__month=i.date.month, date__day=i.date.day)))
+            return HttpResponse(json.dumps({"Days":dates,"ammount":ammount}),status=status.HTTP_200_OK)
         else:
             return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
     except:
