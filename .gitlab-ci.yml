@@ -9,6 +9,7 @@ stages:
 clean-dockers:
   stage: cleanup
   script:
+    - docker ps -aq
     - docker kill $(docker ps -aq) || true
     - docker rm $(docker ps -aq) || true
   only:
