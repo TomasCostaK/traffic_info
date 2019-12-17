@@ -47,6 +47,9 @@ def street(request):
             name=data.get("name")
             start = data.get("beginning_coords")
             end = data.get("ending_coords")
+            city=data.get("city")
+            if len(Street.objects.filter(city=city,begin_coord_x=start[0],begin_coord_y=start[1],ending_coord_x=end[0],ending_coord_y=end[1],name=name))>0:
+                return HttpResponse("That street already exists",status=status.HTTP_409_CONFLICT)
 
             if start[0] < end[0]:
                 x_length = end[0] - start[0]
@@ -64,7 +67,7 @@ def street(request):
 
             path_length = math.hypot(x_length, y_length)
 
-            city=data.get("city")
+
             street_obj=Street(name=name,
                             begin_coord_x=start[0],
                             begin_coord_y=start[1],
@@ -96,7 +99,8 @@ def street(request):
             create_section(street_obj, end_section[0], end_section[1], end[0], end[1], False)
 
             return HttpResponse(json.dumps(StreetInputSerializer(street_obj).data),status=status.HTTP_200_OK)
-    except:
+    except Exception as e:
+        print(e)
         return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
 
 @csrf_exempt
@@ -313,10 +317,28 @@ def charts(request,type,street,begin,end):
             begin_day=datetime(int(begin[0]),int(begin[1]),int(begin[2]),0,0,0)
             end_day=datetime(int(end[0]),int(end[1]),int(end[2]),0,0,0)
             difference_days=(end_day-begin_day).days
-            for i in range(difference_days):
-                    temp_day=begin_day+timedelta(days=i)
-                    dates.append(f"{temp_day.year}-{temp_day.month}-{temp_day.day}")
-                    ammount.append(len(Accident.objects.filter(date__year=temp_day.year, date__month=temp_day.month, date__day=temp_day.day)))
+            if type == "accident":
+                for i in range(difference_days):
+                        temp_day=begin_day+timedelta(days=i)
+                        dates.append(f"{temp_day.year}-{temp_day.month}-{temp_day.day}")
+                        ammount.append(len(Accident.objects.filter(date__year=temp_day.year, date__month=temp_day.month, date__day=temp_day.day,section__street=street)))
+            elif type == "roadblock":
+                for i in range(difference_days):
+                        temp_day=begin_day+timedelta(days=i)
+                        dates.append(f"{temp_day.year}-{temp_day.month}-{temp_day.day}")
+                        vals=Blocked.objects.filter(begin__lt=temp_day,section__street=street)
+                        if len(vals):
+                            for j in vals:
+                                print(j.end)
+                                if j.end is None:
+                                    ammount.append(1)
+                                elif j.end.replace(tzinfo=None)>temp_day:
+                                    ammount.append(1)
+                                else:
+                                    ammount.append(0)
+                        else:
+                            ammount.append(0)
+
             return HttpResponse(json.dumps({"Days":dates,"ammount":ammount}),status=status.HTTP_200_OK)
         else:
             return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
