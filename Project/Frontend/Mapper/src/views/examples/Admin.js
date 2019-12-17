@@ -23,6 +23,7 @@ import { Text } from 'react-konva';
 import "../../../node_modules/react-datepicker/dist/react-datepicker.css"
 // core components
 import ExamplesNavbar from "components/Navbars/ExamplesNavbar.js";
+import MapForm from "./MapForm";
 
 const API = '192.168.160.237:8000/';
 const DEFAULT_QUERY = 'all_streets/';

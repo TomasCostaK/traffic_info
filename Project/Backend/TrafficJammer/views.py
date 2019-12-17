@@ -17,9 +17,11 @@ from TrafficJammer.models import Street, \
     SectionSerializer, \
     StreetSerializer, \
     StreetInputSerializer, \
-    SectionStatisticsSerializer, \
+    StreetStatisticsSerializer, \
     CarSerializer, \
-    AccidentSerializer
+    AccidentSerializer, \
+    AllStreetSerializer, \
+    LicensesSerializer
 
 
 
@@ -28,6 +30,9 @@ def info_street(request):
     if request.method=="GET":
         return HttpResponse(json.dumps(SectionSerializer(Section.objects.all(),many=True).data),status=status.HTTP_200_OK)
 
+
+
+'''TODOO FIX THIS '''
 @csrf_exempt
 def street(request):
     try:
@@ -35,50 +40,62 @@ def street(request):
             '''
             Creating a new street
             '''
+            print("Creating a new street")
             data=json.loads(request.body)
             name=data.get("name")
-            begin_coord_x,begin_coord_y=(data.get("beginning_coords")[0],data.get("beginning_coords")[1])
-            ending_coord_x,ending_coord_y=(data.get("ending_coords")[0],data.get("ending_coords")[1])
-            length=math.hypot(begin_coord_x-ending_coord_x,begin_coord_y-ending_coord_y)
+            start = data.get("beginning_coords")
+            end = data.get("ending_coords")
 
+            if start[0] < end[0]:
+                x_length = end[0] - start[0]
+                increase_x = 1
+            else:
+                x_length = start[0] - end[0]
+                increase_x = -1
+
+            if start[1] < end[1]:
+                y_length = end[1] - start[1]
+                increase_y = 1
+            else:
+                y_length = start[1] - end[1]
+                increase_y = -1
+            
+            path_length = math.hypot(x_length, y_length)
+
+            city=data.get("city")
             street_obj=Street(name=name,
-                          begin_coord_x=begin_coord_x,
-                          begin_coord_y=begin_coord_y,
-                          ending_coord_x=ending_coord_x,
-                          ending_coord_y=ending_coord_y,
-                          length=length)
+                            begin_coord_x=start[0],
+                            begin_coord_y=start[1],
+                            ending_coord_x=end[0],
+                            ending_coord_y=end[1],
+                            length=path_length,
+                            city=city)
             street_obj.save()
             '''
-            Turning the street into different sections
+            Turning the street into different s ections
             Each section is aprox 500m of a street, if the street is made of sections that aren't divisible by 500
             the last section will be the rest 1200=500+500+200
             '''
-            number_of_divisions=(length/(500))
-            stop=False
-            for i in range(0,math.ceil(number_of_divisions)+1):
+            num_subsections = int(path_length//500) + 1
+            end_section = tuple(start)
 
-                begin_x=begin_coord_x+(i*((ending_coord_x-begin_coord_x)/number_of_divisions))
-                begin_y=begin_coord_y+(i*((ending_coord_y-begin_coord_y)/number_of_divisions))
-                end_coord_x=begin_coord_x+((i+1)*((ending_coord_x-begin_coord_x)/number_of_divisions))
-                end_coord_y=begin_coord_y+((i+1)*((ending_coord_y-begin_coord_y)/number_of_divisions))
+            for i in range(1, num_subsections):
 
-                if i==0:
-                    begin_x=begin_coord_x
-                    begin_y=begin_coord_y
-                if end_coord_x>ending_coord_x:
-                    end_coord_x=ending_coord_x
-                    stop=True
-                if end_coord_y>ending_coord_y:
-                    end_coord_y=ending_coord_y
-                    stop=True
-                if begin_x==end_coord_x and begin_y==end_coord_y:
-                    break
-                create_section(street_obj,begin_x,begin_y,end_coord_x,end_coord_y,True)
-                create_section(street_obj,begin_x,begin_y,end_coord_x,end_coord_y,False)
-                if stop:
-                    break
+                start_section = end_section
+                end_section = (
+                        start[0] + i*x_length/num_subsections*increase_x,
+                        start[1] + i*y_length/num_subsections*increase_y
+                    )
+                
+                create_section(street_obj,start_section[0], start_section[1],end_section[0], end_section[1], True)
+                create_section(street_obj,start_section[0], start_section[1],end_section[0], end_section[1], False)
+            
+            create_section(street_obj, end_section[0], end_section[1], end[0], end[1], True)
+            create_section(street_obj, end_section[0], end_section[1], end[0], end[1], False)
+            
             return HttpResponse(json.dumps(StreetInputSerializer(street_obj).data),status=status.HTTP_200_OK)
-    except:
+    except Exception as e:
+        print(e)
         return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
 
 @csrf_exempt
@@ -141,22 +158,20 @@ def create_section(street,coord_x,coord_y,end_x,end_y,direction):
     section.save()
 
 
-def get_car(request):
+def get_car(request,license_plate):
     try:
         if request.method=='GET':
-            data=json.loads(request.body)
-            car=Car.objects.get(license_plate=data.get('license_plate'))
+            car=Car.objects.get(license_plate=license_plate)
             return HttpResponse(json.dumps(CarSerializer(car).data),status=status.HTTP_200_OK)
         else:
             return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
     except Car.DoesNotExist:
         return HttpResponse(status=status.HTTP_404_NOT_FOUND)
 
-def all_cars(request):
+def all_cars(request,section):
     try:
         if request.method=="GET":
-            data=json.loads(request.body)
-            section=Section.objects.get(id=data.get('id'))
+            section=Section.objects.get(id=section)
             car=Car.objects.filter(section=section)
             return HttpResponse(json.dumps(CarSerializer(car,many=True).data),status=status.HTTP_200_OK)
         else:
@@ -164,28 +179,39 @@ def all_cars(request):
     except Section.DoesNotExist:
         return HttpResponse(status=status.HTTP_404_NOT_FOUND)
 
-def statistics(request):
+def statistics(request,street,begin,end,week_day=None):
     day_to_int={"Monday":2,"Tuesday":3,"Wednesday":4,"Thursday":5,"Friday":6,"Saturday":7,"Sunday":1}
     try:
         if request.method=="GET":
-            data=json.loads(request.body)
-            print(data)
-            begin_time=data.get("begin").split("-")
+            begin_time=begin.split("-")
             begin_time=datetime(int(begin_time[0]), int(begin_time[1]), int(begin_time[2]), 0, 0, 0, 0, timezone.utc)
-            end_time=data.get("end").split("-")
+            end_time=end.split("-")
             end_time=datetime(int(end_time[0]),int(end_time[1]),int(end_time[2]),0,0,0,0,timezone.utc)
-            id=data.get("id")
-            section=Section.objects.get(id=id)
-            blocked=Blocked.objects.filter(begin__range=(begin_time,end_time),end__range=(begin_time,end_time))
-            if "week_day" in data:
-                transit = Transit.objects.filter(date__range=(begin_time, end_time),date__week_day=day_to_int.get(data.get("week_day")))
-                accident = Accident.objects.filter(date__range=(begin_time, end_time),date__week_day=day_to_int.get(data.get("week_day")))
-            else:
-                transit=Transit.objects.filter(date__range=(begin_time,end_time))
-                accident=Accident.objects.filter(date__range=(begin_time,end_time))
-            return HttpResponse(json.dumps(SectionStatisticsSerializer(section,
-                                                                       context={"transit":transit,"blocked":blocked,"accident":accident}).data)
-                                ,status=status.HTTP_200_OK)
+            street=Street.objects.get(id=street)
+            section_list=Section.objects.filter(street=street)
+            # Generation of empty query sets
+            transit=Transit.objects.none()
+            blocked=Blocked.objects.none()
+            accident=Accident.objects.none()
+            # iteration of each section of that street
+            for section in section_list:
+                temp_blocked=Blocked.objects.filter(section=section,begin__range=(begin_time,end_time),end__range=(begin_time,end_time))
+                blocked = blocked | temp_blocked
+                if week_day:
+                    temp_transit = Transit.objects.filter(section=section,date__range=(begin_time, end_time),date__week_day=day_to_int.get(week_day))
+                    temp_accident = Accident.objects.filter(section=section,date__range=(begin_time, end_time),date__week_day=day_to_int.get(week_day))
+                    # Join of Query Sets
+                    transit = transit | temp_transit
+                    accident = accident | temp_accident
+                else:
+                    temp_transit=Transit.objects.filter(section=section,date__range=(begin_time,end_time))
+                    temp_accident=Accident.objects.filter(section=section,date__range=(begin_time,end_time))
+                    # Join of Query Sets
+                    transit = transit | temp_transit
+                    accident = temp_accident | temp_accident
+
+            return HttpResponse(json.dumps(StreetStatisticsSerializer(street,
+                                context={"transit":transit,"blocked":blocked,"accident":accident}).data),status=status.HTTP_200_OK)
         else:
             return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
     except Section.DoesNotExist:
@@ -207,17 +233,24 @@ def visibility(request):
 
 @csrf_exempt
 def police(request):
-    if request.method=="PUT":
-        try:
+    try:
+        if request.method == "PUT":
             data= json.loads(request.body)
-            section=Section.objects.get(id=data.get)
-            section.police=data.get("police")
+            section=Section.objects.get(id=data.get("id"))
+            section.police=True
             section.save()
             return HttpResponse(json.dumps(SectionSerializer(section).data),status=status.HTTP_200_OK)
-        except Section.DoesNotExist:
+        elif request.method == "DELETE":
+            data=json.loads(request.body)
+            section = Section.objects.get(id=data.get("id"))
+            section.police = False
+            section.save()
+            return HttpResponse(json.dumps(SectionSerializer(section).data),status=status.HTTP_200_OK)
+        else:
+            return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+    except Section.DoesNotExist:
             return HttpResponse(status=status.HTTP_404_NOT_FOUND)
-    else:
-        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+
 
 @csrf_exempt
 def roadblock(request):
@@ -237,6 +270,9 @@ def roadblock(request):
             road_block=Blocked.objects.get(section=data.get("id"),end__isnull=True)
             road_block.end=datetime.now(timezone.utc)
             road_block.save()
+            section = Section.objects.get(id=data.get("id"))
+            section.roadblock = False
+            section.save()
             return HttpResponse("Road unblocked",status=status.HTTP_200_OK)
         else:
             return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
@@ -244,3 +280,23 @@ def roadblock(request):
         return HttpResponse("Section doesn't exist",status=status.HTTP_404_NOT_FOUND)
     except Blocked.DoesNotExist:
         return HttpResponse("Road isn't blocked",status=status.HTTP_404_NOT_FOUND)
+
+def all_streets(request):
+    try:
+        if request.method=="GET":
+            streets=Street.objects.all()
+            return HttpResponse(json.dumps(AllStreetSerializer(streets,many=True).data))
+        else:
+            return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+    except:
+        return HttpResponse(status=status.HTTP_404_NOT_FOUND)
+
+def licenses_by_section(request,city):
+    try:
+        if request.method=="GET":
+            section=Section.objects.filter(street__city=city)
+            return HttpResponse(json.dumps(LicensesSerializer(section,many=True).data))
+        else:
+            return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+    except:
+        return HttpResponse(status=status.HTTP_404_NOT_FOUND)

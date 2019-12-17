@@ -3,19 +3,20 @@ services:
  - docker:dind
 
 stages:
+ - cleanup
  - deploy
 
-before_script:
-  - apk update -qq && apk add -y -qq py-pip
-  - apk add python-dev libffi-dev openssl-dev gcc libc-dev make
-  - docker info
+clean-dockers:
+  stage: cleanup
+  script:
+    - docker kill $(docker ps -aq) || true
+    - docker rm $(docker ps -aq) || true
 
-step-backend:
+deploy-backend-frontend:
  stage: deploy
  script:
-  - pip install docker-compose
-  - docker-compose -f Project/docker-compose.yml stop
-  - docker-compose -f Project/docker-compose.yml build --no-cache
-  - docker-compose -f Project/docker-compose.yml up -d
+  - docker build --tag "backend" Project/Backend
+  - docker run -p 8000:8000 -d backend
+  - docker build --tag "frontend" Project/Frontend/Mapper
+  - docker run -p 8800:80 -d frontend
 
-  
