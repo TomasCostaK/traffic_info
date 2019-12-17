@@ -106,12 +106,13 @@ def car_to_street(request):
             data=json.loads(request.body)
             crud_ops=data.get("data")
             for op in crud_ops:
-                if op.get("type")=="insert":
+                if op.get("type") == "insert":
                     section=Section.objects.get(id=op.get("id"))
                     section.number_cars+=1
                     car=Car(license_plate=op.get("plate"),section=section)
                     car.save()
-                elif op.get("type")=="delete":
+                    add_to_transit(section)
+                elif op.get("type") == "delete":
                     section=Section.objects.get(id=op.get("id"))
                     section.number_cars-=1
                     car=Car.objects.get(license_plate=op.get("plate"))
@@ -138,7 +139,7 @@ def add_to_accident(request):
     except Section.DoesNotExist:
         return HttpResponse(status=status.HTTP_404_NOT_FOUND)
 
-def add_to_transit(section,transit=75):
+def add_to_transit(section,transit=80):
     time_of_transit = datetime.now(timezone.utc)
     last_time_of_transit = sorted(Transit.objects.filter(section=section),key=lambda transit:transit.date,reverse=True)
     if section.number_cars>transit:
@@ -307,13 +308,28 @@ def charts(request,type,street,begin,end):
         if request.method=="GET":
             dates=[]
             ammount=[]
-            accidents=Accident.objects.filter(date__range=(begin,end),section__street=street)
-            for i in accidents:
-                if f"{i.date.year}-{i.date.month}-{i.date.day}" not in dates:
-                    dates.append(f"{i.date.year}-{i.date.month}-{i.date.day}")
-                    ammount.append(len(Accident.objects.filter(date__year=i.date.year, date__month=i.date.month, date__day=i.date.day)))
+            begin=begin.split("-")
+            end=end.split("-")
+            begin_day=datetime(int(begin[0]),int(begin[1]),int(begin[2]),0,0,0)
+            end_day=datetime(int(end[0]),int(end[1]),int(end[2]),0,0,0)
+            difference_days=(end_day-begin_day).days
+            for i in range(difference_days):
+                    temp_day=begin_day+timedelta(days=i)
+                    dates.append(f"{temp_day.year}-{temp_day.month}-{temp_day.day}")
+                    ammount.append(len(Accident.objects.filter(date__year=temp_day.year, date__month=temp_day.month, date__day=temp_day.day)))
             return HttpResponse(json.dumps({"Days":dates,"ammount":ammount}),status=status.HTTP_200_OK)
         else:
             return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
     except:
         return HttpResponse(status=status.HTTP_404_NOT_FOUND)
+
+def available_cities(request):
+    try:
+        if request.method=="GET":
+            final=list(set([street.city for street in Street.objects.all().only("city")]))
+            return HttpResponse(json.dumps(final), status=status.HTTP_200_OK)
+        else:
+            return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+    except:
+        return HttpResponse(status=status.HTTP_404_NOT_FOUND)
+
