@@ -32,12 +32,15 @@ import BlackNavbar from "components/Navbars/BlackNavbar.js";
 
 const API = 'http://192.168.160.237:8000/';
 const DEFAULT_QUERY = 'all_streets/';
+const ALL_CITIES = 'available_cities/';
 const STATS_QUERY = 'statistics/';
+const GRAPH_STATS = 'charts/';
+
 
 //Fazer as stats como class independende
 class Stats extends React.Component {
   render() {
-    return (
+    return ( 
         <div>
           <h3 style={{color:'rgba(0,0,0,0.6)', fontWeight:'bolder', fontSize:20}}>{this.props.stat_name}</h3>
           <h4 style={{color:'rgba(0,0,0,0.6)', fontWeight:'bolder', textAlign:'center' ,fontSize:22}}> {this.props.number} </h4>
@@ -60,11 +63,14 @@ class Dashboard extends Component {
       end_date_cal: new Date(),
       dayofweek:'',
       dataSource: [],
+      labels:[],
+      values:[],
+      type_chart:{'key':'Accidents','value':'accident'},
       dataSourceStats: [{
-        "name": "Rua Tenente Joaquim Lopes Craveiro", 
+        "name": "", 
         "transit_count": 0, 
         "road_block": {"total_time": 0, "times": 0},
-        "total_accident": []
+        "total_accident": 0
       }],
       options : ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
     };
@@ -79,12 +85,14 @@ class Dashboard extends Component {
     //sumting heya
   }
 
-  fillStats = () => {
+  fillStats = (respo) => {
     let dataSourceGraph = {
-      labels: [moment(this.state.begin_date).format("YYYY-MM-DD"), moment(this.state.begin_date).add(1, 'days').format("YYYY-MM-DD") ,moment(this.state.begin_date).add(2, 'days').format("YYYY-MM-DD") ,moment(this.state.begin_date).add(3, 'days').format("YYYY-MM-DD") ,moment(this.state.begin_date).add(4, 'days').format("YYYY-MM-DD") ,moment(this.state.begin_date).add(5, 'days').format("YYYY-MM-DD") ],
+      //labels: [respo.Days],
+      labels: ['2019-01-01','2019-01-02'],
       datasets: [{
           label: '# of Accidents',
-          data: [1, 7, 4, 5, 0, 3],
+          //data: [respo.ammount],
+          data: [1,0],
           backgroundColor: [
             'cyan',
               'cyan',
@@ -101,8 +109,8 @@ class Dashboard extends Component {
               'cyan',
               'cyan',
           ],
-          backgroundColor:'transparent',
-          borderWidth: 3
+          backgroundColor:'rgba(0,255,255, 0.3)',
+          borderWidth: 2
       }]
   }
   return dataSourceGraph;
@@ -116,6 +124,18 @@ class Dashboard extends Component {
     this.getDataStats()
   };
 
+  getDataCities = () => {
+    console.log(API+GRAPH_STATS+this.state.type_chart.value+ '/street=' + this.state.street_id +'&start_date=' + this.state.begin_date +' &end_date=' + this.state.end_date +'/')
+    fetch(API+GRAPH_STATS+this.state.type_chart.value+'/street=' + this.state.street_id +'&start_date=' + this.state.begin_date +' &end_date=' + this.state.end_date +'/', { headers: {'Content-Type':'application/json'}}).
+      then(resp => resp.json()).
+      then(rest => {
+        console.log(rest)
+        return rest
+      }).
+      then(responseData => {
+        this.fillStats(responseData)
+      });
+  }
   
 
   handleChangeEnd = async date => {
@@ -127,7 +147,7 @@ class Dashboard extends Component {
   };
 
   getData() {
-    fetch(API+DEFAULT_QUERY, { headers: {'Content-Type': 'application/json'}}).
+    fetch(API+DEFAULT_QUERY, { headers: {'Content-Type':'application/json'}}).
       then(resp => resp.json()).
       then(rest => {
         console.log("Making request to info_street")
@@ -135,10 +155,25 @@ class Dashboard extends Component {
         return rest
       }).
       then(responseData => {
-
         this.setState({
           dataSource : responseData
         })
+      });
+  }
+
+  getDataGraph = () => {
+    console.log(API+GRAPH_STATS+this.state.type_chart.value+ '/street=' + this.state.street_id +'&start_date=' + this.state.begin_date +' &end_date=' + this.state.end_date +'/')
+    fetch(API+GRAPH_STATS+this.state.type_chart.value+'/street=' + this.state.street_id +'&start_date=' + this.state.begin_date +' &end_date=' + this.state.end_date +'/', { headers: {'Content-Type':'application/json'}}).
+      then(resp => resp.json()).
+      then(rest => {
+        return rest
+      }).
+      then(responseData => {
+        this.setState({
+          labels : responseData.Days,
+          values: responseData.ammount
+        })
+        this.fillStats(responseData)
       });
   }
 
@@ -198,7 +233,7 @@ class Dashboard extends Component {
               color={'black'}
               style={{fontWeight:'bold',width:40}}
               inputBoxFontColor={'black'}
-              dropDownHoverColor={'rgba(0,255,255,0.3)'}
+              dropDownHoverColor={'rgba(0,255,255,0.1)'}
               onSelect={record => this.changeStreetDisplayed(record)}
             />
             
@@ -241,7 +276,7 @@ class Dashboard extends Component {
               backgroundColor:'rgba(255,255,255,1)',
             }}
           >
-            <Line width={1000} height={250} data={this.fillStats()} />
+            <Line width={1000} height={250} data={this.getDataGraph()} />
           </div>
           </Row>
         </div>

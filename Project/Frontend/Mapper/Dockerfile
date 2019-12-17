@@ -7,7 +7,7 @@ WORKDIR /app/frontend
 # Copy all important files for the installation
 COPY package*.json ./
 RUN npm ci
-RUN npm install konva react-konva
+RUN npm install konva react-konva @material-ui/core
 RUN npm audit fix
 COPY . .
 RUN npm run build

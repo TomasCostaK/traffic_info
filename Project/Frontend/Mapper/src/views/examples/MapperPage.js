@@ -87,7 +87,7 @@ class RegisterPage extends Component {
     delta_x = endx - begx
     delta_y = endy - begy
     points = []
-    var street_distance = 3;
+    var street_distance = 4 ;
 
     if (direction){
       points = [0,0,delta_x, delta_y]
@@ -106,7 +106,7 @@ class RegisterPage extends Component {
         y = {begy+40}
         points={points}
         stroke = {traffic}
-        strokeWidth = {3}
+        strokeWidth = {5}
       />
       
       {/*this.renderPoints(begx,begy,endx,endy)*/}
@@ -132,16 +132,16 @@ class RegisterPage extends Component {
 
   analyse_traffic(congestion){
     if (congestion.toLowerCase() == "medium") {
-      return "rgba(242, 121, 53, 1)" //orange
+      return "rgba(245, 229, 27, 1)"
     } 
     else if (congestion.toLowerCase() == "congested"){
-      return "rgba(255,255,0,0.67)"
+      return "rgba(242, 121, 53, 1)" //orange
     }
     else if(congestion.toLowerCase() == "blocked") {
-      return "rgba(0,0,0,0.65)"
+      return "rgba(46, 49, 49, 1)"
     }
     else{
-      return "white"
+      return "rgba(255,255,255,1)"
     }
   }
 
@@ -226,16 +226,16 @@ class RegisterPage extends Component {
           <Container style={{flex:8}}>
             <Row style={{alignContent:'center',justifyContent:'center',border:10,borderColor:'rgba(0,0,0,0.75)'}}>
               <div style={{padding:20}}>
-                <Row style={{color:'black'}}>
-                <Text style={{color:'rgba(0,0,0,0.75)', fontWeight:'bold', fontSize:30}}>Map Analysis for:</Text>
+                <Row style={{color:'black',alignContent:'space-between',justifyContent:'space-between'}}>
+                <Text style={{color:'rgba(0,0,0,0.75)', fontWeight:'bold', fontSize:25}}>Map Analysis for:  </Text>
                 <ReactSearchBox
                   placeholder="Search street"
-                  value="Porto"
+                  value="Ilhavo"
                   data={this.state.streets}
                   color={'black'}
-                  style={{fontWeight:'bold',width:40}}
+                  style={{fontWeight:'bold',width:10}}
                   inputBoxFontColor={'black'}
-                  dropDownHoverColor={'rgba(0,255,255,0.3)'}
+                  dropDownHoverColor={'rgba(0,255,255,0.1)'}
                   onSelect={record => this.changeStreet(record)}
                 />
                 <Button style={{marginLeft:10,maxHeight:40}} onClick={() => this.changeZoom(true)}>- Zoom</Button>
@@ -243,7 +243,7 @@ class RegisterPage extends Component {
                 </Row>
 
               </div>
-                <Stage style={{backgroundColor:'rgba(0,0,0,0.75)'}} width={window_width} height={window_height}>
+                <Stage style={{backgroundColor:'rgba(0,0,0,0.7)'}} width={window_width} height={window_height}>
                   <Layer  id="map">
                   {/* Aqui desenhamos o mapa */}
                   {this.fill_map()}
