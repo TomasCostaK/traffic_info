@@ -150,6 +150,10 @@ class RegisterPage extends Component {
     map_data = this.state.dataSource
     //map_data = map_data_json
     const lines = []
+    /*Quando pesquisamos e se o trecho nao estiver a nulo, estamos a desenhar um mapa de procura e entao,
+      precisamos de diminuir thickness das outras ruas e mostrar onde se situa o carro
+      caso queiramos sair da view -> colocar trecho a nulo e voltamos a um mapa normal
+    */
 
     for (let index = 0; index < map_data.length; index++) {
       const trecho = map_data[index];
