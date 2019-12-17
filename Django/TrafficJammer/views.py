@@ -106,7 +106,7 @@ def street(request):
 @csrf_exempt
 def car_to_street(request):
     try:
-        if request.method=="PUT":
+        if request.method=="POST":
             data=json.loads(request.body)
             crud_ops=data.get("data")
             for op in crud_ops:
@@ -227,7 +227,7 @@ def statistics(request,street,begin,end,week_day=None):
 
 @csrf_exempt
 def visibility(request):
-    if request.method=="POST":
+    if request.method=="PUT":
         try:
             data=json.loads(request.body)
             section=Section.objects.get(id=data.get("id"))
@@ -263,7 +263,7 @@ def police(request):
 @csrf_exempt
 def roadblock(request):
     try:
-        if request.method=="PUT":
+        if request.method=="POST":
             data = json.loads(request.body)
             section = Section.objects.get(id=data.get("id"))
             section.roadblock=True
