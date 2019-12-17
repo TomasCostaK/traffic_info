@@ -12,7 +12,8 @@ clean-dockers:
     - docker kill $(docker ps -aq) || true
     - docker rm $(docker ps -aq) || true
   only:
-    master
+    - master
+    - docker
 
 deploy-backend-frontend:
   stage: deploy
@@ -22,4 +23,5 @@ deploy-backend-frontend:
     - docker build --tag "frontend" Project/Frontend/Mapper
     - docker run -p 8800:80 -d frontend
   only:
-    master
+    - master
+    - docker
