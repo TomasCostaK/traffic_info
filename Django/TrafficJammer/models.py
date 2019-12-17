@@ -154,7 +154,7 @@ class StreetStatisticsSerializer(serializers.ModelSerializer):
 
     def accident(self,Street):
         total_accident=self.context.get("accident")
-        return AccidentSerializer(total_accident,many=True).data
+        return len(AccidentSerializer(total_accident,many=True).data)
 
     class Meta:
         model=Street
@@ -181,3 +181,4 @@ class LicensesSerializer(serializers.ModelSerializer):
         fields=("id","licenses")
 
 '''End of Serializers for Cars In a City'''
+
