@@ -56,6 +56,21 @@ class RegisterPage extends Component {
       car_plate:'',
       time: Date.now(),
       dataSource: [],
+      streets : [
+        {
+          key: 'Porto',
+          value: 'Porto',
+        },
+        {
+          key: 'Ilhavo',
+          value: 'Ilhavo',
+        },
+        {
+          key: 'Roma',
+          value: 'Roma',
+        },
+      ],
+      street : 'Ilhavo',
     };
   }
 
@@ -72,7 +87,7 @@ class RegisterPage extends Component {
     delta_x = endx - begx
     delta_y = endy - begy
     points = []
-    var street_distance = 7;
+    var street_distance = 3;
 
     if (direction){
       points = [0,0,delta_x, delta_y]
@@ -80,8 +95,7 @@ class RegisterPage extends Component {
     } else {
       points = [!(delta_x)*street_distance, !(delta_y)*street_distance,delta_x+!(delta_x)*street_distance,delta_y+!(delta_y)*street_distance]
       if (delta_x !== 0 && delta_y !== 0){
-        points = [0,street_distance,delta_x-street_distance,delta_y]
-
+        points = [0,street_distance,delta_x,delta_y+street_distance]
       }
       //traffic = "yellow"
     }
@@ -92,10 +106,9 @@ class RegisterPage extends Component {
         y = {begy+40}
         points={points}
         stroke = {traffic}
-        strokeWidth = {2}
+        strokeWidth = {3}
       />
       
-      {this.renderBlock(begx,begy,traffic)}
       {/*this.renderPoints(begx,begy,endx,endy)*/}
     </>
     )
@@ -112,29 +125,29 @@ class RegisterPage extends Component {
 
   renderPoints(begx,begy,endx,endy,traffic){
     return <>
-      <Circle x={begx+220} y={begy+40} radius={6} fill="green" />
-      <Circle x={endx+220} y={endy+40} radius={6} fill="green" />
+      <Circle x={begx+220} y={begy+40} radius={5} fill="white" />
+      <Circle x={endx+220} y={endy+40} radius={5} fill="white" />
     </>       
   }
 
   analyse_traffic(congestion){
     if (congestion.toLowerCase() == "medium") {
-      return "yellow"
+      return "rgba(242, 121, 53, 1)" //orange
     } 
     else if (congestion.toLowerCase() == "congested"){
-      return "red"
+      return "rgba(255,255,0,0.67)"
     }
     else if(congestion.toLowerCase() == "blocked") {
-      return "black"
+      return "rgba(0,0,0,0.65)"
     }
     else{
-      return "green"
+      return "white"
     }
   }
 
   getData(){
-    console.log("Making request to info_street")
-    fetch('http://192.168.160.237:8000/info_street/', { headers: {'Content-Type': 'application/json'}}).
+    console.log("Making request to info_street: " + 'http://192.168.160.237:8000/info_street/'+this.state.street)
+    fetch('http://192.168.160.237:8000/info_street/'+this.state.street, { headers: {'Content-Type': 'application/json'}}).
       then(resp => resp.json()).
       then(responseData => {
         console.log(responseData);
@@ -146,11 +159,12 @@ class RegisterPage extends Component {
     });
   }
 
-  fill_map(){
+  fill_map = () =>{
     map_data = this.state.dataSource
     //map_data = map_data_json
     const lines = []
-    /*Quando pesquisamos e se o trecho nao estiver a nulo, estamos a desenhar um mapa de procura e entao,
+    /*
+      Quando pesquisamos e se o trecho nao estiver a nulo, estamos a desenhar um mapa de procura e entao,
       precisamos de diminuir thickness das outras ruas e mostrar onde se situa o carro
       caso queiramos sair da view -> colocar trecho a nulo e voltamos a um mapa normal
     */
@@ -159,7 +173,7 @@ class RegisterPage extends Component {
       const trecho = map_data[index];
       var traffic = this.analyse_traffic(trecho.transit_type)
       //Por isto num array? E dar push do return inteiro
-      console.log("TrechoID :" + trecho.id + ", carID: " + this.state.car_trecho)
+      //console.log("TrechoID :" + trecho.id + ", carID: " + this.state.car_trecho)
       if (this.state.car_trecho != null && this.state.car_trecho==trecho.id) {
         lines.push( this.draw_street(false,trecho.beginning_coords_x/this.state.zooming_distance, trecho.beginning_coords_y/this.state.zooming_distance, trecho.ending_coords_x/this.state.zooming_distance, trecho.ending_coords_y/this.state.zooming_distance, traffic , trecho.actual_direction, trecho.police))
       } else {
@@ -187,6 +201,14 @@ class RegisterPage extends Component {
     }
   }
 
+  changeStreet = async (text) =>{
+    console.log(text)
+    await this.setState({
+      street: text.key
+    })
+    this.getData();
+  }
+
   render() {
     return (
       <>
@@ -204,9 +226,22 @@ class RegisterPage extends Component {
           <Container style={{flex:8}}>
             <Row style={{alignContent:'center',justifyContent:'center',border:10,borderColor:'rgba(0,0,0,0.75)'}}>
               <div style={{padding:20}}>
-                <Text style={{color:'rgba(0,0,0,0.75)', fontWeight:'bold', fontSize:30}}>Map Analysis for: Espinho</Text>
-                <Button style={{marginLeft:20}} onClick={() => this.changeZoom(true)}>- Zoom</Button>
-                <Button onClick={() => this.changeZoom(false)}>+ Zoom</Button>
+                <Row style={{color:'black'}}>
+                <Text style={{color:'rgba(0,0,0,0.75)', fontWeight:'bold', fontSize:30}}>Map Analysis for:</Text>
+                <ReactSearchBox
+                  placeholder="Search street"
+                  value="Porto"
+                  data={this.state.streets}
+                  color={'black'}
+                  style={{fontWeight:'bold',width:40}}
+                  inputBoxFontColor={'black'}
+                  dropDownHoverColor={'rgba(0,255,255,0.3)'}
+                  onSelect={record => this.changeStreet(record)}
+                />
+                <Button style={{marginLeft:10,maxHeight:40}} onClick={() => this.changeZoom(true)}>- Zoom</Button>
+                <Button style={{marginLeft:10,maxHeight:40}} onClick={() => this.changeZoom(false)}>+ Zoom</Button>
+                </Row>
+
               </div>
                 <Stage style={{backgroundColor:'rgba(0,0,0,0.75)'}} width={window_width} height={window_height}>
                   <Layer  id="map">

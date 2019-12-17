@@ -30,7 +30,7 @@ import "../../../node_modules/react-datepicker/dist/react-datepicker.css"
 // core components
 import BlackNavbar from "components/Navbars/BlackNavbar.js";
 
-const API = '192.168.160.237:8000/';
+const API = 'http://192.168.160.237:8000/';
 const DEFAULT_QUERY = 'all_streets/';
 const STATS_QUERY = 'statistics/';
 
@@ -127,11 +127,15 @@ class Dashboard extends Component {
   };
 
   getData() {
-    console.log("Making request to info_street")
     fetch(API+DEFAULT_QUERY, { headers: {'Content-Type': 'application/json'}}).
       then(resp => resp.json()).
+      then(rest => {
+        console.log("Making request to info_street")
+        console.log(rest);
+        return rest
+      }).
       then(responseData => {
-        console.log(responseData);
+
         this.setState({
           dataSource : responseData
         })
