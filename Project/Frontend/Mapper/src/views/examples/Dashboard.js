@@ -52,7 +52,7 @@ class Dashboard extends Component {
     super(props);
     this.state = {
       hits: [],
-      street_name: '',
+      street_name: "Rua Tenente Joaquim Lopes Craveiro",
       street_id: 1,
       begin_date: moment().format('YYYY-MM-DD'),
       end_date: moment().format('YYYY-MM-DD'),
@@ -186,7 +186,7 @@ class Dashboard extends Component {
             backgroundColor:'rgba(0,0,0,0)',
           }}
         >
-          <Container style={{display:'flex',flex:1,flexDirection:'column'}}>
+          <Container style={{display:'flex',flex:1,flexDirection:'column',maringTop:50}}>
             <Row style={{alignContent:'center',justifyContent:'center',border:10,borderColor:'white'}}> 
                 <Text style={{color:'rgba(0,0,0,0.6)', fontWeight:'bold', fontSize:30}}>Analytics for streets in: Espinho</Text>
             </Row>
@@ -223,7 +223,7 @@ class Dashboard extends Component {
 
               </Container>
             </Row>
-        <Text style={{color:'rgba(0,0,0,0.6)', fontWeight:'bold', marginTop:80, textAlign:'center',fontSize:30}}>{this.state.street_name}</Text>
+        <Text style={{color:'rgba(0,0,0,0.6)', fontWeight:'bold', marginTop:80, textAlign:'center',fontSize:24}}>{this.state.street_name}</Text>
             <div style={{display:'flex', flexDirection:'row' , justifyContent:'space-between',alignContent:'space-between'}}>
               <Stats style={{flex:1}} stat_name="Nº of accidents" number={this.state.dataSourceStats[0].total_accident}/>
               <Stats style={{flex:1}} stat_name="Roadblock total time" number={this.state.dataSourceStats[0].road_block.total_time}/>
@@ -231,8 +231,10 @@ class Dashboard extends Component {
               <Stats style={{flex:1}} stat_name="Transit Count" number={this.state.dataSourceStats[0].transit_count}/>
 
             </div>
-
+            </Container>    
+          </div>
           {/* ChartJS */}
+          <div>
           <Row style={{alignContent:'center',justifyContent:'center', marginTop:30}}>
           <div
             style={{
@@ -242,7 +244,6 @@ class Dashboard extends Component {
             <Line width={1000} height={250} data={this.fillStats()} />
           </div>
           </Row>
-            </Container>    
         </div>
     </>
     )
