@@ -82,12 +82,17 @@ class RegisterPage extends Component {
     clearInterval(this.interval);
   }
 
-  draw_street(opt,begx, begy, endx, endy, traffic,direction,police){
+  draw_street(searching_car,begx, begy, endx, endy, traffic,direction,police){
     var delta_x,delta_y,points
     delta_x = endx - begx
     delta_y = endy - begy
     points = []
-    var street_distance = 4 ;
+    var street_distance = 4;
+    var strWidth = 5;
+
+    if (searching_car){
+      var strWidth = 1;
+    }
 
     if (direction){
       points = [0,0,delta_x, delta_y]
@@ -106,7 +111,7 @@ class RegisterPage extends Component {
         y = {begy+40}
         points={points}
         stroke = {traffic}
-        strokeWidth = {5}
+        strokeWidth = {strWidth}
       />
       
       {/*this.renderPoints(begx,begy,endx,endy)*/}
@@ -168,16 +173,23 @@ class RegisterPage extends Component {
       precisamos de diminuir thickness das outras ruas e mostrar onde se situa o carro
       caso queiramos sair da view -> colocar trecho a nulo e voltamos a um mapa normal
     */
-
+    var opt = this.state.car_trecho != null
     for (let index = 0; index < map_data.length; index++) {
       const trecho = map_data[index];
       var traffic = this.analyse_traffic(trecho.transit_type)
       //Por isto num array? E dar push do return inteiro
+      if(trecho.police){
+        traffic = "rgba(0, 181, 204, 1)"
+      }
       //console.log("TrechoID :" + trecho.id + ", carID: " + this.state.car_trecho)
-      if (this.state.car_trecho != null && this.state.car_trecho==trecho.id) {
-        lines.push( this.draw_street(false,trecho.beginning_coords_x/this.state.zooming_distance, trecho.beginning_coords_y/this.state.zooming_distance, trecho.ending_coords_x/this.state.zooming_distance, trecho.ending_coords_y/this.state.zooming_distance, traffic , trecho.actual_direction, trecho.police))
+      if (opt) {
+        if (this.state.car_trecho==trecho.id) {
+          lines.push( this.draw_street(false,trecho.beginning_coords_x/this.state.zooming_distance, trecho.beginning_coords_y/this.state.zooming_distance, trecho.ending_coords_x/this.state.zooming_distance, trecho.ending_coords_y/this.state.zooming_distance, traffic , trecho.actual_direction, trecho.police))
+        } else {
+          lines.push( this.draw_street(true,trecho.beginning_coords_x/this.state.zooming_distance, trecho.beginning_coords_y/this.state.zooming_distance, trecho.ending_coords_x/this.state.zooming_distance, trecho.ending_coords_y/this.state.zooming_distance, traffic , trecho.actual_direction, trecho.police))
+        }
       } else {
-        lines.push( this.draw_street(true,trecho.beginning_coords_x/this.state.zooming_distance, trecho.beginning_coords_y/this.state.zooming_distance, trecho.ending_coords_x/this.state.zooming_distance, trecho.ending_coords_y/this.state.zooming_distance, traffic , trecho.actual_direction, trecho.police))
+        lines.push( this.draw_street(false,trecho.beginning_coords_x/this.state.zooming_distance, trecho.beginning_coords_y/this.state.zooming_distance, trecho.ending_coords_x/this.state.zooming_distance, trecho.ending_coords_y/this.state.zooming_distance, traffic , trecho.actual_direction, trecho.police))
       }
     }
 
@@ -204,7 +216,8 @@ class RegisterPage extends Component {
   changeStreet = async (text) =>{
     console.log(text)
     await this.setState({
-      street: text.key
+      street: text.key,
+      car_trecho:37
     })
     this.getData();
   }
