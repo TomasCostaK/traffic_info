@@ -116,11 +116,13 @@ def car_to_street(request):
                     car=Car(license_plate=op.get("plate"),section=section)
                     car.save()
                     add_to_transit(section)
+                    section.save()
                 elif op.get("type") == "delete":
                     section=Section.objects.get(id=op.get("id"))
                     section.number_cars-=1
                     car=Car.objects.get(license_plate=op.get("plate"))
                     car.delete()
+                    section.save()
                 else:
                     return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
             return HttpResponse(status=status.HTTP_200_OK)
@@ -148,11 +150,11 @@ def add_to_transit(section,transit=80):
     last_time_of_transit = sorted(Transit.objects.filter(section=section),key=lambda transit:transit.date,reverse=True)
     if section.number_cars>transit:
         if last_time_of_transit==[]:
-            transit = Transit(date=time_of_transit, section=section)
-            transit.save()
+            street_transit = Transit(date=time_of_transit, section=section)
+            street_transit.save()
         if last_time_of_transit[0].date+timedelta(minutes=30)<time_of_transit:
-            transit = Transit(date=time_of_transit,section=section)
-            transit.save()
+            street_transit = Transit(date=time_of_transit,section=section)
+            street_transit.save()
 
 def create_section(street,coord_x,coord_y,end_x,end_y,direction):
     section = Section(street=street,
