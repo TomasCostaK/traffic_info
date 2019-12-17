@@ -56,7 +56,12 @@ class RegisterPage extends Component {
       car_plate:'',
       time: Date.now(),
       dataSource: [],
-      streets : [
+      all_plates: [{
+        'key':'Nenhuma','value':'Nenhuma'},
+        {'key':'tom1k1','value':'tom1k1'},        
+        {'key':'tom1k2','value':'tom1k2'},
+      ],
+      streets : [ //Ir buscar dinamicamente
         {
           key: 'Porto',
           value: 'Porto',
@@ -198,7 +203,19 @@ class RegisterPage extends Component {
   }
 
   searchPlate = (plate) => {
+    console.log("Goten here")
     console.log("New plate:" + plate)
+    if (plate.key=="Nenhuma"){
+      this.setState({
+        car_plate:'',
+        car_trecho:null
+      })
+      return
+    }
+    this.setState({
+      car_plate:plate,
+      car_trecho:13
+    })
   }
 
   changeZoom(flag){
@@ -240,7 +257,7 @@ class RegisterPage extends Component {
             <Row style={{alignContent:'center',justifyContent:'center',border:10,borderColor:'rgba(0,0,0,0.75)'}}>
               <div style={{padding:20}}>
                 <Row style={{color:'black',alignContent:'space-between',justifyContent:'space-between'}}>
-                <Text style={{color:'rgba(0,0,0,0.75)', fontWeight:'bold', fontSize:25}}>Map Analysis for:  </Text>
+                <Text style={{color:'rgba(0,0,0,0.75)', fontWeight:'bold', fontSize:23}}>Map Analysis for:  </Text>
                 <ReactSearchBox
                   placeholder="Search street"
                   value="Ilhavo"
@@ -264,21 +281,23 @@ class RegisterPage extends Component {
               </Stage>
             </Row>
           </Container>
-          <Container style={{flex:3,marginRight:50,fontWeight:'medium',flexDirection:'column',alignContent:'center',marginTop:150 ,justifyContent:'center'}}>
+          <Container style={{color:'black',flex:3,marginRight:50,fontWeight:'medium',flexDirection:'column',alignContent:'center',marginTop:150 ,justifyContent:'center'}}>
           <Text style={{color:'black', fontWeight:'bolder', fontSize:20}}>Search Plate:</Text>
+          <Row style={{color:'black',alignContent:'space-between',justifyContent:'space-between'}}>
           <ReactSearchBox
             placeholder="Search Plate"
             value={this.state.car_plate}
             style={{fontSize:10,fontWeight:'bolder'}}
-            data={this.state.car_plate}
-            callback={record => console.log(record)}
+            data={this.state.all_plates}
+            onSelect={record => this.searchPlate(record)}
           />
+          </Row>
+          
             <Text style={{color:'black', fontWeight:'bolder', fontSize:20}}>Legenda:</Text>
             <Container style={{flex:1,flexDirection:'column',alignContent:'center',justifyContent:'center',border:10,marginTop:30,borderColor:'rgba(0,0,0,0.75)'}}>
-              <Row><Text style={{color:'green', fontWeight:1000, fontSize:18}}>---  </Text><Text style={{color:'black', fontWeight:'bolder', fontSize:15, marginLeft: 10}}>Trânsito Leve</Text></Row>
-              <Row><Text style={{color:'yellow', fontWeight:1000, fontSize:18}}>---  </Text><Text style={{color:'black', fontWeight:'bolder', fontSize:15, marginLeft: 10}}>Trânsito Médio</Text></Row>
-              <Row><Text style={{color:'red', fontWeight:1000, fontSize:18}}>---  </Text><Text style={{color:'black', fontWeight:'bolder', fontSize:15, marginLeft: 10}}>Trânsito Alto</Text></Row>
-              <Row><Text style={{color:'black', fontWeight:1000, fontSize:18}}>---  </Text><Text style={{color:'black', fontWeight:'bolder', fontSize:15, marginLeft: 10}}>Bloqueio</Text></Row>
+              <Row><Text style={{color:"rgba(245, 229, 27, 1)", fontWeight:1000, fontSize:18}}>---  </Text><Text style={{color:'black', fontWeight:'bolder', fontSize:15, marginLeft: 10}}>Trânsito Médio</Text></Row>
+              <Row><Text style={{color:"rgba(242, 121, 53, 1)", fontWeight:1000, fontSize:18}}>---  </Text><Text style={{color:'black', fontWeight:'bolder', fontSize:15, marginLeft: 10}}>Trânsito Alto</Text></Row>
+              <Row><Text style={{color:"rgba(46, 49, 49, 1)", fontWeight:1000, fontSize:18}}>---  </Text><Text style={{color:'black', fontWeight:'bolder', fontSize:15, marginLeft: 10}}>Bloqueio</Text></Row>
               <Row><Text style={{color:'blue', fontWeight:1000, fontSize:18}}>---  </Text><Text style={{color:'black', fontWeight:'bolder', fontSize:15, marginLeft: 10}}>Policiamento</Text></Row>
             </Container>
           </Container>
