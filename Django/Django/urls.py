@@ -32,5 +32,6 @@ urlpatterns = [
     path('police/',views.police,name='police'),
     path('roadblock/',views.roadblock,name='roadblock'),
     path('licenses_by_city/<str:city>/',views.licenses_by_section,name='licenses_by_city'),
-    path('charts/<str:type>/street=<int:street>&start_date=<str:begin>&end_date=<str:end>/',views.charts,name='charts')
+    path('charts/<str:type>/street=<int:street>&start_date=<str:begin>&end_date=<str:end>/',views.charts,name='charts'),
+    path('available_cities/',views.available_cities,name='available cities')
 ]

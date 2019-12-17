@@ -75,9 +75,9 @@ class StreetSerializer(serializers.ModelSerializer):
 class SectionSerializer(serializers.ModelSerializer):
     street=StreetSerializer()
     transit_type=serializers.SerializerMethodField('type')
-    def type(self,Section,transit_limit=85):
+    def type(self,Section,transit_limit=40):
         if Section.visibility<50:
-            transit_limit=30
+            transit_limit=16
 
         if Section.roadblock:
             return 'Blocked'
