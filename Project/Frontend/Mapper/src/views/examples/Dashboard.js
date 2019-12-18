@@ -18,13 +18,13 @@
 */
 import React, { Component } from "react";
 // reactstrap components
-import { Button, Form, Input, Container, Row, Col } from "reactstrap";
+import { Container, Row} from "reactstrap";
 import { Text } from 'react-konva';
 import moment from 'moment';
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import ReactSearchBox from 'react-search-box'
-import { Bar, Line, defaults } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 import DatePicker from "react-datepicker";
 import "../../../node_modules/react-datepicker/dist/react-datepicker.css"
 // core components
@@ -76,14 +76,43 @@ class Dashboard extends Component {
       dataSource: [],
       labels:[],
       values:[],
-      type_chart:{'key':'Accidents','value':'accident'},
+      type_chart:[{'key':'Accidents','value':'accident'},{'key':'Roadblocks','value':'roadblock'}],
       dataSourceStats: [{
         "name": "", 
         "transit_count": 0, 
         "road_block": {"total_time": 0, "times": 0},
         "total_accident": 0
       }],
-      options : ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
+      options : ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+
+      //Graph Data
+      graph_data:{
+        //labels: [respo.Days],
+        labels: [''],
+        datasets: [{
+            label: '# of Accidents',
+            //data: [respo.ammount],
+            data: [0],
+            backgroundColor: [
+              'cyan',
+                'cyan',
+                'cyan',
+                'cyan',
+                'cyan',
+                'cyan',
+          ],
+            borderColor: [
+                'cyan',
+                'cyan',
+                'cyan',
+                'cyan',
+                'cyan',
+                'cyan',
+            ],
+            backgroundColor:'rgba(0,255,255, 0.34)',
+            borderWidth: 3
+        }]
+    },
     };
   }
   //date-format: AAAA-MM-DD
@@ -104,35 +133,38 @@ class Dashboard extends Component {
     this.getData();
   }
 
-  fillStats = (respo) => {
-    let dataSourceGraph = {
-      //labels: [respo.Days],
-      labels: ['2019-01-01','2019-01-02'],
-      datasets: [{
-          label: '# of Accidents',
-          //data: [respo.ammount],
-          data: [1,0],
-          backgroundColor: [
-            'cyan',
+  fillStats = async (respo)  => {
+    console.log("Stats response:")
+    console.log(respo.values)
+    await this.setState({
+      graph_data: {
+        //labels: [respo.Days],
+        labels: respo.labels,
+        datasets: [{
+            label: '# of Accidents',
+            //data: [respo.ammount],
+            data: respo.values,
+            backgroundColor: [
               'cyan',
-              'cyan',
-              'cyan',
-              'cyan',
-              'cyan',
-        ],
-          borderColor: [
-              'cyan',
-              'cyan',
-              'cyan',
-              'cyan',
-              'cyan',
-              'cyan',
+                'cyan',
+                'cyan',
+                'cyan',
+                'cyan',
+                'cyan',
           ],
-          backgroundColor:'rgba(0,255,255, 0.3)',
-          borderWidth: 2
-      }]
-  }
-  return dataSourceGraph;
+            borderColor: [
+                'cyan',
+                'cyan',
+                'cyan',
+                'cyan',
+                'cyan',
+                'cyan',
+            ],
+            backgroundColor:'rgba(0,255,255, 0.3)',
+            borderWidth: 2
+        }]
+    }
+    })
   }
 
   handleChangeStart = async date => {
@@ -141,6 +173,8 @@ class Dashboard extends Component {
       begin_date_cal: date
     });
     this.getDataStats()
+    this.getDataGraph()
+
   };
   
 
@@ -150,6 +184,8 @@ class Dashboard extends Component {
       end_date_cal: date
     });
     this.getDataStats()
+    this.getDataGraph()
+
   };
 
   getData = () => {
@@ -169,8 +205,8 @@ class Dashboard extends Component {
   
   
   getDataGraph () {
-    console.log(API+GRAPH_STATS+this.state.type_chart.value+ '/street=' + this.state.street_id +'&start_date=' + this.state.begin_date +' &end_date=' + this.state.end_date +'/')
-    fetch(API+GRAPH_STATS+this.state.type_chart.value+'/street=' + this.state.street_id +'&start_date=' + this.state.begin_date +' &end_date=' + this.state.end_date +'/', { headers: {'Content-Type':'application/json'}}).
+    console.log(API+GRAPH_STATS+this.state.type_chart[0].value+ '/street=' + this.state.street_id +'&start_date=' + this.state.begin_date +' &end_date=' + this.state.end_date +'/')
+    fetch(API+GRAPH_STATS+this.state.type_chart[0].value+'/street=' + this.state.street_id +'&start_date=' + this.state.begin_date +' &end_date=' + this.state.end_date +'/', { headers: {'Content-Type':'application/json'}}).
       then(resp => resp.json()).
       then(rest => {
         return rest
@@ -181,7 +217,8 @@ class Dashboard extends Component {
           labels : responseData.Days,
           values: responseData.ammount
         })
-        this.fillStats(responseData)
+        console.log(this.state)
+        this.fillStats(this.state)
       });
   }
 
@@ -207,6 +244,7 @@ class Dashboard extends Component {
       street_id : response.key
     })
     this.getDataStats()
+    this.getDataGraph()
   }
 
   changeDay = async (day) => {
@@ -294,7 +332,7 @@ class Dashboard extends Component {
               backgroundColor:'rgba(255,255,255,1)',
             }}
           >
-            <Line width={1000} height={250} data={(response) => this.fillStats(response)} />
+            <Line width={1000} height={250} data={this.state.graph_data} />
           </div>
           </Row>
         </div>

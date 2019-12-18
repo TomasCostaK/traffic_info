@@ -17,10 +17,9 @@
 
 */
 import React, { Component } from "react";
-import map_data_json from "../../data/Mapdata"
-import { Stage, Layer, Star,Line,Circle, Text, Image,Rect } from 'react-konva';
+import { Stage, Layer,Line,Circle, Text, Image } from 'react-konva';
 // reactstrap components
-import { Button, Form, Input, Container, Row, Col } from "reactstrap";
+import { Button, Container, Row } from "reactstrap";
 import useImage from 'use-image';
 import ReactSearchBox from 'react-search-box'
 // core components
@@ -125,11 +124,11 @@ class RegisterPage extends Component {
     delta_x = endx - begx
     delta_y = endy - begy
     points = []
-    var street_distance = 4;
+    var street_distance = 8;
     var strWidth = 5;
 
     if (searching_car){
-      var strWidth = 1;
+      strWidth = 1;
     }
 
     if (direction){
@@ -190,7 +189,7 @@ class RegisterPage extends Component {
 
   getData = () => {
     console.log("Making request to info_street: " + 'http://192.168.160.237:8000/info_street/'+this.state.street)
-    fetch('http://192.168.160.237:8000/info_street/'+this.state.street, { headers: {'Content-Type': 'application/json'}}).
+    fetch(API+DEFAULT_QUERY+this.state.street, { headers: {'Content-Type': 'application/json'}}).
       then(resp => resp.json()).
       then(responseData => {
         console.log(responseData);
