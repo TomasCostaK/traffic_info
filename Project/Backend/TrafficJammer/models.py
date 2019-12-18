@@ -75,9 +75,9 @@ class StreetSerializer(serializers.ModelSerializer):
 class SectionSerializer(serializers.ModelSerializer):
     street=StreetSerializer()
     transit_type=serializers.SerializerMethodField('type')
-    def type(self,Section,transit_limit=85):
+    def type(self,Section,transit_limit=40):
         if Section.visibility<50:
-            transit_limit=30
+            transit_limit=16
 
         if Section.roadblock:
             return 'Blocked'
@@ -154,7 +154,7 @@ class StreetStatisticsSerializer(serializers.ModelSerializer):
 
     def accident(self,Street):
         total_accident=self.context.get("accident")
-        return AccidentSerializer(total_accident,many=True).data
+        return len(AccidentSerializer(total_accident,many=True).data)
 
     class Meta:
         model=Street
@@ -181,3 +181,4 @@ class LicensesSerializer(serializers.ModelSerializer):
         fields=("id","licenses")
 
 '''End of Serializers for Cars In a City'''
+

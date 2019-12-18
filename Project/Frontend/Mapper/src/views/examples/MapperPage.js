@@ -17,22 +17,20 @@
 
 */
 import React, { Component } from "react";
-import map_data_json from "../../data/Mapdata"
-import { Stage, Layer, Star,Line,Circle, Text, Image,Rect } from 'react-konva';
+import { Stage, Layer,Line,Circle, Text, Image } from 'react-konva';
 // reactstrap components
-import { Button, Form, Input, Container, Row, Col } from "reactstrap";
+import { Button, Container, Row } from "reactstrap";
 import useImage from 'use-image';
 import ReactSearchBox from 'react-search-box'
 // core components
 import BlackNavbar from "components/Navbars/BlackNavbar.js";
 
-let window_height = 350;
-let window_width = 700;
 //Ter em conta o zooming distance na width do stroke das estradas e nao so so seu tamanho
 var map_data;
 
-const API = '192.168.160.237:8000/';
+const API = 'http://192.168.160.237:8000/';
 const DEFAULT_QUERY = 'info_street/';
+const SEARCH_PLATE = 'specific_car/';
 
 const PoliceImage = (begx,begy) => {
   const [image] = useImage('../../assets/img/car.jpg');
@@ -52,15 +50,10 @@ class RegisterPage extends Component {
       zooming_distance : 7,
       hits: [],
       loading_map:true,
-      car_trecho:null,
-      car_plate:'',
       time: Date.now(),
       dataSource: [],
-      all_plates: [{
-        'key':'Nenhuma','value':'Nenhuma'},
-        {'key':'tom1k1','value':'tom1k1'},        
-        {'key':'tom1k2','value':'tom1k2'},
-      ],
+
+      //Streets
       streets : [ //Ir buscar dinamicamente
         {
           key: 'Porto',
@@ -76,15 +69,63 @@ class RegisterPage extends Component {
         },
       ],
       street : 'Ilhavo',
+
+      //Plates work
+      value:null,
+
+      //Car search
+      car_trecho:null,
+      car_plate:'',
+
+      width: 0,
+      height: 0,
+
     };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+  }
+
+  updateWindowDimensions() {
+    this.setState({ width: window.innerWidth, height: window.innerHeight });
   }
 
   componentDidMount() {
-    this.interval = setInterval(() => this.setState({ time: Date.now(), loading_map:false } && this.getData()), 2000);
+    this.interval = setInterval(() => this.setState({ time: Date.now(), loading_map:false } && this.getData()), 4000);
+    this.updateWindowDimensions();
+    window.addEventListener('resize', this.updateWindowDimensions);
   }
 
   componentWillUnmount() {
     clearInterval(this.interval);
+    window.removeEventListener('resize', this.updateWindowDimensions);
+  }
+
+  fetchPlate =(text) => {
+    //Fetching plate given
+    var finalUrl = API + SEARCH_PLATE + text + '/'
+    console.log("Making request: " + finalUrl)
+    fetch(finalUrl, { headers: {'Content-Type': 'application/json'}}).
+      then(resp => {
+        if (!resp.ok) {
+          alert("That car was not found in this city!")
+          this.setState({
+            car_trecho : null,
+            car_plate: ''
+          });
+          return "flag"
+        }
+        return resp.json()
+      }).
+      then(response => {
+        console.log(response)
+        if(response!="flag"){
+          this.setState({
+            car_trecho : response.section,
+            car_plate: response.license_plate
+          });
+        }
+      });
   }
 
   draw_street(searching_car,begx, begy, endx, endy, traffic,direction,police){
@@ -92,11 +133,11 @@ class RegisterPage extends Component {
     delta_x = endx - begx
     delta_y = endy - begy
     points = []
-    var street_distance = 4;
+    var street_distance = 7;
     var strWidth = 5;
 
     if (searching_car){
-      var strWidth = 1;
+      strWidth = 1;
     }
 
     if (direction){
@@ -138,7 +179,7 @@ class RegisterPage extends Component {
       <Circle x={begx+220} y={begy+40} radius={5} fill="white" />
       <Circle x={endx+220} y={endy+40} radius={5} fill="white" />
     </>       
-  }
+  } 
 
   analyse_traffic(congestion){
     if (congestion.toLowerCase() == "medium") {
@@ -155,9 +196,9 @@ class RegisterPage extends Component {
     }
   }
 
-  getData(){
+  getData = () => {
     console.log("Making request to info_street: " + 'http://192.168.160.237:8000/info_street/'+this.state.street)
-    fetch('http://192.168.160.237:8000/info_street/'+this.state.street, { headers: {'Content-Type': 'application/json'}}).
+    fetch(API+DEFAULT_QUERY+this.state.street, { headers: {'Content-Type': 'application/json'}}).
       then(resp => resp.json()).
       then(responseData => {
         console.log(responseData);
@@ -202,21 +243,6 @@ class RegisterPage extends Component {
 
   }
 
-  searchPlate = (plate) => {
-    console.log("Goten here")
-    console.log("New plate:" + plate)
-    if (plate.key=="Nenhuma"){
-      this.setState({
-        car_plate:'',
-        car_trecho:null
-      })
-      return
-    }
-    this.setState({
-      car_plate:plate,
-      car_trecho:13
-    })
-  }
 
   changeZoom(flag){
     if(flag){
@@ -230,13 +256,31 @@ class RegisterPage extends Component {
     }
   }
 
+  resetPlate = async () => {
+    await this.setState({
+      car_plate:'',
+      car_trecho:null,
+    })
+    console.log("ThisStatePlate: " + this.state.car_plate)
+  }
+
   changeStreet = async (text) =>{
     console.log(text)
     await this.setState({
       street: text.key,
       car_trecho:37
     })
+    this.resetPlate();
     this.getData();
+  }
+
+  handleChange(event) {
+    this.setState({value: event.target.value});
+  }
+
+  handleSubmit(event) {
+    this.fetchPlate(this.state.value.toUpperCase())
+    event.preventDefault();
   }
 
   render() {
@@ -259,7 +303,7 @@ class RegisterPage extends Component {
                 <Row style={{color:'black',alignContent:'space-between',justifyContent:'space-between'}}>
                 <Text style={{color:'rgba(0,0,0,0.75)', fontWeight:'bold', fontSize:23}}>Map Analysis for:  </Text>
                 <ReactSearchBox
-                  placeholder="Search street"
+                  placeholder="Search city"
                   value="Ilhavo"
                   data={this.state.streets}
                   color={'black'}
@@ -273,7 +317,7 @@ class RegisterPage extends Component {
                 </Row>
 
               </div>
-                <Stage style={{backgroundColor:'rgba(0,0,0,0.7)'}} width={window_width} height={window_height}>
+                <Stage style={{backgroundColor:'rgba(0,0,0,0.7)'}} width={this.state.width*0.5} height={this.state.height*0.65}>
                   <Layer  id="map">
                   {/* Aqui desenhamos o mapa */}
                   {this.fill_map()}
@@ -281,16 +325,19 @@ class RegisterPage extends Component {
               </Stage>
             </Row>
           </Container>
-          <Container style={{color:'black',flex:3,marginRight:50,fontWeight:'medium',flexDirection:'column',alignContent:'center',marginTop:150 ,justifyContent:'center'}}>
+          <Container style={{color:'black',flex:4,marginRight:50,fontWeight:'medium',flexDirection:'column',alignContent:'center',marginTop:150 ,justifyContent:'center'}}>
           <Text style={{color:'black', fontWeight:'bolder', fontSize:20}}>Search Plate:</Text>
-          <Row style={{color:'black',alignContent:'space-between',justifyContent:'space-between'}}>
-          <ReactSearchBox
-            placeholder="Search Plate"
-            value={this.state.car_plate}
-            style={{fontSize:10,fontWeight:'bolder'}}
-            data={this.state.all_plates}
-            onSelect={record => this.searchPlate(record)}
-          />
+          <Row style={{color:'black',alignContent:'center',justifyContent:'center'}}>
+            {/* form para procurar matricula*/}
+            <form onSubmit={this.handleSubmit}>
+                <input type="text" value={this.state.value} onChange={this.handleChange} />
+              <Button style={{maxHeight:38,maxWidth:100,marginLeft:5}} type="submit" value="Submit" >Search</Button>
+            </form>
+          <Button
+          style={{maxHeight:38,maxWidth:100,marginLeft:5}}
+          onClick={() => this.resetPlate()}>
+            Reset
+          </Button>
           </Row>
           
             <Text style={{color:'black', fontWeight:'bolder', fontSize:20}}>Legenda:</Text>

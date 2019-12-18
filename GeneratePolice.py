@@ -18,13 +18,7 @@ while True:
     json_update_false=[json.dumps({"info":"police_up","id":d}) for d in random_data_negative]
 
 for i in json_update_true:
-    print(i)
     r=requests.delete("http://192.168.160.237:8000/roadblock/",data=json.dumps(i),headers={"Content-Type":"text/plain"})
 
-    print(r)
-    print(r.text)
 for f in json_update_false:
-    print(f)
     r=requests.put("http://192.168.160.237:8000/roadblock/",data=json.dumps(f),headers= {"Content-Type":"text/plain"})
-    print(r)
-    print(r.text)

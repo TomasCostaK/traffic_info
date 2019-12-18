@@ -7,7 +7,7 @@ from datetime import datetime,timezone,timedelta
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.response import responses
 from rest_framework import status
-
+import traceback
 from TrafficJammer.models import Street, \
     Section, \
     Transit, \
@@ -26,13 +26,15 @@ from TrafficJammer.models import Street, \
 
 
 @csrf_exempt
-def info_street(request):
-    if request.method=="GET":
-        return HttpResponse(json.dumps(SectionSerializer(Section.objects.all(),many=True).data),status=status.HTTP_200_OK)
+def info_street(request,city):
+    try:
+        if request.method=="GET":
+            sections=Section.objects.filter(street__city=city)
+            return HttpResponse(json.dumps(SectionSerializer(sections,many=True).data),status=status.HTTP_200_OK)
+    except Section.DoesNotExist:
+        return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
 
 
-
-'''TODOO FIX THIS '''
 @csrf_exempt
 def street(request):
     try:
@@ -40,70 +42,87 @@ def street(request):
             '''
             Creating a new street
             '''
+            print("Creating a new street")
             data=json.loads(request.body)
             name=data.get("name")
-            begin_coord_x,begin_coord_y=(data.get("beginning_coords")[0],data.get("beginning_coords")[1])
-            ending_coord_x,ending_coord_y=(data.get("ending_coords")[0],data.get("ending_coords")[1])
-            length=math.hypot(begin_coord_x-ending_coord_x,begin_coord_y-ending_coord_y)
+            start = data.get("beginning_coords")
+            end = data.get("ending_coords")
             city=data.get("city")
+            if len(Street.objects.filter(city=city,begin_coord_x=start[0],begin_coord_y=start[1],ending_coord_x=end[0],ending_coord_y=end[1],name=name))>0:
+                return HttpResponse("That street already exists",status=status.HTTP_409_CONFLICT)
+
+            if start[0] < end[0]:
+                x_length = end[0] - start[0]
+                increase_x = 1
+            else:
+                x_length = start[0] - end[0]
+                increase_x = -1
+
+            if start[1] < end[1]:
+                y_length = end[1] - start[1]
+                increase_y = 1
+            else:
+                y_length = start[1] - end[1]
+                increase_y = -1
+
+            path_length = math.hypot(x_length, y_length)
+
+
             street_obj=Street(name=name,
-                            begin_coord_x=begin_coord_x,
-                            begin_coord_y=begin_coord_y,
-                            ending_coord_x=ending_coord_x,
-                            ending_coord_y=ending_coord_y,
-                            length=length,
+                            begin_coord_x=start[0],
+                            begin_coord_y=start[1],
+                            ending_coord_x=end[0],
+                            ending_coord_y=end[1],
+                            length=path_length,
                             city=city)
             street_obj.save()
             '''
-            Turning the street into different sections
+            Turning the street into different s ections
             Each section is aprox 500m of a street, if the street is made of sections that aren't divisible by 500
             the last section will be the rest 1200=500+500+200
             '''
-            number_of_divisions=(length/(500))
-            stop=False
-            for i in range(0,math.ceil(number_of_divisions)+1):
+            num_subsections = int(path_length//500) + 1
+            end_section = tuple(start)
 
-                begin_x=begin_coord_x+(i*((ending_coord_x-begin_coord_x)/number_of_divisions))
-                begin_y=begin_coord_y+(i*((ending_coord_y-begin_coord_y)/number_of_divisions))
-                end_coord_x=begin_coord_x+((i+1)*((ending_coord_x-begin_coord_x)/number_of_divisions))
-                end_coord_y=begin_coord_y+((i+1)*((ending_coord_y-begin_coord_y)/number_of_divisions))
+            for i in range(1, num_subsections):
 
-                if i==0:
-                    begin_x=begin_coord_x
-                    begin_y=begin_coord_y
-                if end_coord_x>ending_coord_x:
-                    end_coord_x=ending_coord_x
-                    stop=True
-                if end_coord_y>ending_coord_y:
-                    end_coord_y=ending_coord_y
-                    stop=True
-                if begin_x==end_coord_x and begin_y==end_coord_y:
-                    break
-                create_section(street_obj,begin_x,begin_y,end_coord_x,end_coord_y,True)
-                create_section(street_obj,begin_x,begin_y,end_coord_x,end_coord_y,False)
-                if stop:
-                    break
+                start_section = end_section
+                end_section = (
+                        start[0] + i*x_length/num_subsections*increase_x,
+                        start[1] + i*y_length/num_subsections*increase_y
+                    )
+
+                create_section(street_obj,start_section[0], start_section[1],end_section[0], end_section[1], True)
+                create_section(street_obj,start_section[0], start_section[1],end_section[0], end_section[1], False)
+
+            create_section(street_obj, end_section[0], end_section[1], end[0], end[1], True)
+            create_section(street_obj, end_section[0], end_section[1], end[0], end[1], False)
+
             return HttpResponse(json.dumps(StreetInputSerializer(street_obj).data),status=status.HTTP_200_OK)
-    except:
+    except Exception as e:
+        print(e)
         return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
 
 @csrf_exempt
 def car_to_street(request):
     try:
-        if request.method=="PUT":
+        if request.method=="POST":
             data=json.loads(request.body)
             crud_ops=data.get("data")
             for op in crud_ops:
-                if op.get("type")=="insert":
+                if op.get("type") == "insert":
                     section=Section.objects.get(id=op.get("id"))
                     section.number_cars+=1
                     car=Car(license_plate=op.get("plate"),section=section)
                     car.save()
-                elif op.get("type")=="delete":
+                    add_to_transit(section)
+                    section.save()
+                elif op.get("type") == "delete":
                     section=Section.objects.get(id=op.get("id"))
                     section.number_cars-=1
                     car=Car.objects.get(license_plate=op.get("plate"))
                     car.delete()
+                    section.save()
                 else:
                     return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
             return HttpResponse(status=status.HTTP_200_OK)
@@ -126,16 +145,16 @@ def add_to_accident(request):
     except Section.DoesNotExist:
         return HttpResponse(status=status.HTTP_404_NOT_FOUND)
 
-def add_to_transit(section,transit=75):
+def add_to_transit(section,transit=80):
     time_of_transit = datetime.now(timezone.utc)
     last_time_of_transit = sorted(Transit.objects.filter(section=section),key=lambda transit:transit.date,reverse=True)
     if section.number_cars>transit:
         if last_time_of_transit==[]:
-            transit = Transit(date=time_of_transit, section=section)
-            transit.save()
+            street_transit = Transit(date=time_of_transit, section=section)
+            street_transit.save()
         if last_time_of_transit[0].date+timedelta(minutes=30)<time_of_transit:
-            transit = Transit(date=time_of_transit,section=section)
-            transit.save()
+            street_transit = Transit(date=time_of_transit,section=section)
+            street_transit.save()
 
 def create_section(street,coord_x,coord_y,end_x,end_y,direction):
     section = Section(street=street,
@@ -208,7 +227,7 @@ def statistics(request,street,begin,end,week_day=None):
 
 @csrf_exempt
 def visibility(request):
-    if request.method=="POST":
+    if request.method=="PUT":
         try:
             data=json.loads(request.body)
             section=Section.objects.get(id=data.get("id"))
@@ -244,7 +263,7 @@ def police(request):
 @csrf_exempt
 def roadblock(request):
     try:
-        if request.method=="PUT":
+        if request.method=="POST":
             data = json.loads(request.body)
             section = Section.objects.get(id=data.get("id"))
             section.roadblock=True
@@ -274,7 +293,7 @@ def all_streets(request):
     try:
         if request.method=="GET":
             streets=Street.objects.all()
-            return HttpResponse(json.dumps(AllStreetSerializer(streets,many=True).data))
+            return HttpResponse(json.dumps(AllStreetSerializer(streets,many=True).data),status=status.HTTP_200_OK)
         else:
             return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
     except:
@@ -289,3 +308,52 @@ def licenses_by_section(request,city):
             return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
     except:
         return HttpResponse(status=status.HTTP_404_NOT_FOUND)
+
+def charts(request,type,street,begin,end):
+    try:
+        if request.method=="GET":
+            dates=[]
+            ammount=[]
+            begin=begin.split("-")
+            end=end.split("-")
+            begin_day=datetime(int(begin[0]),int(begin[1]),int(begin[2]),0,0,0)
+            end_day=datetime(int(end[0]),int(end[1]),int(end[2]),0,0,0)
+            difference_days=(end_day-begin_day).days
+            if type == "accident":
+                for i in range(difference_days):
+                        temp_day=begin_day+timedelta(days=i)
+                        dates.append(f"{temp_day.year}-{temp_day.month}-{temp_day.day}")
+                        ammount.append(len(Accident.objects.filter(date__year=temp_day.year, date__month=temp_day.month, date__day=temp_day.day,section__street=street)))
+            elif type == "roadblock":
+                for i in range(difference_days):
+                        temp_day=begin_day+timedelta(days=i)
+                        dates.append(f"{temp_day.year}-{temp_day.month}-{temp_day.day}")
+                        vals=Blocked.objects.filter(begin__lt=temp_day,section__street=street)
+                        if len(vals):
+                            for j in vals:
+                                print(j.end)
+                                if j.end is None:
+                                    ammount.append(1)
+                                elif j.end.replace(tzinfo=None)>temp_day:
+                                    ammount.append(1)
+                                else:
+                                    ammount.append(0)
+                        else:
+                            ammount.append(0)
+
+            return HttpResponse(json.dumps({"Days":dates,"ammount":ammount}),status=status.HTTP_200_OK)
+        else:
+            return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+    except:
+        return HttpResponse(status=status.HTTP_404_NOT_FOUND)
+
+def available_cities(request):
+    try:
+        if request.method=="GET":
+            final=list(set([street.city for street in Street.objects.all().only("city")]))
+            return HttpResponse(json.dumps(final), status=status.HTTP_200_OK)
+        else:
+            return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+    except:
+        return HttpResponse(status=status.HTTP_404_NOT_FOUND)
+

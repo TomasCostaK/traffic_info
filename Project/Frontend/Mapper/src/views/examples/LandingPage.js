@@ -120,15 +120,15 @@ function LandingPage() {
               <Col md="3">
                 <Card className="card-profile card-plain">
                   <div className="card-avatar">
-                    <a href="/profile-page" >
+                    <a href="#tomas" >
                       <img
                         alt="..."
-                        src={require("assets/img/faces/clem-onojeghuo-3.jpg")}
+                        src={require("assets/img/tomas2.png")}
                       />
                     </a>
                   </div>
                   <CardBody>
-                    <a href="/profile-page" >
+                    <a href="#tomas" >
                       <div className="author">
                         <CardTitle tag="h4">Tomás Costa</CardTitle>
                         <h6 className="card-category">Team Manager</h6>
@@ -177,7 +177,7 @@ function LandingPage() {
                     <a href="#pablo" >
                       <img
                         alt="..."
-                        src={require("assets/img/faces/joe-gardner-2.jpg")}
+                        src={require("assets/img/mota2.png")}
                       />
                     </a>
                   </div>
@@ -229,15 +229,15 @@ function LandingPage() {
               <Col md="3">
                 <Card className="card-profile card-plain">
                   <div className="card-avatar">
-                    <a href="#pablo" >
+                    <a href="#pedro" >
                       <img
                         alt="..."
-                        src={require("assets/img/faces/joe-gardner-2.jpg")}
+                        src={require("assets/img/pedro.jpg")}
                       />
                     </a>
                   </div>
                   <CardBody>
-                    <a href="#pablo" >
+                    <a href="#pedro" >
                       <div className="author">
                         <CardTitle tag="h4">Pedro Oliveira</CardTitle>
                         <h6 className="card-category">DevOps Master</h6>
@@ -284,15 +284,15 @@ function LandingPage() {
               <Col md="3">
                 <Card className="card-profile card-plain">
                   <div className="card-avatar">
-                    <a href="#pablo" >
+                    <a href="#joao" >
                       <img
                         alt="..."
-                        src={require("assets/img/faces/erik-lucatero-2.jpg")}
+                        src={require("assets/img/joao.png")}
                       />
                     </a>
                   </div>
                   <CardBody>
-                    <a href="#pablo" >
+                    <a href="#joao" >
                       <div className="author">
                         <CardTitle tag="h4">João Silva</CardTitle>
                         <h6 className="card-category">Architecture Expert</h6>

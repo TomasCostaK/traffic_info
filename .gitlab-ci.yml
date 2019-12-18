@@ -1,22 +1,30 @@
 image: docker:latest
 services:
- - docker:dind
+  - docker:dind
 
 stages:
- - cleanup
- - deploy
+  - cleanup
+  - deploy
 
 clean-dockers:
   stage: cleanup
   script:
+    - docker ps -aq
     - docker kill $(docker ps -aq) || true
     - docker rm $(docker ps -aq) || true
+    - docker volume ls -qf dangling=true
+    - docker volume rm $(docker volume ls -qf dangling=true) || true
+  only:
+    - master
+    - docker
 
 deploy-backend-frontend:
- stage: deploy
- script:
-  - docker build --tag "backend" Project/Backend
-  - docker run -p 8000:8000 -d backend
-  - docker build --tag "frontend" Project/Frontend/Mapper
-  - docker run -p 8800:80 -d frontend
-
+  stage: deploy
+  script:
+    - docker build --tag "backend" Project/Backend
+    - docker run -p 8000:8000 -d backend
+    - docker build --tag "frontend" Project/Frontend/Mapper
+    - docker run -p 8800:80 -d frontend
+  only:
+    - master
+    - docker
