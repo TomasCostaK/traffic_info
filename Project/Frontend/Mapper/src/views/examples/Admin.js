@@ -26,9 +26,12 @@ import { Text } from 'react-konva';
 import "../../../node_modules/react-datepicker/dist/react-datepicker.css"
 // core components
 import BlackNavbar from "components/Navbars/BlackNavbar.js";
+import { FormErrors } from './MapFormError.js';
 
-const API = '192.168.160.237:8000/';
+const API = 'http://192.168.160.237:8000/';
 const DEFAULT_QUERY = 'all_streets/';
+const ALL_CITIES = 'available_cities/';
+const POST_STREET = 'street/';
 
 //Fazer as stats como class independende
 
@@ -38,17 +41,35 @@ class Admin extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dataSource: [],
-    };
-    this.street = {
-      name: '',
+      streetname: '',
       beginX: 0,
       beginY: 0,
       endX: 0,
       endY: 0,
       city: '',
-      valid: false
+      error_log: {streetname: '', beginX: '', endX: '', beginY: '', endY: '', city: '', coords: ''},
+      name_valid: false,
+      beginX_valid: false,
+      beginY_valid: false,
+      endX_valid: false,
+      endY_valid: false,
+      coord_valid: false,
+      city_valid: false,
+      valid: false,
+      all_cities: []
     }
+  }
+
+  fetchAllCities(){
+    fetch(API+ALL_CITIES, { headers: {'Content-Type': 'application/json'}}).
+      then(resp => resp.json()).
+      then(responseData => {
+        return responseData;
+      })
+      .then(data => {this.setState({
+        all_cities : data
+      })
+    });
   }
 
   //date-format: AAAA-MM-DD
@@ -61,24 +82,60 @@ class Admin extends Component {
     //sumting heya
   }
 
-  postStreet(){
-    return;
+  postStreet = async () =>{
+    console.log("posting to ", + API + POST_STREET)
+    const response = await fetch( API + POST_STREET, {  
+      method: 'POST',
+      headers: {'Content-Type': 'text/plain'} ,
+      body: JSON.stringify({
+        "name": this.state.name,
+        "beginning_coords": [
+          parseInt(this.state.beginX),
+          parseInt(this.state.beginY)
+        ],
+        "ending_coords": [
+          parseInt(this.state.endX),
+          parseInt(this.state.endY)
+        ],
+        "city": this.state.city
+      })
+    });
+    console.log(await response);
+    console.log(await response.json());
   }
 
   handleUserInput (e) {
     const name = e.target.name;
     const value = e.target.value;
-    this.setStreet({[name]: value, ()=>this.validateData()});
+    this.setState({[name]: value}, () => {this.validateData(); });
   }
 
-  validateData(){
-    this.street.valid = 
-        this.street.name.match(/^[a-zA-Z ]{2,80}$/) &&
-        Number.isInteger(this.street.beginX) &&
-        Number.isInteger(this.street.beginY) &&
-        Number.isInteger(this.street.endX) &&
-        Number.isInteger(this.street.endY) &&
-        this.street.city.match(/^[a-zA-Z ]{2,80}$/)
+  validateData = () => {
+    this.fetchAllCities();
+    
+    this.state.name_valid = this.state.streetname.match(/^[a-zA-Z ]{2,80}$/);
+    this.state.error_log.streetname = (!this.state.name_valid)? "You inserted an invalid name\n":"" ;
+    
+    this.state.beginX_valid = !Number.isNaN(this.state.beginX);
+    this.state.error_log.beginX = (!this.state.beginX_valid)? "Begining Coordinate of X is not a number\n":"";
+    
+    this.state.beginY_valid = !Number.isNaN(this.state.beginY);
+    this.state.error_log.beginY = (!this.state.beginY_valid)? "Begining Coordinate of Y is not a number\n":"";
+    
+    this.state.endX_valid = !Number.isNaN(this.state.endX);
+    this.state.error_log.endX = (!this.state.endX_valid)? "Ending Coordinate of X is not a number\n":"";
+    
+    this.state.endY_valid = !Number.isNaN(this.state.endY);
+    this.state.error_log.endY = (!this.state.endY_valid)? "Ending Coordinate of Y is not a number\n":"";
+    
+    this.state.coord_valid = this.state.beginX != this.state.endX || this.state.beginY != this.state.endY;
+    this.state.error_log.coords = (!this.state.coord_valid)? "Both begining and ending coordinates are the same\n":"";
+    
+    this.state.city_valid = this.state.all_cities.includes(this.state.city);
+    this.state.error_log.city = (!this.state.city_valid)? "The cities you entered are invalid, you can only pick between " + this.state.all_cities + "\n":"";
+    
+    this.state.valid = this.state.name_valid && this.state.beginX_valid && this.state.beginY_valid && this.state.endX_valid && this.state.endY_valid && this.state.coord_valid && this.state.city_valid;
+        
   }
 
   getDataStats = () => {
@@ -118,12 +175,12 @@ class Admin extends Component {
                   <Grid item xs={12}>
                     <TextField
                       required
-                      id="streetName"
-                      name="streetName"
+                      id="streetname"
+                      name="streetname"
                       label="Street name"
                       fullWidth
                       onChange={(event) => this.handleUserInput(event)}
-                      value={this.street.name}
+                      value={this.state.name}
                       
                       autoComplete="Rua"
                     />
@@ -131,48 +188,52 @@ class Admin extends Component {
                   <Grid item xs={6} sm={3}>
                       <TextField
                       required
-                      id="beginingX"
-                      name="beginingX"
+                      id="beginX"
+                      name="beginX"
                       label="X coord to start"
+                      type="number"
                       fullWidth
                       onChange={(event) => this.handleUserInput(event)}
-                      value={this.street.beginX}
+                      value={this.state.beginX}
                       autoComplete="0"
                       />
                   </Grid>
                   <Grid item xs={6} sm={3}>
                       <TextField
                       required
-                      id="beginingY"
-                      name="beginingY"
+                      id="beginY"
+                      name="beginY"
                       label="Y coord to start"
+                      type="number"
                       fullWidth
                       onChange={(event) => this.handleUserInput(event)}
-                      value={this.street.beginY}
+                      value={this.state.beginY}
                       autoComplete="0"
                       />
                   </Grid>
                   <Grid item xs={6} sm={3}>
                       <TextField
                       required
-                      id="endingX"
-                      name="endingX"
+                      id="endX"
+                      name="endX"
                       label="X coord to end"
+                      type="number"
                       fullWidth
                       onChange={(event) => this.handleUserInput(event)}
-                      value={this.street.endX}
+                      value={this.state.endX}
                       autoComplete="1000"
                       />
                   </Grid>
                   <Grid item xs={6} sm={3}>
                       <TextField
                       required
-                      id="endingY"
-                      name="endingY"
+                      id="endY"
+                      name="endY"
                       label="Y coord to end"
                       fullWidth
+                      type="number"
                       onChange={(event) => this.handleUserInput(event)}
-                      value={this.street.endY}
+                      value={this.state.endY}
                       autoComplete="100"
                       />
                   </Grid>
@@ -184,7 +245,7 @@ class Admin extends Component {
                       label="City"
                       fullWidth
                       onChange={(event) => this.handleUserInput(event)}
-                      value={this.street.city}
+                      value={this.state.city}
                       autoComplete="Cidade "
                     />
                   </Grid>
@@ -192,11 +253,15 @@ class Admin extends Component {
                 <Button
                     variant="contained"
                     color="primary"
-                    disabled={!this.street.valid}
-                    onClick={this.postStreet()}
+                    disabled={!this.state.valid}
+                    onClick={() => this.postStreet()}
                   >Submit</Button>  
               </React.Fragment>
             </Container>
+            
+        </div>
+        <div className="panel panel-default">
+          <FormErrors formErrors={this.state.error_log} />
         </div>
     </>
     )
