@@ -32,7 +32,6 @@ import BlackNavbar from "components/Navbars/BlackNavbar.js";
 
 const API = 'http://192.168.160.237:8000/';
 const DEFAULT_QUERY = 'all_streets/';
-const ALL_CITIES = 'available_cities/';
 const STATS_QUERY = 'statistics/';
 const GRAPH_STATS = 'charts/';
 
@@ -117,6 +116,8 @@ class Dashboard extends Component {
   }
   //date-format: AAAA-MM-DD
 
+
+  
   componentDidMount() {
     this.getData()
     this.getDataGraph()
@@ -189,7 +190,8 @@ class Dashboard extends Component {
   };
 
   getData = () => {
-    fetch(API+DEFAULT_QUERY, { headers: {'Content-Type':'application/json'}}).
+    console.log("Making request: " + API+DEFAULT_QUERY+this.state.street+ '/')
+    fetch(API+DEFAULT_QUERY+this.state.street+ '/', { headers: {'Content-Type':'application/json'}}).
       then(resp => resp.json()).
       then(rest => {
         console.log("Making request to info_street")

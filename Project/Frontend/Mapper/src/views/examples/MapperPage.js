@@ -25,8 +25,6 @@ import ReactSearchBox from 'react-search-box'
 // core components
 import BlackNavbar from "components/Navbars/BlackNavbar.js";
 
-let window_height = 350;
-let window_width = 800;
 //Ter em conta o zooming distance na width do stroke das estradas e nao so so seu tamanho
 var map_data;
 
@@ -79,17 +77,28 @@ class RegisterPage extends Component {
       car_trecho:null,
       car_plate:'',
 
+      width: 0,
+      height: 0,
+
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+  }
+
+  updateWindowDimensions() {
+    this.setState({ width: window.innerWidth, height: window.innerHeight });
   }
 
   componentDidMount() {
     this.interval = setInterval(() => this.setState({ time: Date.now(), loading_map:false } && this.getData()), 4000);
+    this.updateWindowDimensions();
+    window.addEventListener('resize', this.updateWindowDimensions);
   }
 
   componentWillUnmount() {
     clearInterval(this.interval);
+    window.removeEventListener('resize', this.updateWindowDimensions);
   }
 
   fetchPlate =(text) => {
@@ -124,7 +133,7 @@ class RegisterPage extends Component {
     delta_x = endx - begx
     delta_y = endy - begy
     points = []
-    var street_distance = 8;
+    var street_distance = 7;
     var strWidth = 5;
 
     if (searching_car){
@@ -308,7 +317,7 @@ class RegisterPage extends Component {
                 </Row>
 
               </div>
-                <Stage style={{backgroundColor:'rgba(0,0,0,0.7)'}} width={window_width} height={window_height}>
+                <Stage style={{backgroundColor:'rgba(0,0,0,0.7)'}} width={this.state.width*0.5} height={this.state.height*0.65}>
                   <Layer  id="map">
                   {/* Aqui desenhamos o mapa */}
                   {this.fill_map()}
