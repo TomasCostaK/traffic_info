@@ -1,21 +1,30 @@
 image: docker:latest
 services:
- - docker:dind
+  - docker:dind
 
 stages:
- - deploy
+  - cleanup
+  - deploy
 
-before_script:
-  - apk update -qq && apk add -y -qq py-pip
-  - apk add python-dev libffi-dev openssl-dev gcc libc-dev make
-  - docker info
+clean-dockers:
+  stage: cleanup
+  script:
+    - docker ps -aq
+    - docker kill $(docker ps -aq) || true
+    - docker rm $(docker ps -aq) || true
+    - docker volume ls -qf dangling=true
+    - docker volume rm $(docker volume ls -qf dangling=true) || true
+  only:
+    - master
+    - docker
 
-step-backend:
- stage: deploy
- script:
-  - pip install docker-compose
-  - docker-compose -f Project/docker-compose.yml stop
-  - docker-compose -f Project/docker-compose.yml build --no-cache
-  - docker-compose -f Project/docker-compose.yml up -d
-
-  
+deploy-backend-frontend:
+  stage: deploy
+  script:
+    - docker build --tag "backend" Project/Backend
+    - docker run -p 8000:8000 -d backend
+    - docker build --tag "frontend" Project/Frontend/Mapper
+    - docker run -p 8800:80 -d frontend
+  only:
+    - master
+    - docker

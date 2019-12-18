@@ -19,14 +19,19 @@ from TrafficJammer import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('info_street/',views.info_street,name="info"),
+    path('info_street/<str:city>/',views.info_street,name="info"),
+    path('all_streets/',views.all_streets,name="all_streets"),
     path('street/',views.street,name="crud_street"),
     path('car/',views.car_to_street,name="crud_car"),
     path('accident/',views.add_to_accident,name="accident"),
-    path('specific_car/',views.get_car,name='get_car'),
-    path('all_cars/',views.all_cars,name='all_cars'),
-    path('statistics/',views.statistics,name='statistics'),
+    path('specific_car/<str:license_plate>/',views.get_car,name='get_car'),
+    path('all_cars/<int:section>/',views.all_cars,name='all_cars'),
+    path('statistics/<int:street>/<str:begin>/<str:end>/',views.statistics,name='statistics'),
+    path('statistics/<int:street>/<str:begin>/<str:end>/<str:week_day>/', views.statistics, name='statistics'),
     path('visibility/',views.visibility,name='visibility'),
     path('police/',views.police,name='police'),
     path('roadblock/',views.roadblock,name='roadblock'),
+    path('licenses_by_city/<str:city>/',views.licenses_by_section,name='licenses_by_city'),
+    path('charts/<str:type>/street=<int:street>&start_date=<str:begin>&end_date=<str:end>/',views.charts,name='charts'),
+    path('available_cities/',views.available_cities,name='available cities')
 ]
