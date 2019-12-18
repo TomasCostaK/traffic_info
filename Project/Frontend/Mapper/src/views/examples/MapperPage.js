@@ -56,8 +56,7 @@ class RegisterPage extends Component {
       car_plate:'',
       time: Date.now(),
       dataSource: [],
-      all_plates: [{
-        'key':'Nenhuma','value':'Nenhuma'},
+      all_plates: [
         {'key':'tom1k1','value':'tom1k1'},        
         {'key':'tom1k2','value':'tom1k2'},
       ],
@@ -203,17 +202,10 @@ class RegisterPage extends Component {
   }
 
   searchPlate = (plate) => {
-    console.log("Goten here")
-    console.log("New plate:" + plate)
-    if (plate.key=="Nenhuma"){
-      this.setState({
-        car_plate:'',
-        car_trecho:null
-      })
-      return
-    }
+    console.log("New plate:" + plate.key)
+
     this.setState({
-      car_plate:plate,
+      car_plate:plate.key,
       car_trecho:13
     })
   }
@@ -230,12 +222,21 @@ class RegisterPage extends Component {
     }
   }
 
+  resetPlate = async () => {
+    await this.setState({
+      car_plate:'',
+      car_trecho:null,
+    })
+    console.log("ThisStatePlate: " + this.state.car_plate)
+  }
+
   changeStreet = async (text) =>{
     console.log(text)
     await this.setState({
       street: text.key,
       car_trecho:37
     })
+    this.resetPlate();
     this.getData();
   }
 
@@ -291,6 +292,11 @@ class RegisterPage extends Component {
             data={this.state.all_plates}
             onSelect={record => this.searchPlate(record)}
           />
+          <Button
+          style={{maxHeight:40,marginLeft:5}}
+          onClick={() => this.resetPlate()}>
+            Reset
+          </Button>
           </Row>
           
             <Text style={{color:'black', fontWeight:'bolder', fontSize:20}}>Legenda:</Text>
