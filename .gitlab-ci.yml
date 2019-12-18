@@ -12,6 +12,8 @@ clean-dockers:
     - docker ps -aq
     - docker kill $(docker ps -aq) || true
     - docker rm $(docker ps -aq) || true
+    - docker volume ls -qf dangling=true
+    - docker volume rm $(docker volume ls -qf dangling=true) || true
   only:
     - master
     - docker
