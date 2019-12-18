@@ -24,6 +24,7 @@ import "../../../node_modules/react-datepicker/dist/react-datepicker.css"
 // core components
 import ExamplesNavbar from "components/Navbars/ExamplesNavbar.js";
 import MapForm from "./MapForm";
+import Button from '@material-ui/core/Button';
 
 const API = '192.168.160.237:8000/';
 const DEFAULT_QUERY = 'all_streets/';
@@ -38,6 +39,15 @@ class Admin extends Component {
     this.state = {
       dataSource: [],
     };
+    this.street = {
+      name: '',
+      beginX: 0,
+      beginY: 0,
+      endX: 0,
+      endY: 0,
+      city: '',
+      valid: false
+    }
   }
 
   //date-format: AAAA-MM-DD
@@ -82,6 +92,15 @@ class Admin extends Component {
                 <Row>
                     <Text style={{color:'white',fontWeight:'bolder'}}>ADMIN CHANGING STREETS</Text>
                 </Row>
+                <React.Fragment>
+                  <MapForm />
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    disabled={!this.street.valid}
+                    onClick={postStreet}
+                  >Submit</Button>
+                </React.Fragment>
             </Container>
         </div>
     </>
