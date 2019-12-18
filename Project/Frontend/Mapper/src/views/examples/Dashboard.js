@@ -124,7 +124,7 @@ class Dashboard extends Component {
     this.getDataStats()
   };
 
-  getDataCities = () => {
+  /*getDataCities = () => {
     console.log(API+GRAPH_STATS+this.state.type_chart.value+ '/street=' + this.state.street_id +'&start_date=' + this.state.begin_date +' &end_date=' + this.state.end_date +'/')
     fetch(API+GRAPH_STATS+this.state.type_chart.value+'/street=' + this.state.street_id +'&start_date=' + this.state.begin_date +' &end_date=' + this.state.end_date +'/', { headers: {'Content-Type':'application/json'}}).
       then(resp => resp.json()).
@@ -135,7 +135,7 @@ class Dashboard extends Component {
       then(responseData => {
         this.fillStats(responseData)
       });
-  }
+  }*/
   
 
   handleChangeEnd = async date => {
@@ -161,6 +161,7 @@ class Dashboard extends Component {
       });
   }
 
+  /*
   getDataGraph = () => {
     console.log(API+GRAPH_STATS+this.state.type_chart.value+ '/street=' + this.state.street_id +'&start_date=' + this.state.begin_date +' &end_date=' + this.state.end_date +'/')
     fetch(API+GRAPH_STATS+this.state.type_chart.value+'/street=' + this.state.street_id +'&start_date=' + this.state.begin_date +' &end_date=' + this.state.end_date +'/', { headers: {'Content-Type':'application/json'}}).
@@ -175,7 +176,7 @@ class Dashboard extends Component {
         })
         this.fillStats(responseData)
       });
-  }
+  }*/
 
   getDataStats = () => {
     console.log("Making request to statistics")
@@ -276,7 +277,7 @@ class Dashboard extends Component {
               backgroundColor:'rgba(255,255,255,1)',
             }}
           >
-            <Line width={1000} height={250} data={this.getDataGraph()} />
+            <Line width={1000} height={250} data={(response) => this.fillStats(response)} />
           </div>
           </Row>
         </div>
