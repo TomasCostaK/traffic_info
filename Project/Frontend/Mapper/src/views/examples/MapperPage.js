@@ -27,7 +27,7 @@ import ReactSearchBox from 'react-search-box'
 import BlackNavbar from "components/Navbars/BlackNavbar.js";
 
 let window_height = 350;
-let window_width = 700;
+let window_width = 800;
 //Ter em conta o zooming distance na width do stroke das estradas e nao so so seu tamanho
 var map_data;
 

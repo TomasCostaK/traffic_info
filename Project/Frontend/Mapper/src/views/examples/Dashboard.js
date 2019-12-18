@@ -55,7 +55,7 @@ class Dashboard extends Component {
     super(props);
     this.state = {
       hits: [],
-      street_name: "",
+      street_name: "Travessa das Leirinhas",
       streets : [ //Ir buscar dinamicamente
         {
           key: 'Porto',
@@ -90,6 +90,7 @@ class Dashboard extends Component {
 
   componentDidMount() {
     this.getData()
+    this.getDataGraph()
   }
 
   componentWillUnmount() {
@@ -97,7 +98,6 @@ class Dashboard extends Component {
   }
 
   changeStreet = async (text) =>{
-    console.log(text)
     await this.setState({
       street: text.key,
     })
@@ -167,8 +167,8 @@ class Dashboard extends Component {
       });
   }
   
-  /*
-  getDataGraph = () => {
+  
+  getDataGraph () {
     console.log(API+GRAPH_STATS+this.state.type_chart.value+ '/street=' + this.state.street_id +'&start_date=' + this.state.begin_date +' &end_date=' + this.state.end_date +'/')
     fetch(API+GRAPH_STATS+this.state.type_chart.value+'/street=' + this.state.street_id +'&start_date=' + this.state.begin_date +' &end_date=' + this.state.end_date +'/', { headers: {'Content-Type':'application/json'}}).
       then(resp => resp.json()).
@@ -176,13 +176,14 @@ class Dashboard extends Component {
         return rest
       }).
       then(responseData => {
+        console.log(responseData)
         this.setState({
           labels : responseData.Days,
           values: responseData.ammount
         })
         this.fillStats(responseData)
       });
-  }*/
+  }
 
   getDataStats = () => {
     console.log("Making request to statistics")
@@ -195,13 +196,13 @@ class Dashboard extends Component {
       .then(data => {
         console.log(data)
         this.setState({
-        dataSourceStats : [data]
+          dataSourceStats : [data]
       })
     });
   }
 
-  changeStreetDisplayed(response) {
-    this.setState({
+  changeStreetDisplayed =  async (response) => {
+    await this.setState({
       street_name: response.value,
       street_id : response.key
     })
@@ -245,7 +246,7 @@ class Dashboard extends Component {
             <Text style={{color:'rgba(0,0,0,0.6)', fontSize:13, marginTop:5, fontWeight:'bolder'}}>Street name: </Text>
             <ReactSearchBox
               placeholder="Search street"
-              value=""
+              value="Travessa das Leirinhas"
               data={this.state.dataSource}
               color={'black'}
               style={{fontWeight:'bold',width:40}}
@@ -278,9 +279,9 @@ class Dashboard extends Component {
         <Text style={{color:'rgba(0,0,0,0.6)', fontWeight:'bold', marginTop:80, textAlign:'center',fontSize:24}}>{this.state.street_name}</Text>
             <div style={{display:'flex', flexDirection:'row' , justifyContent:'space-between',alignContent:'space-between'}}>
               <Stats style={{flex:1}} stat_name="Nº of accidents" number={this.state.dataSourceStats[0].total_accident}/>
-              <Stats style={{flex:1}} stat_name="Roadblock total time" number={this.state.dataSourceStats[0].road_block.total_time}/>
+              <Stats style={{flex:1}} stat_name="Roadblock total time" number={(this.state.dataSourceStats[0].road_block.total_time.toFixed()).toString() + "H"}/>
               <Stats style={{flex:1}} stat_name="Nº of roadblocks" number={this.state.dataSourceStats[0].road_block.times}/>
-              <Stats style={{flex:1}} stat_name="Transit Count" number={this.state.dataSourceStats[0].transit_count}/>
+              <Stats style={{flex:1}} stat_name="Times Congested" number={this.state.dataSourceStats[0].transit_count}/>
 
             </div>
             </Container>    
