@@ -31,8 +31,9 @@ let window_width = 700;
 //Ter em conta o zooming distance na width do stroke das estradas e nao so so seu tamanho
 var map_data;
 
-const API = '192.168.160.237:8000/';
+const API = 'http://192.168.160.237:8000/';
 const DEFAULT_QUERY = 'info_street/';
+const SEARCH_PLATE = 'specific_car/';
 
 const PoliceImage = (begx,begy) => {
   const [image] = useImage('../../assets/img/car.jpg');
@@ -52,14 +53,10 @@ class RegisterPage extends Component {
       zooming_distance : 7,
       hits: [],
       loading_map:true,
-      car_trecho:null,
-      car_plate:'',
       time: Date.now(),
       dataSource: [],
-      all_plates: [
-        {'key':'tom1k1','value':'tom1k1'},        
-        {'key':'tom1k2','value':'tom1k2'},
-      ],
+
+      //Streets
       streets : [ //Ir buscar dinamicamente
         {
           key: 'Porto',
@@ -75,15 +72,57 @@ class RegisterPage extends Component {
         },
       ],
       street : 'Ilhavo',
+
+      //Plates work
+      all_plates: [
+        {'key':'1','value':'tom1k1'},        
+        {'key':'12','value':'tom1k2'},
+      ],
+      dataSourcePlates:[],
+      value:null,
+
+      //Car search
+      car_trecho:null,
+      car_plate:'',
+
     };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
-    this.interval = setInterval(() => this.setState({ time: Date.now(), loading_map:false } && this.getData()), 2000);
+    this.interval = setInterval(() => this.setState({ time: Date.now(), loading_map:false } && this.getData()), 4000);
   }
 
   componentWillUnmount() {
     clearInterval(this.interval);
+  }
+
+  fetchPlate =(text) => {
+    //Fetching plate given
+    var finalUrl = API + SEARCH_PLATE + text + '/'
+    console.log("Making request: " + finalUrl)
+    fetch(finalUrl, { headers: {'Content-Type': 'application/json'}}).
+      then(resp => {
+        if (!resp.ok) {
+          alert("That car is not in this city!")
+          this.setState({
+            car_trecho : null,
+            car_plate: ''
+          });
+          return "flag"
+        }
+        return resp.json()
+      }).
+      then(response => {
+        console.log(response)
+        if(response!="flag"){
+          this.setState({
+            car_trecho : response.section,
+            car_plate: response.license_plate
+          });
+        }
+      });
   }
 
   draw_street(searching_car,begx, begy, endx, endy, traffic,direction,police){
@@ -201,14 +240,6 @@ class RegisterPage extends Component {
 
   }
 
-  searchPlate = (plate) => {
-    console.log("New plate:" + plate.key)
-
-    this.setState({
-      car_plate:plate.key,
-      car_trecho:13
-    })
-  }
 
   changeZoom(flag){
     if(flag){
@@ -240,6 +271,15 @@ class RegisterPage extends Component {
     this.getData();
   }
 
+  handleChange(event) {
+    this.setState({value: event.target.value});
+  }
+
+  handleSubmit(event) {
+    this.fetchPlate(this.state.value.toUpperCase())
+    event.preventDefault();
+  }
+
   render() {
     return (
       <>
@@ -260,7 +300,7 @@ class RegisterPage extends Component {
                 <Row style={{color:'black',alignContent:'space-between',justifyContent:'space-between'}}>
                 <Text style={{color:'rgba(0,0,0,0.75)', fontWeight:'bold', fontSize:23}}>Map Analysis for:  </Text>
                 <ReactSearchBox
-                  placeholder="Search street"
+                  placeholder="Search city"
                   value="Ilhavo"
                   data={this.state.streets}
                   color={'black'}
@@ -282,18 +322,16 @@ class RegisterPage extends Component {
               </Stage>
             </Row>
           </Container>
-          <Container style={{color:'black',flex:3,marginRight:50,fontWeight:'medium',flexDirection:'column',alignContent:'center',marginTop:150 ,justifyContent:'center'}}>
+          <Container style={{color:'black',flex:4,marginRight:50,fontWeight:'medium',flexDirection:'column',alignContent:'center',marginTop:150 ,justifyContent:'center'}}>
           <Text style={{color:'black', fontWeight:'bolder', fontSize:20}}>Search Plate:</Text>
-          <Row style={{color:'black',alignContent:'space-between',justifyContent:'space-between'}}>
-          <ReactSearchBox
-            placeholder="Search Plate"
-            value={this.state.car_plate}
-            style={{fontSize:10,fontWeight:'bolder'}}
-            data={this.state.all_plates}
-            onSelect={record => this.searchPlate(record)}
-          />
+          <Row style={{color:'black',alignContent:'center',justifyContent:'center'}}>
+            {/* form para procurar matricula*/}
+            <form onSubmit={this.handleSubmit}>
+                <input type="text" value={this.state.value} onChange={this.handleChange} />
+              <Button style={{maxHeight:40,maxWidth:100,marginLeft:5}} type="submit" value="Submit" >Search</Button>
+            </form>
           <Button
-          style={{maxHeight:40,marginLeft:5}}
+          style={{maxHeight:40,maxWidth:100,marginLeft:5}}
           onClick={() => this.resetPlate()}>
             Reset
           </Button>

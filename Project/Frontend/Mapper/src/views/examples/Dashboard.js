@@ -55,7 +55,18 @@ class Dashboard extends Component {
     super(props);
     this.state = {
       hits: [],
-      street_name: "Rua Tenente Joaquim Lopes Craveiro",
+      street_name: "",
+      streets : [ //Ir buscar dinamicamente
+        {
+          key: 'Porto',
+          value: 'Porto',
+        },
+        {
+          key: 'Ilhavo',
+          value: 'Ilhavo',
+        },
+      ],
+      street : 'Ilhavo',
       street_id: 1,
       begin_date: moment().format('YYYY-MM-DD'),
       end_date: moment().format('YYYY-MM-DD'),
@@ -83,6 +94,14 @@ class Dashboard extends Component {
 
   componentWillUnmount() {
     //sumting heya
+  }
+
+  changeStreet = async (text) =>{
+    console.log(text)
+    await this.setState({
+      street: text.key,
+    })
+    this.getData();
   }
 
   fillStats = (respo) => {
@@ -211,7 +230,17 @@ class Dashboard extends Component {
         >
           <Container style={{display:'flex',flex:1,flexDirection:'column',maringTop:50}}>
             <Row style={{alignContent:'center',justifyContent:'center',border:10,borderColor:'white'}}> 
-                <Text style={{color:'rgba(0,0,0,0.6)', fontWeight:'bold', fontSize:30}}>Analytics for streets in: Espinho</Text>
+                <Text style={{color:'rgba(0,0,0,0.6)', fontWeight:'bold', fontSize:30}}>Analytics for streets in:</Text>
+                <ReactSearchBox
+                  placeholder="Search city"
+                  value="Ilhavo"
+                  data={this.state.streets}
+                  color={'black'}
+                  style={{fontWeight:'bold',width:10}}
+                  inputBoxFontColor={'black'}
+                  dropDownHoverColor={'rgba(0,255,255,0.1)'}
+                  onSelect={record => this.changeStreet(record)}
+                />
             </Row>
             <Text style={{color:'rgba(0,0,0,0.6)', fontSize:13, marginTop:5, fontWeight:'bolder'}}>Street name: </Text>
             <ReactSearchBox
