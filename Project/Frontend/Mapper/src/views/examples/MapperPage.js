@@ -74,11 +74,6 @@ class RegisterPage extends Component {
       street : 'Ilhavo',
 
       //Plates work
-      all_plates: [
-        {'key':'1','value':'tom1k1'},        
-        {'key':'12','value':'tom1k2'},
-      ],
-      dataSourcePlates:[],
       value:null,
 
       //Car search
@@ -105,7 +100,7 @@ class RegisterPage extends Component {
     fetch(finalUrl, { headers: {'Content-Type': 'application/json'}}).
       then(resp => {
         if (!resp.ok) {
-          alert("That car is not in this city!")
+          alert("That car was not found in this city!")
           this.setState({
             car_trecho : null,
             car_plate: ''
@@ -328,10 +323,10 @@ class RegisterPage extends Component {
             {/* form para procurar matricula*/}
             <form onSubmit={this.handleSubmit}>
                 <input type="text" value={this.state.value} onChange={this.handleChange} />
-              <Button style={{maxHeight:40,maxWidth:100,marginLeft:5}} type="submit" value="Submit" >Search</Button>
+              <Button style={{maxHeight:38,maxWidth:100,marginLeft:5}} type="submit" value="Submit" >Search</Button>
             </form>
           <Button
-          style={{maxHeight:40,maxWidth:100,marginLeft:5}}
+          style={{maxHeight:38,maxWidth:100,marginLeft:5}}
           onClick={() => this.resetPlate()}>
             Reset
           </Button>
