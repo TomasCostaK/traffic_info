@@ -1,10 +1,11 @@
 # Traffic Jammer
 
-## The Product
-Traffic Jammer is a web application that allows you to view traffic close to you (as a regular user) and manage your city through a very detailed dashboard (administrator). Features include:
+## Product Abstract
+Traffic Jammer is a web application that allows you to view traffic close to you (as a regular user) and manage your city through a very detailed dashboard (administrator). Users with special access (admins) can also create new streets on each city. Features include:
 * Simple interface for visualizing the traffic around you, don't waste time in traffic anymore.
 * Relevant statistics concerning your city's roads including: roadbloack, traffic jams and car crashes.
 * Beautiful and easily usable interface both for clients and administration.
+* Track specific cars in a given city.
 
 ## Team
 * Team Manager - Tomás 
@@ -18,9 +19,6 @@ Traffic Jammer is a web application that allows you to view traffic close to you
 * [Project Guidelines](https://gitlab.com/myiesgroup/iesproject_trafficjammer/blob/master/Reports/ProjectGuidelines.pdf)
 * [Website](http://192.168.160.237:8800)
 * [API](http://192.168.160.237:8000)
-
-## Presentation
-15 minutes + 5 discussion
 
 ### Topics:
 * Objetivo
@@ -79,7 +77,7 @@ Messaging queue may be done with RabbitMQ since we already have some knowledge u
 
 Backend will be done in Django, since one of our programmers can never seem to get Maven right, and as Django is done in Python, which is a languange the whole development team is already very familiar with, and is simpler and more straightforward in terms of handling HTTP requests.
 
-Front end development may be done with ReactJS, depending on how Tomas feels about it lmao. (easier if we also want the app, as we only need to develop once)
+Front end development may be done with ReactJS, since one of our programmers is already experienced with React, and the API calls are very feasible using fetch.
 
 Interface has to be seen afterwards with Tomas, but with the information at the moment we can either just try to get the most out of the Google API, or just do a simple interface from scratch that takes a very minimalistic graph or a simple grid. (Either way we will need to manually integrate and create streets)
 
@@ -88,8 +86,6 @@ Traffic point of the user: como está o transito à volta dele?
 Street statistics: estatisticas de acidente, trafico medio, que rua se conecta a qual, comprimento da rua, inicio e 
 Extra: Route dum sitio (if able)
 
-## Street attributes
-Fill something in here
 
 ##Sensores
         -Objectos
