@@ -299,6 +299,7 @@ class Dashboard extends Component {
                 <DatePicker
                   selected={this.state.begin_date_cal}
                   onChange={this.handleChangeStart}
+                  maxDate={new Date()}
                 />
               </Container>
               <Container style={{flex:1, alignContent:'center',justifyContent:'center'}}>
@@ -306,7 +307,7 @@ class Dashboard extends Component {
                 <DatePicker
                   selected={this.state.end_date_cal}
                   onChange={this.handleChangeEnd}
-                  maxDate={addDays(new Date(), 1)}
+                  maxDate={new Date()}
                 />
               </Container>
               <Container style={{flex:1, alignContent:'center',justifyContent:'center'}}>
