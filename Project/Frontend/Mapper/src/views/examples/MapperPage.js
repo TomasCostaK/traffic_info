@@ -138,7 +138,7 @@ class RegisterPage extends Component {
       <Circle x={begx+220} y={begy+40} radius={5} fill="white" />
       <Circle x={endx+220} y={endy+40} radius={5} fill="white" />
     </>       
-  }
+  } 
 
   analyse_traffic(congestion){
     if (congestion.toLowerCase() == "medium") {
