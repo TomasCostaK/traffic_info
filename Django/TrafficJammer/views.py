@@ -126,14 +126,10 @@ def car_to_street(request):
                 else:
                     return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
             return HttpResponse(status=status.HTTP_200_OK)
-    except Exception as e:
-        traceback.print_exc(e)
-        print(e)
-        print(request)
-    '''except Car.DoesNotExist:
+    except Car.DoesNotExist:
         return HttpResponse("Car not found",status=status.HTTP_404_NOT_FOUND)
     except Section.DoesNotExist:
-        return HttpResponse("Section not found",status=status.HTTP_404_NOT_FOUND)'''
+        return HttpResponse("Section not found",status=status.HTTP_404_NOT_FOUND)
 
 @csrf_exempt
 def crud_accident(request):
