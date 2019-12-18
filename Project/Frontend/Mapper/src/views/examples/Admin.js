@@ -17,14 +17,15 @@
 
 */
 import React, { Component } from "react";
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import TextField from '@material-ui/core/TextField';
 // reactstrap components
 import { Button, Form, Input, Container, Row, Col } from "reactstrap";
 import { Text } from 'react-konva';
 import "../../../node_modules/react-datepicker/dist/react-datepicker.css"
 // core components
-import ExamplesNavbar from "components/Navbars/ExamplesNavbar.js";
-import MapForm from "./MapForm";
-import Button from '@material-ui/core/Button';
+import BlackNavbar from "components/Navbars/BlackNavbar.js";
 
 const API = '192.168.160.237:8000/';
 const DEFAULT_QUERY = 'all_streets/';
@@ -60,6 +61,26 @@ class Admin extends Component {
     //sumting heya
   }
 
+  postStreet(){
+    return;
+  }
+
+  handleUserInput (e) {
+    const name = e.target.name;
+    const value = e.target.value;
+    this.setStreet({[name]: value, ()=>this.validateData()});
+  }
+
+  validateData(){
+    this.street.valid = 
+        this.street.name.match(/^[a-zA-Z ]{2,80}$/) &&
+        Number.isInteger(this.street.beginX) &&
+        Number.isInteger(this.street.beginY) &&
+        Number.isInteger(this.street.endX) &&
+        Number.isInteger(this.street.endY) &&
+        this.street.city.match(/^[a-zA-Z ]{2,80}$/)
+  }
+
   getDataStats = () => {
     console.log("Making request to statistics")
     var final_url = '';
@@ -80,27 +101,101 @@ class Admin extends Component {
   render() {
     return (
       <>
-        <ExamplesNavbar />
+        <BlackNavbar />
         <div
           className="page-header"
           data-parallax={true}
           style={{
-            backgroundColor:'rgba(0,0,0,.85)',
+            backgroundColor:'rgba(255,255,255,1)',
           }}
         >
             <Container style={{display:'flex',flex:1,flexDirection:'column'}}>
-                <Row>
-                    <Text style={{color:'white',fontWeight:'bolder'}}>ADMIN CHANGING STREETS</Text>
-                </Row>
-                <React.Fragment>
-                  <MapForm />
-                  <Button
+              <React.Fragment>
+                <Typography variant="h6" gutterBottom>
+                  Map Address
+                </Typography>
+                <Grid container spacing={3}>
+                  <Grid item xs={12}>
+                    <TextField
+                      required
+                      id="streetName"
+                      name="streetName"
+                      label="Street name"
+                      fullWidth
+                      onChange={(event) => this.handleUserInput(event)}
+                      value={this.street.name}
+                      
+                      autoComplete="Rua"
+                    />
+                  </Grid>
+                  <Grid item xs={6} sm={3}>
+                      <TextField
+                      required
+                      id="beginingX"
+                      name="beginingX"
+                      label="X coord to start"
+                      fullWidth
+                      onChange={(event) => this.handleUserInput(event)}
+                      value={this.street.beginX}
+                      autoComplete="0"
+                      />
+                  </Grid>
+                  <Grid item xs={6} sm={3}>
+                      <TextField
+                      required
+                      id="beginingY"
+                      name="beginingY"
+                      label="Y coord to start"
+                      fullWidth
+                      onChange={(event) => this.handleUserInput(event)}
+                      value={this.street.beginY}
+                      autoComplete="0"
+                      />
+                  </Grid>
+                  <Grid item xs={6} sm={3}>
+                      <TextField
+                      required
+                      id="endingX"
+                      name="endingX"
+                      label="X coord to end"
+                      fullWidth
+                      onChange={(event) => this.handleUserInput(event)}
+                      value={this.street.endX}
+                      autoComplete="1000"
+                      />
+                  </Grid>
+                  <Grid item xs={6} sm={3}>
+                      <TextField
+                      required
+                      id="endingY"
+                      name="endingY"
+                      label="Y coord to end"
+                      fullWidth
+                      onChange={(event) => this.handleUserInput(event)}
+                      value={this.street.endY}
+                      autoComplete="100"
+                      />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      required
+                      id="city"
+                      name="city"
+                      label="City"
+                      fullWidth
+                      onChange={(event) => this.handleUserInput(event)}
+                      value={this.street.city}
+                      autoComplete="Cidade "
+                    />
+                  </Grid>
+                </Grid>
+                <Button
                     variant="contained"
                     color="primary"
                     disabled={!this.street.valid}
-                    onClick={postStreet}
-                  >Submit</Button>
-                </React.Fragment>
+                    onClick={this.postStreet()}
+                  >Submit</Button>  
+              </React.Fragment>
             </Container>
         </div>
     </>
