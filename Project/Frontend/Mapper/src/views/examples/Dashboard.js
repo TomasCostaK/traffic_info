@@ -147,7 +147,7 @@ class Dashboard extends Component {
         })
       });
   }
-
+  
   /*
   getDataGraph = () => {
     console.log(API+GRAPH_STATS+this.state.type_chart.value+ '/street=' + this.state.street_id +'&start_date=' + this.state.begin_date +' &end_date=' + this.state.end_date +'/')
