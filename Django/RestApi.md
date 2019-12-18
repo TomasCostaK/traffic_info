@@ -302,3 +302,361 @@ ___
     "Porto"
 ]
 ```
+
+# PUTS
+## Alter the visibility of a given section
+```mermaid
+graph LR; 
+A((PUT));
+B[ 'visibility/' ];
+C["{'id':<int:section_id>,'visibility':<int:visibility_value>}"];
+A -- REQUEST --> C -->B
+```
+___
+# WARNING Visibility is a number between 0 and 100
+___
+**Possible HTTP Responses**
+
+ > **HTTP_200_OK** -> Returns the section in which the visibility changed and all the other attributes of that section
+
+ > **HTTP_400_BAD_REQUEST**
+
+ > **HTTP_404_NOT_FOUND**
+
+**Example**
+**PUT   ``` /visibility/```**
+```python
+INPUT:
+{
+	"id":1,
+	"visibility":50
+}
+OUTPUT:
+{
+    "id": 1,
+    "number_cars": 0,
+    "actual_direction": true,
+    "n_accident": 0,
+    "beginning_coords_x": 0,
+    "beginning_coords_y": 0,
+    "ending_coords_x": 0,
+    "ending_coords_y": 400,
+    "street": {
+        "name": "Rua Tenente Joaquim Lopes Craveiro",
+        "id": 1
+    },
+    "transit_type": "Normal",
+    "police": false,
+    "visibility": 50
+}
+```
+
+## Add police to a given section
+```mermaid
+graph LR; 
+A((PUT));
+B[ 'police/' ];
+C["{'id':<int:section_id>}"];
+A -- REQUEST --> C -->B
+```
+
+**Possible HTTP Responses**
+
+ > **HTTP_200_OK** -> Returns the section in which the police changed to True and all the other attributes of that section
+
+ > **HTTP_400_BAD_REQUEST**
+
+ > **HTTP_404_NOT_FOUND**
+
+**Example**
+**PUT   ``` /police/```**
+```python
+INPUT:
+{
+	"id":1,
+}
+OUTPUT:
+{
+    "id": 1,
+    "number_cars": 0,
+    "actual_direction": true,
+    "n_accident": 0,
+    "beginning_coords_x": 0,
+    "beginning_coords_y": 0,
+    "ending_coords_x": 0,
+    "ending_coords_y": 400,
+    "street": {
+        "name": "Rua Tenente Joaquim Lopes Craveiro",
+        "id": 1
+    },
+    "transit_type": "Normal",
+    "police": true,
+    "visibility": 50
+}
+```
+
+# POSTS
+
+## Create a new street
+```mermaid
+graph LR; 
+A((POST));
+B[ 'street/' ];
+C["{'name':<str:street_name>,'beginning_coords':[<int:x_coord>,<int:y_coord>,'ending_coords':[<int:x_coord>,<int:y_coord>],'city':<str:city_name>}"];
+A -- REQUEST --> C -->B
+```
+
+**Possible HTTP Responses**
+
+ > **HTTP_200_OK** -> Returns the street with all its values. Having some that are defined by the sever
+
+ > **HTTP_400_BAD_REQUEST**
+
+**Example**
+**POST  ``` /street/```**
+```python
+INPUT:
+{
+    "name": "Rua Tenente Joaquim Lopes Craveiro",
+    "beginning_coords": [
+        0,
+        0
+    ],
+    "ending_coords": [
+        0,
+        2000
+    ],
+    "city":"Ilhavo"
+}
+OUTPUT:
+{
+    "name": "Rua Tenente Joaquim Lopes Craveiro",
+    "begin_coord_x": 0,
+    "begin_coord_y": 0,
+    "ending_coord_x": 0,
+    "ending_coord_y": 2000,
+    "length": 2000,
+    "city": "Ilhavo"
+}
+```
+
+## Add and remove cars to a certain section
+## The rabbitmq should execute an aggregation function
+
+```mermaid
+graph LR; 
+A((POST));
+B[ 'car/' ];
+C["{'type':'various_cars','city':<str:city_name>},'data':[{'type':('delete' | 'insert'),'id':<int:section_id>,'plate':<str>}, ...]"];
+A -- REQUEST --> C -->B
+```
+
+**Possible HTTP Responses**
+
+ > **HTTP_200_OK** -> HTTP_200_OK means every CRUD OPERATION in the aggregation was executed
+
+ > **HTTP_400_BAD_REQUEST**
+
+ > **HTTP_404_NOT_FOUND**
+
+**Example**
+**POST   ```/car/```**
+```python
+INPUT:
+{
+    "type":"various_cars",
+    "city":"Ilhavo",
+    "data":[
+        {"type":"delete","id":1,"plate":"mota10"},
+        {"type":"insert","id":1,"plate":"tomas1"},
+    ]
+}
+OUTPUT:
+<HTTP_200_OK>
+```
+
+## Update the accident information of a section
+
+```mermaid
+graph LR; 
+A((POST));
+B[ 'accident/' ];
+C["{'id':<int:section_id>,'x_coord':<int>,'y_coord':<int>}"]
+A -- REQUEST --> C --> B
+```
+
+**Possible HTTP Responses**
+
+ > **HTTP_200_OK** -> Returns the coords of the accident, the section and the time in which the server registered the accident
+
+ > **HTTP_400_BAD_REQUEST**
+
+ > **HTTP_404_NOT_FOUND**
+
+**Example**
+**POST   ``` /accident/```**
+```python
+INPUT:
+{
+    "id":1,
+    "x_coord":20,
+    "y_coord":20
+}
+OUTPUT:
+{
+    "coord_x": 20,
+    "coord_y": 20,
+    "date": "2019-12-18T00:06:54.533982Z",
+    "section": 1
+}
+```
+
+## Update roadblock information of a section
+```mermaid
+graph LR; 
+A((POST));
+B[ 'roadblock/' ];
+C["{'id':<int:section_id>"];
+A -- REQUEST --> C -->B
+```
+
+**Possible HTTP Responses**
+
+ > **HTTP_200_OK** -> Returns the following string 'Road blocked'
+
+ > **HTTP_400_BAD_REQUEST**
+
+ > **HTTP_404_NOT_FOUND**
+
+ > **HTTP_304_NOT_MODIFIED** -> Returns the following string 'A road can only be blocked once'
+
+**Example**
+**POST   ``` /roadblock/```**
+```python
+INPUT:
+{
+    "id":1,
+}
+OUTPUT:
+'Road Blocked'
+```
+
+# DELETE
+
+## Remove police to a given section
+```mermaid
+graph LR; 
+A((DELETE));
+B[ 'police/' ];
+C["{'id':<int:section_id>}"];
+A -- REQUEST --> C -->B
+```
+
+**Possible HTTP Responses**
+
+ > **HTTP_200_OK** -> Returns the section in which the police changed to False and all the other attributes of that section
+
+ > **HTTP_400_BAD_REQUEST**
+
+ > **HTTP_404_NOT_FOUND**
+
+**Example**
+**PUT   ``` /police/```**
+```python
+INPUT:
+{
+	"id":1,
+}
+OUTPUT:
+{
+    "id": 1,
+    "number_cars": 0,
+    "actual_direction": true,
+    "n_accident": 0,
+    "beginning_coords_x": 0,
+    "beginning_coords_y": 0,
+    "ending_coords_x": 0,
+    "ending_coords_y": 400,
+    "street": {
+        "name": "Rua Tenente Joaquim Lopes Craveiro",
+        "id": 1
+    },
+    "transit_type": "Normal",
+    "police": False,
+    "visibility": 50
+}
+```
+
+## Remove roadblock from a section
+```mermaid
+graph LR; 
+A((DELETE));
+B[ 'roadblock/' ];
+C["{'id':<int:section_id>}"];
+A -- REQUEST --> C -->B
+```
+
+**Possible HTTP Responses**
+
+ > **HTTP_200_OK** -> Returns the following string 'Road Unblocked'
+
+ > **HTTP_400_BAD_REQUEST**
+
+ > **HTTP_404_NOT_FOUND**
+
+**Example**
+**Delete   ``` /roadblock/```**
+```python
+INPUT:
+{
+	"id":1,
+}
+OUTPUT:
+'Road unblocked'
+```
+
+
+## Remove a accident from a section
+
+```mermaid
+graph LR; 
+A((DELETE));
+B[ 'accident/' ];
+C["{'id':<int:section_id>}"]
+A -- REQUEST --> C --> B
+```
+
+**Possible HTTP Responses**
+
+ > **HTTP_200_OK** -> Returns the following string "Accident removed from section"
+
+ > **HTTP_400_BAD_REQUEST**
+
+ > **HTTP_404_NOT_FOUND**
+
+ > **HTTP_304_NOT_MODIFIED** -> Returns a string with the following message "Currently,there are no accidents in this section"
+
+**Example**
+**DELETE   ``` /accident/```**
+```python
+INPUT:
+{
+    "id":1,
+}
+OUTPUT:
+"Accident removed from section"
+```
+
+**Bad example**
+
+**Section 2 has no accidents at the moment**
+
+**DELETE   ``` /accident/```**
+```python
+INPUT:
+{
+    "id":2,
+}
+OUTPUT:
+"Currently,there are no accidents in this section"
+```
