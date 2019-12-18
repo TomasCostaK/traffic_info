@@ -3,64 +3,86 @@ import pika
 import json
 import requests
 import time
+from threading import Thread
 
 t = time.time()
-queu1 = []
-queu2 = []
+queues = {'Ilhavo':[], 'Roma':[]}
+
 
 def callback(ch, method, properties, body):
-    global queu1
-    global queu2
+    global queues
     global t
-
     body = json.loads(body)
+    #print(body)
     if body["type"] in ["insert", "delete"]:
-        if body['city'] == 'neighbours':
-            queu1.append(body)
+        if body['city'] == 'Ilhavo':
+            body.pop('city', None)
+            queues['Ilhavo'].append(body)
         else:
-            queu2.append(body)
+            body.pop('city', None)
+            queues['Roma'].append(body)
 
-    elif body["type"] == "visibility":
-        msg = json.dumps({"id" : body["id"], "visibility": body["visibility"], "city":body["city"]})
+    for city in queues:
+        if len(queues[city]) == 100:
+            print("SENSOR1----------")
+            msg = json.dumps({"type":"various_cars", "city": city, "data":queues[city]})
+            print(msg)
+            a=requests.post("http://192.168.160.237:8000/car/", data = msg, headers={"Content-Type":"text/plain"})
+            print(a)
+            while str(a)=="<Response [500]>":
+                a=requests.post("http://192.168.160.237:8000/car/", data = msg, headers={"Content-Type":"text/plain"})
+                print(a)
+            queues[city] = []
+            t = time.time()
+
+
+def othercallback(ch, method, properties, body):
+    print("SENSOR2")
+    body = json.loads(body)
+    if body["type"] == "visibility":
+        msg = json.dumps({"id" : body["id"], "visibility": body["visibility"]})
         print(msg)
-        #requests.put("http://192.168.160.237:8000/visibility/", data = msg, headers={"Content-Type":"text/plain"})
+        r=requests.put("http://192.168.160.237:8000/visibility/", data = msg, headers={"Content-Type":"text/plain"})
+        print(r)
     elif body["type"] == "roadblock_down":
-        msg = json.dumps({"id" : body["id"], "city":body["city"]})
+        msg = json.dumps({"id" : body["id"]})
         print(msg)
-        #requests.delete("http://192.168.160.237:8000/roadblock/", data = msg, headers={"Content-Type":"text/plain"})
+        print("rdown")
+        r=requests.delete("http://192.168.160.237:8000/roadblock/", data = msg, headers={"Content-Type":"text/plain"})
+        print(r)
     elif body["type"] == "roadblock_up":
-        msg = json.dumps({"id" : body["id"], "city":body["city"]})
+        msg = json.dumps({"id" : body["id"]})
         print(msg)
-        #requests.put("http://192.168.160.237:8000/roadblock/", data = msg, headers={"Content-Type":"text/plain"})
+        print("rup")
+        r = requests.post("http://192.168.160.237:8000/roadblock/", data = msg, headers={"Content-Type":"text/plain"})
+        print(r)
     elif body["type"] == "police_down":
-        msg = json.dumps({"id" : body["id"], "city":body["city"]})
+        msg = json.dumps({"id" : body["id"]})
         print(msg)
-        #requests.delete("http://192.168.160.237:8000/police/", data = msg, headers={"Content-Type":"text/plain"})
+        r=requests.delete("http://192.168.160.237:8000/police/", data = msg, headers={"Content-Type":"text/plain"})
+        print(r)
     elif body["type"] == "police_up":
-        msg = json.dumps({"id" : body["id"], "city":body["city"]})
+        msg = json.dumps({"id" : body["id"]})
         print(msg)
-        #requests.put("http://192.168.160.237:8000/police/", data = msg, headers={"Content-Type":"text/plain"})
-
-    
-    if len(queu1) == 100:    #SEND CARS IN BULK
-        #print(time.time() - t)
-
-        msg = json.dumps({"type":"various_cars", "city": "aaaa", "data":queu1})
+        r=requests.put("http://192.168.160.237:8000/police/", data = msg, headers={"Content-Type":"text/plain"})
+        print(r)
+    elif body["type"] == "accident_down":
+        msg = json.dumps(body)
         print(msg)
-        #requests.put("http://192.168.160.237:8000/car/", data = msg, headers={"Content-Type":"text/plain"})
-
-        queu1 = []
-        t = time.time()
-
-    if len(queu2) == 100:
-        #print(time.time() - t)
-
-        msg = json.dumps({"type":"various_cars","city": "bbbb", "data":queu2})
+        r=requests.delete("http://192.168.160.237:8000/accident/",data=msg,headers={"Content-Type":"text/plain"})
+        print(r)
+    elif body["type"] == "accident_up":
+        msg = json.dumps(body)
         print(msg)
-        #requests.put("http://192.168.160.237:8000/car/", data = msg, headers={"Content-Type":"text/plain"})
+        r=requests.post("http://192.168.160.237:8000/accident/",data=msg,headers={"Content-Type":"text/plain"})
+        print(r)
 
-        queu2 = []
-        t = time.time()
+
+def consumeOtherSensors():
+    channel.basic_consume(
+        queue='otherSensors', on_message_callback=othercallback, auto_ack=True)
+
+
 
 #MAKE CONNECTION
 connection = pika.BlockingConnection(
@@ -68,7 +90,15 @@ connection = pika.BlockingConnection(
 channel = connection.channel()
 
 #SET QUEUE
+channel.queue_delete(queue='cars')
+channel.queue_delete(queue='otherSensors')
+
 channel.queue_declare(queue='cars')
+channel.queue_declare(queue='otherSensors')
+
+thread = Thread(target = consumeOtherSensors)
+thread.start()
+thread.join()
 
 channel.basic_consume(
     queue='cars', on_message_callback=callback, auto_ack=True)

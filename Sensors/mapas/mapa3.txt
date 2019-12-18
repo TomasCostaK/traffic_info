@@ -143,6 +143,18 @@
         ]
     },
     {
+        "name": "Avenida Vasco Branco",
+        "beginning_coords": [
+            1000,
+            2000
+        ],
+        "ending_coords": [
+            1500,
+            1500
+        ]
+    },
+
+    {
         "name": "Viela das Arotas",
         "beginning_coords": [
             2500,
