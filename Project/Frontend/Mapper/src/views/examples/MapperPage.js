@@ -155,7 +155,7 @@ class RegisterPage extends Component {
     }
   }
 
-  getData(){
+  getData = () => {
     console.log("Making request to info_street: " + 'http://192.168.160.237:8000/info_street/'+this.state.street)
     fetch('http://192.168.160.237:8000/info_street/'+this.state.street, { headers: {'Content-Type': 'application/json'}}).
       then(resp => resp.json()).

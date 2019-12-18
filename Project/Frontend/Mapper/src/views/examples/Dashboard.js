@@ -123,19 +123,6 @@ class Dashboard extends Component {
     });
     this.getDataStats()
   };
-
-  /*getDataCities = () => {
-    console.log(API+GRAPH_STATS+this.state.type_chart.value+ '/street=' + this.state.street_id +'&start_date=' + this.state.begin_date +' &end_date=' + this.state.end_date +'/')
-    fetch(API+GRAPH_STATS+this.state.type_chart.value+'/street=' + this.state.street_id +'&start_date=' + this.state.begin_date +' &end_date=' + this.state.end_date +'/', { headers: {'Content-Type':'application/json'}}).
-      then(resp => resp.json()).
-      then(rest => {
-        console.log(rest)
-        return rest
-      }).
-      then(responseData => {
-        this.fillStats(responseData)
-      });
-  }*/
   
 
   handleChangeEnd = async date => {
@@ -146,7 +133,7 @@ class Dashboard extends Component {
     this.getDataStats()
   };
 
-  getData() {
+  getData = () => {
     fetch(API+DEFAULT_QUERY, { headers: {'Content-Type':'application/json'}}).
       then(resp => resp.json()).
       then(rest => {
