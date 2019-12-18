@@ -126,20 +126,34 @@ def car_to_street(request):
                 else:
                     return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
             return HttpResponse(status=status.HTTP_200_OK)
-    except Car.DoesNotExist:
+    except Exception as e:
+        traceback.print_exc(e)
+        print(e)
+        print(request)
+    '''except Car.DoesNotExist:
         return HttpResponse("Car not found",status=status.HTTP_404_NOT_FOUND)
     except Section.DoesNotExist:
-        return HttpResponse("Section not found",status=status.HTTP_404_NOT_FOUND)
+        return HttpResponse("Section not found",status=status.HTTP_404_NOT_FOUND)'''
 
 @csrf_exempt
-def add_to_accident(request):
+def crud_accident(request):
     try:
         if request.method=="POST":
             data=json.loads(request.body)
             section=Section.objects.get(id=data.get("id"))
+            section.n_accident=section.n_accident+1
             accident= Accident(section=section,coord_x=data.get("x_coord"),coord_y=data.get("y_coord"),date=datetime.now(timezone.utc))
             accident.save()
+            section.save()
             return HttpResponse(json.dumps(AccidentSerializer(accident).data),status=status.HTTP_200_OK)
+        elif request.method=="DELETE":
+            data = json.loads(request.body)
+            section = Section.objects.get(id=data.get("id"))
+            if section.n_accident==0:
+                return HttpResponse("Currently,there are no accidents in this section",status=status.HTTP_304_NOT_MODIFIED)
+            section.n_accident=section.n_accident-1
+            section.save()
+            return HttpResponse("Accident removed from section", status=status.HTTP_200_OK)
         else:
             return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
     except Section.DoesNotExist:
@@ -152,7 +166,7 @@ def add_to_transit(section,transit=80):
         if last_time_of_transit==[]:
             street_transit = Transit(date=time_of_transit, section=section)
             street_transit.save()
-        if last_time_of_transit[0].date+timedelta(minutes=30)<time_of_transit:
+        elif last_time_of_transit[0].date+timedelta(minutes=30)<time_of_transit:
             street_transit = Transit(date=time_of_transit,section=section)
             street_transit.save()
 
@@ -289,10 +303,10 @@ def roadblock(request):
     except Blocked.DoesNotExist:
         return HttpResponse("Road isn't blocked",status=status.HTTP_404_NOT_FOUND)
 
-def all_streets(request):
+def all_streets_city(request,city):
     try:
         if request.method=="GET":
-            streets=Street.objects.all()
+            streets=Street.objects.filter(city=city)
             return HttpResponse(json.dumps(AllStreetSerializer(streets,many=True).data),status=status.HTTP_200_OK)
         else:
             return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
@@ -331,13 +345,15 @@ def charts(request,type,street,begin,end):
                         vals=Blocked.objects.filter(begin__lt=temp_day,section__street=street)
                         if len(vals):
                             for j in vals:
-                                print(j.end)
                                 if j.end is None:
                                     ammount.append(1)
+                                    break
                                 elif j.end.replace(tzinfo=None)>temp_day:
                                     ammount.append(1)
+                                    break
                                 else:
                                     ammount.append(0)
+                                    break
                         else:
                             ammount.append(0)
 

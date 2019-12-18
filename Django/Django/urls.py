@@ -20,10 +20,10 @@ from TrafficJammer import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('info_street/<str:city>/',views.info_street,name="info"),
-    path('all_streets/',views.all_streets,name="all_streets"),
+    path('all_streets_city/<str:city>/',views.all_streets_city,name="all_streets_city"),
     path('street/',views.street,name="crud_street"),
     path('car/',views.car_to_street,name="crud_car"),
-    path('accident/',views.add_to_accident,name="accident"),
+    path('accident/',views.crud_accident,name="accident"),
     path('specific_car/<str:license_plate>/',views.get_car,name='get_car'),
     path('all_cars/<int:section>/',views.all_cars,name='all_cars'),
     path('statistics/<int:street>/<str:begin>/<str:end>/',views.statistics,name='statistics'),

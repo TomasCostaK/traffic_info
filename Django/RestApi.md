@@ -123,16 +123,16 @@ A -- REQUEST --> B
 }
 ```
 
-## Get all the streets that are in the database
+## Get all the streets of a give city
 
 ```mermaid
 graph LR; 
-A((GET));B[ 'all_streets/' ]
+A((GET));B[ 'all_streets_city/<str:city_name>>' ]
 A -- REQUEST --> B
 ```
 **Possible HTTP Responses**
 
- > **HTTP_200_OK** -> Returns a list of dictionaries containing the id and name of the streets in the database , being that key represents the id and value represents the name
+ > **HTTP_200_OK** -> Returns a list of dictionaries containing the id and name of the streets of the city , being that key represents the id and value represents the name
 
  > **HTTP_400_BAD_REQUEST**
 
@@ -140,7 +140,7 @@ A -- REQUEST --> B
 
 
 **Example**
-**GET  ``` /all_streets/```**
+**GET  ``` /all_streets/Ilhavo/```**
 ```python
 [
     {
