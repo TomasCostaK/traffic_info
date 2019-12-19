@@ -31,7 +31,7 @@ import "../../../node_modules/react-datepicker/dist/react-datepicker.css"
 import BlackNavbar from "components/Navbars/BlackNavbar.js";
 
 const API = 'http://192.168.160.237:8000/';
-const DEFAULT_QUERY = 'all_streets/';
+const DEFAULT_QUERY = 'all_streets_city/';
 const STATS_QUERY = 'statistics/';
 const GRAPH_STATS = 'charts/';
 
@@ -63,6 +63,10 @@ class Dashboard extends Component {
         {
           key: 'Ilhavo',
           value: 'Ilhavo',
+        },
+        {
+          key: 'Roma',
+          value: 'Roma',
         },
       ],
       street : 'Ilhavo',
