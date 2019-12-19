@@ -272,7 +272,18 @@ class Admin extends Component {
                     disabled={!this.state.valid}
                     onClick={() => this.postStreet()}
                   >Submit</Button>  
-                
+                <Grid xs={6} sm={3}>
+                    <TextField
+                      required
+                      id="city"
+                      name="city"
+                      label="City"
+                      fullWidth
+                      onChange={(event) => this.handleUserInput(event)}
+                      value={this.state.city}
+                      autoComplete="Cidade "
+                    />
+                  </Grid>
               </React.Fragment>
             </Container>
             

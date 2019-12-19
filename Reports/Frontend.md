@@ -28,7 +28,8 @@ In the administration page we are able to create a new street, if it passes all 
  * Having a unique name
  * Having beginning coordinates differ from the ending
 
-In the future, we intend for an administrator to also be capable of doing some editing in the sections of the streets, e.g. directly tell the system if a road is blocked, or if there is police activity. Even thought these variables are provided real time by the sensors
+We intended for an administrator to also be capable of doing some editing in the sections of the streets, e.g. directly tell the system if a road is blocked, or if there is police activity, but we stepped away from that idea, since these events are provided real time by the sensors.  
+It makes more sense to come from the sensors data that from an administrator "creating" roadblocks and accidents.
 
 ## Mobile Application
 We inteded to create a mobile application that would display the maps and would send push notifications if the traffic nearby was rapidly increasing. But, the core of the project was made using a library that wasnt present in ReactNative, and so, we had to pushback our changes in mobile and focus on the website.
