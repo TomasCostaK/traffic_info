@@ -82,33 +82,49 @@ class Admin extends Component {
     //sumting heya
   }
 
-  postStreet = async () =>{
+  postStreet = () =>{
     console.log("posting to ", + API + POST_STREET)
-    const response = await fetch( API + POST_STREET, {  
+    let fetchBody = JSON.stringify({
+      "name": this.state.streetname,
+      "beginning_coords": [
+        parseInt(this.state.beginX),
+        parseInt(this.state.beginY)
+      ],
+      "ending_coords": [
+        parseInt(this.state.endX),
+        parseInt(this.state.endY)
+      ],
+      "city": this.state.city
+    })
+
+    fetch( API + POST_STREET, {  
       method: 'POST',
       headers: {'Content-Type': 'text/plain'} ,
-      body: JSON.stringify({
-        "name": this.state.name,
-        "beginning_coords": [
-          parseInt(this.state.beginX),
-          parseInt(this.state.beginY)
-        ],
-        "ending_coords": [
-          parseInt(this.state.endX),
-          parseInt(this.state.endY)
-        ],
-        "city": this.state.city
-      })
+      body: fetchBody
+    })
+    .then( (response) => response.json())
+    .then( responseJson => {
+      if(responseJson.success != 0){
+        alert("Street successfully created!")
+      }
+      else{
+        alert("Street creation failed! Try again.")
+      }
+    })
+    .catch((error) => {
+      console.log(error);
     });
-    console.log(await response);
-    console.log(await response.json());
+
   }
 
-  handleUserInput (e) {
+  handleUserInput = async (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    this.setState({[name]: value}, () => {this.validateData(); });
+    console.log("Setting " + name)
+    console.log("as " + value)
+    await this.setState({[name]: value}, () => {this.validateData(); });
   }
+
 
   validateData = () => {
     this.fetchAllCities();
@@ -256,6 +272,7 @@ class Admin extends Component {
                     disabled={!this.state.valid}
                     onClick={() => this.postStreet()}
                   >Submit</Button>  
+                
               </React.Fragment>
             </Container>
             
