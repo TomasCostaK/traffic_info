@@ -16,10 +16,11 @@ Traffic Jammer is a web application that allows you to view traffic close to you
 ## Project Structure
 * [API Documentation](https://gitlab.com/myiesgroup/iesproject_trafficjammer/blob/master/Project/Backend/RestApi.md)
 * [Frontend Documentation](https://gitlab.com/myiesgroup/iesproject_trafficjammer/blob/master/Project/Frontend/Mapper/README.md)
-* [Prototype](https://gitlab.com/myiesgroup/iesproject_trafficjammer/tree/master/Prototype)
-* [Project Guidelines](https://gitlab.com/myiesgroup/iesproject_trafficjammer/blob/master/Reports/ProjectGuidelines.pdf)
 * [Website](http://192.168.160.237:8800)
 * [API Endpoint](http://192.168.160.237:8000)
+* [Prototype](https://gitlab.com/myiesgroup/iesproject_trafficjammer/tree/master/Prototype)
+* [Project Guidelines](https://gitlab.com/myiesgroup/iesproject_trafficjammer/blob/master/Reports/ProjectGuidelines.pdf)
+* [Work Tracker](https://gitlab.com/myiesgroup/iesproject_trafficjammer/-/boards)
 
 ### Topics:
 * Objetivo
