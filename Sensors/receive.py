@@ -6,7 +6,7 @@ import time
 from threading import Thread
 
 t = time.time()
-queues = {'Ilhavo':[], 'Roma':[]}
+queues = {'Ilhavo':[], 'Roma':[], 'Porto':[]}
 
 
 def callback(ch, method, properties, body):
@@ -18,13 +18,15 @@ def callback(ch, method, properties, body):
         if body['city'] == 'Ilhavo':
             body.pop('city', None)
             queues['Ilhavo'].append(body)
-        else:
+        elif body['city'] == 'Roma':
             body.pop('city', None)
             queues['Roma'].append(body)
+        elif body['city'] == 'Porto':
+            body.pop('city', None)
+            queues['Porto'].append(body)
 
     for city in queues:
         if len(queues[city]) == 100:
-            print("SENSOR1----------")
             msg = json.dumps({"type":"various_cars", "city": city, "data":queues[city]})
             print(msg)
             a=requests.post("http://192.168.160.237:8000/car/", data = msg, headers={"Content-Type":"text/plain"})
@@ -37,7 +39,6 @@ def callback(ch, method, properties, body):
 
 
 def othercallback(ch, method, properties, body):
-    print("SENSOR2")
     body = json.loads(body)
     if body["type"] == "visibility":
         msg = json.dumps({"id" : body["id"], "visibility": body["visibility"]})

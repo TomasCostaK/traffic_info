@@ -230,10 +230,9 @@ class Sensor:
 
         #SENSOR
         i = 1 
-        self.printInfo()
+        #self.printInfo()
         
         while True:
-            print(i)
             if i % 50 == 0:
                 #self.printInfo()
                 pass
@@ -261,8 +260,8 @@ class Sensor:
                 self.add(trechoOut, plateOut)
             
             i+=1
-            if i == 1000000:
-                i = 0
+            if i == 10000:
+                i = 1
             time.sleep(0.05)
 
 

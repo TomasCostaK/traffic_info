@@ -88,6 +88,17 @@
         ]
     },
     {
+        "name": "Zona Residencial da Patela",
+        "beginning_coords": [
+            500,
+            2000
+        ],
+        "ending_coords": [
+            1500,
+            1000
+        ]
+    },
+    {
         "name": "Rua Luis de Camoes",
         "beginning_coords": [
             0,
