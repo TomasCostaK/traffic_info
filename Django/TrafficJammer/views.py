@@ -216,7 +216,7 @@ def statistics(request,street,begin,end,week_day=None):
                     temp_accident=Accident.objects.filter(section=section,date__range=(begin_time,end_time))
                     # Join of Query Sets
                     transit = transit | temp_transit
-                    accident = temp_accident | temp_accident
+                    accident = accident | temp_accident
 
             return HttpResponse(json.dumps(StreetStatisticsSerializer(street,
                                 context={"transit":transit,"blocked":blocked,"accident":accident}).data),status=status.HTTP_200_OK)
