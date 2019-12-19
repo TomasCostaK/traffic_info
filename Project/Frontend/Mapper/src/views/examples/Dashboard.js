@@ -18,13 +18,13 @@
 */
 import React, { Component } from "react";
 // reactstrap components
-import { Button, Form, Input, Container, Row, Col } from "reactstrap";
+import { Container, Row} from "reactstrap";
 import { Text } from 'react-konva';
 import moment from 'moment';
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import ReactSearchBox from 'react-search-box'
-import { Bar, Line, defaults } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 import DatePicker from "react-datepicker";
 import "../../../node_modules/react-datepicker/dist/react-datepicker.css"
 // core components
@@ -32,7 +32,6 @@ import BlackNavbar from "components/Navbars/BlackNavbar.js";
 
 const API = 'http://192.168.160.237:8000/';
 const DEFAULT_QUERY = 'all_streets/';
-const ALL_CITIES = 'available_cities/';
 const STATS_QUERY = 'statistics/';
 const GRAPH_STATS = 'charts/';
 
@@ -55,7 +54,18 @@ class Dashboard extends Component {
     super(props);
     this.state = {
       hits: [],
-      street_name: "Rua Tenente Joaquim Lopes Craveiro",
+      street_name: "Travessa das Leirinhas",
+      streets : [ //Ir buscar dinamicamente
+        {
+          key: 'Porto',
+          value: 'Porto',
+        },
+        {
+          key: 'Ilhavo',
+          value: 'Ilhavo',
+        },
+      ],
+      street : 'Ilhavo',
       street_id: 1,
       begin_date: moment().format('YYYY-MM-DD'),
       end_date: moment().format('YYYY-MM-DD'),
@@ -65,55 +75,97 @@ class Dashboard extends Component {
       dataSource: [],
       labels:[],
       values:[],
-      type_chart:{'key':'Accidents','value':'accident'},
+      type_chart:[{'key':'Accidents','value':'accident'},{'key':'Roadblocks','value':'roadblock'}],
       dataSourceStats: [{
         "name": "", 
         "transit_count": 0, 
         "road_block": {"total_time": 0, "times": 0},
         "total_accident": 0
       }],
-      options : ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
+      options : ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+
+      //Graph Data
+      graph_data:{
+        //labels: [respo.Days],
+        labels: [''],
+        datasets: [{
+            label: '# of Accidents',
+            //data: [respo.ammount],
+            data: [0],
+            backgroundColor: [
+              'cyan',
+                'cyan',
+                'cyan',
+                'cyan',
+                'cyan',
+                'cyan',
+          ],
+            borderColor: [
+                'cyan',
+                'cyan',
+                'cyan',
+                'cyan',
+                'cyan',
+                'cyan',
+            ],
+            backgroundColor:'rgba(0,255,255, 0.34)',
+            borderWidth: 3
+        }]
+    },
     };
   }
   //date-format: AAAA-MM-DD
 
+
+  
   componentDidMount() {
     this.getData()
+    this.getDataGraph()
   }
 
   componentWillUnmount() {
     //sumting heya
   }
 
-  fillStats = (respo) => {
-    let dataSourceGraph = {
-      //labels: [respo.Days],
-      labels: ['2019-01-01','2019-01-02'],
-      datasets: [{
-          label: '# of Accidents',
-          //data: [respo.ammount],
-          data: [1,0],
-          backgroundColor: [
-            'cyan',
-              'cyan',
-              'cyan',
-              'cyan',
-              'cyan',
-              'cyan',
-        ],
-          borderColor: [
-              'cyan',
-              'cyan',
-              'cyan',
-              'cyan',
-              'cyan',
-              'cyan',
-          ],
-          backgroundColor:'rgba(0,255,255, 0.3)',
-          borderWidth: 2
-      }]
+  changeStreet = async (text) =>{
+    await this.setState({
+      street: text.key,
+    })
+    this.getData();
   }
-  return dataSourceGraph;
+
+  fillStats = async (respo)  => {
+    console.log("Stats response:")
+    console.log(respo.values)
+    await this.setState({
+      graph_data: {
+        //labels: [respo.Days],
+        labels: respo.labels,
+        datasets: [{
+            label: '# of Accidents',
+            //data: [respo.ammount],
+            data: respo.values,
+            backgroundColor: [
+              'cyan',
+                'cyan',
+                'cyan',
+                'cyan',
+                'cyan',
+                'cyan',
+          ],
+            borderColor: [
+                'cyan',
+                'cyan',
+                'cyan',
+                'cyan',
+                'cyan',
+                'cyan',
+            ],
+            backgroundColor:'rgba(0,255,255, 0.3)',
+            borderWidth: 2
+        }]
+    }
+    })
   }
 
   handleChangeStart = async date => {
@@ -122,6 +174,8 @@ class Dashboard extends Component {
       begin_date_cal: date
     });
     this.getDataStats()
+    this.getDataGraph()
+
   };
   
 
@@ -131,10 +185,13 @@ class Dashboard extends Component {
       end_date_cal: date
     });
     this.getDataStats()
+    this.getDataGraph()
+
   };
 
   getData = () => {
-    fetch(API+DEFAULT_QUERY, { headers: {'Content-Type':'application/json'}}).
+    console.log("Making request: " + API+DEFAULT_QUERY+this.state.street+ '/')
+    fetch(API+DEFAULT_QUERY+this.state.street+ '/', { headers: {'Content-Type':'application/json'}}).
       then(resp => resp.json()).
       then(rest => {
         console.log("Making request to info_street")
@@ -148,22 +205,24 @@ class Dashboard extends Component {
       });
   }
   
-  /*
-  getDataGraph = () => {
-    console.log(API+GRAPH_STATS+this.state.type_chart.value+ '/street=' + this.state.street_id +'&start_date=' + this.state.begin_date +' &end_date=' + this.state.end_date +'/')
-    fetch(API+GRAPH_STATS+this.state.type_chart.value+'/street=' + this.state.street_id +'&start_date=' + this.state.begin_date +' &end_date=' + this.state.end_date +'/', { headers: {'Content-Type':'application/json'}}).
+  
+  getDataGraph () {
+    console.log(API+GRAPH_STATS+this.state.type_chart[0].value+ '/street=' + this.state.street_id +'&start_date=' + this.state.begin_date +' &end_date=' + this.state.end_date +'/')
+    fetch(API+GRAPH_STATS+this.state.type_chart[0].value+'/street=' + this.state.street_id +'&start_date=' + this.state.begin_date +' &end_date=' + this.state.end_date +'/', { headers: {'Content-Type':'application/json'}}).
       then(resp => resp.json()).
       then(rest => {
         return rest
       }).
       then(responseData => {
+        console.log(responseData)
         this.setState({
           labels : responseData.Days,
           values: responseData.ammount
         })
-        this.fillStats(responseData)
+        console.log(this.state)
+        this.fillStats(this.state)
       });
-  }*/
+  }
 
   getDataStats = () => {
     console.log("Making request to statistics")
@@ -176,17 +235,18 @@ class Dashboard extends Component {
       .then(data => {
         console.log(data)
         this.setState({
-        dataSourceStats : [data]
+          dataSourceStats : [data]
       })
     });
   }
 
-  changeStreetDisplayed(response) {
-    this.setState({
+  changeStreetDisplayed =  async (response) => {
+    await this.setState({
       street_name: response.value,
       street_id : response.key
     })
     this.getDataStats()
+    this.getDataGraph()
   }
 
   changeDay = async (day) => {
@@ -211,12 +271,22 @@ class Dashboard extends Component {
         >
           <Container style={{display:'flex',flex:1,flexDirection:'column',maringTop:50}}>
             <Row style={{alignContent:'center',justifyContent:'center',border:10,borderColor:'white'}}> 
-                <Text style={{color:'rgba(0,0,0,0.6)', fontWeight:'bold', fontSize:30}}>Analytics for streets in: Espinho</Text>
+                <Text style={{color:'rgba(0,0,0,0.6)', fontWeight:'bold', fontSize:30}}>Analytics for streets in:</Text>
+                <ReactSearchBox
+                  placeholder="Search city"
+                  value="Ilhavo"
+                  data={this.state.streets}
+                  color={'black'}
+                  style={{fontWeight:'bold',width:10}}
+                  inputBoxFontColor={'black'}
+                  dropDownHoverColor={'rgba(0,255,255,0.1)'}
+                  onSelect={record => this.changeStreet(record)}
+                />
             </Row>
             <Text style={{color:'rgba(0,0,0,0.6)', fontSize:13, marginTop:5, fontWeight:'bolder'}}>Street name: </Text>
             <ReactSearchBox
               placeholder="Search street"
-              value=""
+              value="Travessa das Leirinhas"
               data={this.state.dataSource}
               color={'black'}
               style={{fontWeight:'bold',width:40}}
@@ -231,6 +301,7 @@ class Dashboard extends Component {
                 <DatePicker
                   selected={this.state.begin_date_cal}
                   onChange={this.handleChangeStart}
+                  maxDate={new Date()}
                 />
               </Container>
               <Container style={{flex:1, alignContent:'center',justifyContent:'center'}}>
@@ -238,6 +309,7 @@ class Dashboard extends Component {
                 <DatePicker
                   selected={this.state.end_date_cal}
                   onChange={this.handleChangeEnd}
+                  maxDate={new Date()}
                 />
               </Container>
               <Container style={{flex:1, alignContent:'center',justifyContent:'center'}}>
@@ -249,9 +321,9 @@ class Dashboard extends Component {
         <Text style={{color:'rgba(0,0,0,0.6)', fontWeight:'bold', marginTop:80, textAlign:'center',fontSize:24}}>{this.state.street_name}</Text>
             <div style={{display:'flex', flexDirection:'row' , justifyContent:'space-between',alignContent:'space-between'}}>
               <Stats style={{flex:1}} stat_name="Nº of accidents" number={this.state.dataSourceStats[0].total_accident}/>
-              <Stats style={{flex:1}} stat_name="Roadblock total time" number={this.state.dataSourceStats[0].road_block.total_time}/>
+              <Stats style={{flex:1}} stat_name="Roadblock total time" number={(this.state.dataSourceStats[0].road_block.total_time.toFixed()).toString() + "H"}/>
               <Stats style={{flex:1}} stat_name="Nº of roadblocks" number={this.state.dataSourceStats[0].road_block.times}/>
-              <Stats style={{flex:1}} stat_name="Transit Count" number={this.state.dataSourceStats[0].transit_count}/>
+              <Stats style={{flex:1}} stat_name="Times Congested" number={this.state.dataSourceStats[0].transit_count}/>
 
             </div>
             </Container>    
@@ -264,7 +336,7 @@ class Dashboard extends Component {
               backgroundColor:'rgba(255,255,255,1)',
             }}
           >
-            <Line width={1000} height={250} data={(response) => this.fillStats(response)} />
+            <Line width={1000} height={250} data={this.state.graph_data} />
           </div>
           </Row>
         </div>
